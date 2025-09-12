@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { AxiosRequestConfig, AxiosError } from 'axios';
-import { requestRefreshToken } from '@/features/auth/api/auth';
+import { postRefreshToken } from '@/features/auth';
 import queryString from 'query-string';
 
 interface APIRequest extends Omit<AxiosRequestConfig, 'data' | 'method'> {
@@ -58,7 +58,7 @@ instance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const res = await requestRefreshToken();
+        const res = await postRefreshToken();
 
         if (!res.success) {
           console.error(res.data.message);
