@@ -1,11 +1,10 @@
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import { lazy, Suspense } from 'react';
 import Spinner from '@/shared/ui/Spinner';
+import RootLayout from '@/shared/ui/RootLayout';
 
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
-
-const RootLayout = () => <Outlet />;
 
 const router = createBrowserRouter([
   {
