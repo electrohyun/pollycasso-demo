@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router';
 import { lazy, Suspense } from 'react';
 import Spinner from '@/shared/ui/Spinner';
 
-const SamplePage = lazy(() => import('@/pages/SamplePage'));
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
+const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 
 const RootLayout = () => <Outlet />;
 
@@ -16,12 +16,12 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: '/',
-        element: <SamplePage />,
-      },
-      {
         path: '/login',
         element: <LoginPage />,
+      },
+      {
+        path: '/welcome',
+        element: <WelcomePage />,
       },
     ],
   },
