@@ -1,25 +1,30 @@
-import { Outlet } from 'react-router';
-import { useLocation } from 'react-router';
-import bgDark from '@/assets/bg_dark.svg';
-import bgLight from '@/assets/bg_light.svg';
+import { Outlet, useLocation } from 'react-router';
+import { motion } from 'framer-motion';
+import background from '@/assets/background.svg';
+
+const DARK_PAGES = ['/login', '/register'];
 
 const RootLayout = () => {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
-  const darkBackgroundPages = ['/login'];
-  const isDarkBackground = darkBackgroundPages.includes(location.pathname);
-  const backgroundImage = isDarkBackground ? bgDark : bgLight;
+  const isDark = DARK_PAGES.includes(pathname);
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        minHeight: '100vh',
-      }}
-    >
-      <Outlet />
+    <div className="relative w-screen min-h-screen overflow-hidden">
+      <motion.div
+        key={isDark ? 'dark' : 'light'}
+        initial={{ filter: `brightness(${isDark ? 1 : 0.7})` }}
+        animate={{ filter: `brightness(${isDark ? 0.7 : 1})` }}
+        transition={{ duration: 0.5 }}
+        className="absolute inset-0 z-0 bg-center bg-cover"
+        style={{
+          backgroundImage: `url(${background})`,
+        }}
+      />
+
+      <main className="relative z-10">
+        <Outlet />
+      </main>
     </div>
   );
 };
