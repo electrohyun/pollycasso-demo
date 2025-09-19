@@ -6,3 +6,4 @@ export { SocialLoginButtons } from './SocialLoginButtons';
 export { SignUpLink } from './SignUpLink';
 export { SignUpForm } from './SignUpForm';
 export { PasswordVisibilityToggle } from './PasswordVisibilityToggle';
+export { SocialGuide } from './SocialGuide';
