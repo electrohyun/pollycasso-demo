@@ -1,12 +1,15 @@
 import { Link, useNavigate } from 'react-router';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useState } from 'react';
 import { MegaphoneIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AuthInput } from '@/features/auth/ui/AuthInput';
+import {
+  AuthInput,
+  KakaoLoginButton,
+  GoogleLoginButton,
+} from '@/features/auth/ui';
 import clsx from 'clsx';
 import title from '@/assets/title.svg';
-import kakao from '@/assets/kakao.svg';
-import google from '@/assets/google.svg';
 
 interface LoginFormValues {
   username: string;
@@ -15,6 +18,8 @@ interface LoginFormValues {
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [isAnyFieldFocused, setIsAnyFieldFocused] = useState(false);
+
   const methods = useForm<LoginFormValues>({
     mode: 'onChange',
   });
@@ -46,18 +51,18 @@ const LoginPage = () => {
             <AuthInput<LoginFormValues>
               name="username"
               label="아이디"
-              validation={{
-                required: '아이디를 입력해주세요',
-              }}
+              validation={{ required: '아이디를 입력해주세요' }}
+              onFocus={() => setIsAnyFieldFocused(true)}
+              onBlur={() => setIsAnyFieldFocused(false)}
             />
 
             <AuthInput<LoginFormValues>
               name="password"
               label="비밀번호"
               type="password"
-              validation={{
-                required: '비밀번호를 입력해주세요',
-              }}
+              validation={{ required: '비밀번호를 입력해주세요' }}
+              onFocus={() => setIsAnyFieldFocused(true)}
+              onBlur={() => setIsAnyFieldFocused(false)}
             />
 
             <button
@@ -79,13 +84,13 @@ const LoginPage = () => {
 
         <div className="relative w-[470px] mt-4">
           <AnimatePresence>
-            {!username && !password && (
+            {!username && !password && !isAnyFieldFocused && (
               <motion.div
-                initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                initial={{ opacity: 0, y: 10, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{
                   opacity: 0,
-                  y: -20,
+                  y: 20,
                   scale: 0.8,
                   transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
                 }}
@@ -101,25 +106,12 @@ const LoginPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
-
-          <button
-            onClick={() => navigate('/welcome')}
-            className="flex justify-between bg-[#FEE500] rounded-md py-4 w-full transition-colors duration-200 hover:underline"
-          >
-            <img src={kakao} className="mx-4 w-6" />
-            <p className="text-lg">카카오 로그인</p>
-            <div className="mx-4 w-6" />
-          </button>
         </div>
 
-        <button
-          onClick={() => navigate('/welcome')}
-          className="flex justify-between bg-white rounded-md py-4 mt-4 w-[470px] transition-colors duration-200 hover:underline"
-        >
-          <img src={google} className="mx-4 w-6" />
-          <p className="text-lg">Google 로그인</p>
-          <div className="mx-4 w-6" />
-        </button>
+        <div className="w-[470px] flex flex-col gap-4 mt-4">
+          <KakaoLoginButton />
+          <GoogleLoginButton />
+        </div>
 
         <div className="flex justify-center items-center mt-6">
           <p className="text-lg">계정이 없으신가요?</p>

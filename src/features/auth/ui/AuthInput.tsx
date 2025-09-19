@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ReactNode, FocusEvent } from 'react';
 import { useFormContext, get } from 'react-hook-form';
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import { FormField } from '@/shared/ui/FormField';
@@ -15,6 +15,8 @@ type AuthInputProps<T extends FieldValues> = {
   validation?: RegisterOptions<T>;
   showValidationIcon?: boolean;
   rightAddon?: ReactNode;
+  onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
 };
 
 export const AuthInput = <T extends FieldValues>({
@@ -24,6 +26,8 @@ export const AuthInput = <T extends FieldValues>({
   validation,
   showValidationIcon = false,
   rightAddon,
+  onFocus,
+  onBlur,
 }: AuthInputProps<T>) => {
   const {
     register,
@@ -34,17 +38,16 @@ export const AuthInput = <T extends FieldValues>({
   const [isFocused, setFocused] = useState(false);
 
   const fieldValue = watch(name);
-  const error = errors[name];
+  const error = get(errors, name);
   const isTouched = get(touchedFields, name);
 
-  const { onBlur, ...restRegister } = register(name, validation);
+  const { onBlur: rhfOnBlur, ...restRegister } = register(name, validation);
 
   const hasIcons = showValidationIcon || rightAddon;
 
   return (
     <div className="w-full mt-3">
       <FormField isFocused={isFocused} isError={!!error}>
-        {/* 아이콘 있으면 패딩 있어야함... */}
         <div className={clsx(hasIcons && 'pr-12')}>
           <Input
             id={name}
@@ -52,10 +55,14 @@ export const AuthInput = <T extends FieldValues>({
             type={type}
             isFocused={isFocused}
             hasValue={!!fieldValue}
-            onFocus={() => setFocused(true)}
+            onFocus={(e) => {
+              setFocused(true);
+              onFocus?.(e);
+            }}
             onBlur={(e) => {
-              onBlur(e);
+              rhfOnBlur(e);
               setFocused(false);
+              onBlur?.(e);
             }}
             {...restRegister}
           />
@@ -64,7 +71,7 @@ export const AuthInput = <T extends FieldValues>({
         {fieldValue && (
           <>
             {rightAddon && (
-              <div className="flex items-center absolute right-14 top-1/2 -translate-y-1/2">
+              <div className="absolute right-14 top-1/2 -translate-y-1/2 flex items-center">
                 {rightAddon}
               </div>
             )}
