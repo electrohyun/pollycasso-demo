@@ -1,14 +1,8 @@
-import { useForm, FormProvider } from 'react-hook-form';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { FormProvider } from 'react-hook-form';
 import clsx from 'clsx';
 import { AuthInput } from '@/features/auth/ui/AuthInput';
 import { PasswordVisibilityToggle } from './PasswordVisibilityToggle';
-import {
-  validateUsername,
-  validateNickname,
-  validatePassword,
-} from '@/features/auth/lib/validators';
+import { useSignUp } from '@/features/auth/model';
 
 interface SignUpFormValues {
   username: string;
@@ -18,27 +12,20 @@ interface SignUpFormValues {
 }
 
 export const SignUpForm = () => {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const methods = useForm<SignUpFormValues>({
-    mode: 'onTouched',
-    reValidateMode: 'onChange',
-  });
-
   const {
+    methods,
     handleSubmit,
-    watch,
-    formState: { isValid },
-  } = methods;
-
-  const passwordValue = watch('password');
-
-  const onSubmit = (data: SignUpFormValues) => {
-    console.log('회원가입 정보:', data);
-    navigate('/welcome');
-  };
+    isValid,
+    passwordValue,
+    showPassword,
+    setShowPassword,
+    showConfirmPassword,
+    setShowConfirmPassword,
+    onSubmit,
+    validateUsername,
+    validateNickname,
+    validatePassword,
+  } = useSignUp();
 
   return (
     <FormProvider {...methods}>
@@ -52,12 +39,14 @@ export const SignUpForm = () => {
           showValidationIcon
           validation={{ validate: validateUsername }}
         />
+
         <AuthInput<SignUpFormValues>
           name="nickname"
           label="닉네임"
           showValidationIcon
           validation={{ validate: validateNickname }}
         />
+
         <AuthInput<SignUpFormValues>
           name="password"
           label="비밀번호"
@@ -71,6 +60,7 @@ export const SignUpForm = () => {
             />
           }
         />
+
         <AuthInput<SignUpFormValues>
           name="confirmPassword"
           label="비밀번호 확인"
@@ -87,7 +77,9 @@ export const SignUpForm = () => {
             />
           }
         />
+
         <hr className="my-7 w-[450px] border border-[#419341]" />
+
         <button
           type="submit"
           disabled={!isValid}

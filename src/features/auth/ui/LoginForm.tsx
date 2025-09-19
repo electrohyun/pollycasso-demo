@@ -1,10 +1,9 @@
-import { useForm, FormProvider } from 'react-hook-form';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { FormProvider } from 'react-hook-form';
 import clsx from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MegaphoneIcon } from '@heroicons/react/24/outline';
-import { AuthInput } from '@/features/auth/ui/AuthInput';
+import { AuthInput } from '@/features/auth/ui';
+import { useLogin } from '@/features/auth/model';
 
 interface LoginFormValues {
   username: string;
@@ -12,26 +11,16 @@ interface LoginFormValues {
 }
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
-  const [isAnyFieldFocused, setIsAnyFieldFocused] = useState(false);
-
-  const methods = useForm<LoginFormValues>({
-    mode: 'onChange',
-  });
-
   const {
+    methods,
     handleSubmit,
-    watch,
-    formState: { isValid },
-  } = methods;
-
-  const username = watch('username');
-  const password = watch('password');
-
-  const onSubmit = (data: LoginFormValues) => {
-    console.log('로그인 데이터:', data);
-    navigate('/welcome');
-  };
+    isValid,
+    username,
+    password,
+    isAnyFieldFocused,
+    setIsAnyFieldFocused,
+    onSubmit,
+  } = useLogin();
 
   return (
     <div className="w-[470px] flex flex-col items-center">
@@ -44,6 +33,7 @@ export const LoginForm = () => {
             onFocus={() => setIsAnyFieldFocused(true)}
             onBlur={() => setIsAnyFieldFocused(false)}
           />
+
           <AuthInput<LoginFormValues>
             name="password"
             label="비밀번호"
@@ -52,6 +42,7 @@ export const LoginForm = () => {
             onFocus={() => setIsAnyFieldFocused(true)}
             onBlur={() => setIsAnyFieldFocused(false)}
           />
+
           <button
             type="submit"
             disabled={!isValid}
