@@ -8,7 +8,7 @@ import { ValidationIcon } from '@/shared/ui/ValidationIcon';
 import { ErrorMessage } from '@/shared/ui/ErrorMessage';
 import clsx from 'clsx';
 
-type AuthInputProps<T extends FieldValues> = {
+interface AuthInputProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   type?: string;
@@ -17,7 +17,7 @@ type AuthInputProps<T extends FieldValues> = {
   rightAddon?: ReactNode;
   onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
-};
+}
 
 export const AuthInput = <T extends FieldValues>({
   name,
