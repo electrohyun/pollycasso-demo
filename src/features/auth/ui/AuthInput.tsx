@@ -2,10 +2,7 @@ import { useState } from 'react';
 import type { ReactNode, FocusEvent } from 'react';
 import { useFormContext, get } from 'react-hook-form';
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form';
-import { FormField } from '@/shared/ui/FormField';
-import { Input } from '@/shared/ui/Input';
-import { ValidationIcon } from '@/shared/ui/ValidationIcon';
-import { ErrorMessage } from '@/shared/ui/ErrorMessage';
+import { FormField, Input, ValidationIcon, ErrorMessage } from '@/shared/ui';
 import clsx from 'clsx';
 
 interface AuthInputProps<T extends FieldValues> {
