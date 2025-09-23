@@ -3,6 +3,11 @@ import clsx from 'clsx';
 import { AuthInput } from '@/features/auth/ui/AuthInput';
 import { PasswordVisibilityToggle } from './PasswordVisibilityToggle';
 import { useSignUp } from '@/features/auth/model';
+import {
+  validateUsername,
+  validateNickname,
+  validatePassword,
+} from '@/features/auth/lib/validators';
 
 interface SignUpFormValues {
   username: string;
@@ -22,9 +27,6 @@ export const SignUpForm = () => {
     showConfirmPassword,
     setShowConfirmPassword,
     onSubmit,
-    validateUsername,
-    validateNickname,
-    validatePassword,
   } = useSignUp();
 
   return (

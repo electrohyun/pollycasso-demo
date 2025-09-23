@@ -1,11 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  validateUsername,
-  validateNickname,
-  validatePassword,
-} from '@/features/auth/lib/validators';
 
 interface SignUpFormValues {
   username: string;
@@ -46,8 +41,5 @@ export const useSignUp = () => {
     showConfirmPassword,
     setShowConfirmPassword,
     onSubmit,
-    validateUsername,
-    validateNickname,
-    validatePassword,
   };
 };
