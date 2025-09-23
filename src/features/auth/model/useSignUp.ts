@@ -1,13 +1,9 @@
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-
-interface SignUpFormValues {
-  username: string;
-  nickname: string;
-  password: string;
-  confirmPassword: string;
-}
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signUpSchema } from '@/features/auth/lib';
+import type { SignUpFormValues } from '@/features/auth/lib';
 
 export const useSignUp = () => {
   const navigate = useNavigate();
@@ -15,6 +11,7 @@ export const useSignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const methods = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpSchema),
     mode: 'onTouched',
     reValidateMode: 'onChange',
   });

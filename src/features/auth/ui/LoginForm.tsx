@@ -1,12 +1,7 @@
 import { FormProvider } from 'react-hook-form';
-import { AuthInput } from '@/features/auth/ui';
+import { AuthInput, PasswordVisibilityToggle } from '@/features/auth/ui';
 import { useLogin } from '@/features/auth/model';
 import { SocialGuide } from './SocialGuide';
-
-interface LoginFormValues {
-  username: string;
-  password: string;
-}
 
 export const LoginForm = () => {
   const {
@@ -16,6 +11,8 @@ export const LoginForm = () => {
     password,
     isAnyFieldFocused,
     setIsAnyFieldFocused,
+    showPassword,
+    setShowPassword,
     onSubmit,
   } = useLogin();
 
@@ -23,21 +20,27 @@ export const LoginForm = () => {
     <div className="w-[470px] flex flex-col items-center">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-2">
-          <AuthInput<LoginFormValues>
+          <AuthInput
             name="username"
             label="아이디"
-            validation={{ required: '아이디를 입력해주세요' }}
+            showValidationIcon
             onFocus={() => setIsAnyFieldFocused(true)}
             onBlur={() => setIsAnyFieldFocused(false)}
           />
 
-          <AuthInput<LoginFormValues>
+          <AuthInput
             name="password"
             label="비밀번호"
-            type="password"
-            validation={{ required: '비밀번호를 입력해주세요' }}
+            type={showPassword ? 'text' : 'password'}
+            showValidationIcon
             onFocus={() => setIsAnyFieldFocused(true)}
             onBlur={() => setIsAnyFieldFocused(false)}
+            rightAddon={
+              <PasswordVisibilityToggle
+                isShown={showPassword}
+                onToggle={() => setShowPassword((prev) => !prev)}
+              />
+            }
           />
 
           <button

@@ -1,27 +1,14 @@
 import { FormProvider } from 'react-hook-form';
 import clsx from 'clsx';
-import { AuthInput } from '@/features/auth/ui';
 import { PasswordVisibilityToggle } from './PasswordVisibilityToggle';
+import { AuthInput } from '@/features/auth/ui';
 import { useSignUp } from '@/features/auth/model';
-import {
-  validateUsername,
-  validateNickname,
-  validatePassword,
-} from '@/features/auth/lib/validators';
-
-interface SignUpFormValues {
-  username: string;
-  nickname: string;
-  password: string;
-  confirmPassword: string;
-}
 
 export const SignUpForm = () => {
   const {
     methods,
     handleSubmit,
     isValid,
-    passwordValue,
     showPassword,
     setShowPassword,
     showConfirmPassword,
@@ -35,26 +22,15 @@ export const SignUpForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-[470px] flex flex-col items-center"
       >
-        <AuthInput<SignUpFormValues>
-          name="username"
-          label="아이디"
-          showValidationIcon
-          validation={{ validate: validateUsername }}
-        />
+        <AuthInput name="username" label="아이디" showValidationIcon />
 
-        <AuthInput<SignUpFormValues>
-          name="nickname"
-          label="닉네임"
-          showValidationIcon
-          validation={{ validate: validateNickname }}
-        />
+        <AuthInput name="nickname" label="닉네임" showValidationIcon />
 
-        <AuthInput<SignUpFormValues>
+        <AuthInput
           name="password"
           label="비밀번호"
           type={showPassword ? 'text' : 'password'}
           showValidationIcon
-          validation={{ validate: validatePassword }}
           rightAddon={
             <PasswordVisibilityToggle
               isShown={showPassword}
@@ -63,15 +39,11 @@ export const SignUpForm = () => {
           }
         />
 
-        <AuthInput<SignUpFormValues>
+        <AuthInput
           name="confirmPassword"
           label="비밀번호 확인"
           type={showConfirmPassword ? 'text' : 'password'}
           showValidationIcon
-          validation={{
-            validate: (value) =>
-              value === passwordValue || '비밀번호 확인이 일치하지 않습니다.',
-          }}
           rightAddon={
             <PasswordVisibilityToggle
               isShown={showConfirmPassword}

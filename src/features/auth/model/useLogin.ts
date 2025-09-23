@@ -1,18 +1,18 @@
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-
-interface LoginFormValues {
-  username: string;
-  password: string;
-}
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema } from '@/features/auth/lib';
+import type { LoginFormValues } from '@/features/auth/lib';
 
 export const useLogin = () => {
   const navigate = useNavigate();
   const [isAnyFieldFocused, setIsAnyFieldFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const methods = useForm<LoginFormValues>({
-    mode: 'onChange',
+    resolver: zodResolver(loginSchema),
+    mode: 'onBlur',
   });
 
   const { handleSubmit, watch } = methods;
@@ -31,6 +31,8 @@ export const useLogin = () => {
     password,
     isAnyFieldFocused,
     setIsAnyFieldFocused,
+    showPassword,
+    setShowPassword,
     onSubmit,
   };
 };
