@@ -1,6 +1,6 @@
 import { FormProvider } from 'react-hook-form';
 import clsx from 'clsx';
-import { AuthInput } from '@/features/auth/ui/AuthInput';
+import { AuthInput } from '@/features/auth/ui';
 import { PasswordVisibilityToggle } from './PasswordVisibilityToggle';
 import { useSignUp } from '@/features/auth/model';
 import {

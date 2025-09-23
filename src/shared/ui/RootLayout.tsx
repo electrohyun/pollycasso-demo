@@ -4,7 +4,7 @@ import background from '@/assets/background.svg';
 
 const DARK_PAGES = ['/login', '/signup'];
 
-const RootLayout = () => {
+export const RootLayout = () => {
   const { pathname } = useLocation();
 
   const isDark = DARK_PAGES.includes(pathname);
@@ -28,5 +28,3 @@ const RootLayout = () => {
     </div>
   );
 };
-
-export default RootLayout;

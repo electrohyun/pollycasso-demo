@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/shared/ui';
 import kakaoIcon from '@/assets/kakao.svg';
 import { useNavigate } from 'react-router';
 

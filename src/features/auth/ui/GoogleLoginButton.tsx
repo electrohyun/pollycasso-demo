@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/shared/ui';
 import googleIcon from '@/assets/google.svg';
 import { useNavigate } from 'react-router';
 

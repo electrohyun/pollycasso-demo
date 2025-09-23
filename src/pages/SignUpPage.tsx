@@ -1,6 +1,6 @@
 import title from '@/assets/title.svg';
 import { AuthLayout } from '@/widgets/auth/ui/AuthLayout';
-import { SignUpForm } from '@/features/auth/ui/SignUpForm';
+import { SignUpForm } from '@/features/auth/ui';
 
 const SignUpPage = () => {
   return (
