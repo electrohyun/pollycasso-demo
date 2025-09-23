@@ -3,7 +3,7 @@ import { z } from 'zod';
 const USERNAME_MESSAGE =
   '아이디는 5~20자 이내의 영어 소문자(a-z), 숫자(0-9), 특수문자(_, -)로 구성되어야 합니다.' as const;
 const NICKNAME_MESSAGE =
-  '닉네임은 한글 포함 시 10자 이하, 영문/숫자만 있으면 30자 이하로 구성되어야 합니다.' as const;
+  '닉네임은 한글 포함 시 10자 이내, 영문/숫자 30자 이내로 구성되어야 합니다.' as const;
 const PASSWORD_MESSAGE =
   '비밀번호는 8~20자 이내의 영문자, 숫자, 특수문자로 구성되어야 합니다.' as const;
 const CONFIRM_MESSAGE = '비밀번호가 일치하지 않습니다.' as const;
