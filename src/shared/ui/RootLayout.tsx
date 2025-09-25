@@ -6,8 +6,9 @@ import { Leaf } from '@/shared/ui';
 import { createLeafData } from '@/shared/lib/leaf';
 import type { LeafData } from '@/shared/lib/leaf';
 
+// 추후 LEAF_COUNT 상수를 제거하고 사용자 환경 설정에 넣어 조절할 수 있는 상태로 작성할 예정입니다.
 const DARK_PAGES = ['/login', '/signup'];
-const LEAF_COUNT = 5;
+const LEAF_COUNT = 8;
 
 export const RootLayout = () => {
   const { pathname } = useLocation();
@@ -19,11 +20,10 @@ export const RootLayout = () => {
     setLeafData(
       createLeafData(LEAF_COUNT, window.innerWidth, window.innerHeight),
     );
-  }, [pathname]);
+  }, []);
 
   return (
     <div className="relative w-screen min-h-screen overflow-hidden">
-      {/* 배경 */}
       <motion.div
         key={isDark ? 'dark' : 'light'}
         initial={{ filter: `brightness(${isDark ? 1 : 0.8})` }}
@@ -33,12 +33,10 @@ export const RootLayout = () => {
         style={{ backgroundImage: `url(${Background})` }}
       />
 
-      {/* 낙엽 */}
       {leafData.map((leaf, index) => (
         <Leaf key={index} {...leaf} />
       ))}
 
-      {/* 페이지 콘텐츠 */}
       <main className="relative z-10">
         <Outlet />
       </main>
