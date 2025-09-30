@@ -2,6 +2,7 @@ import { FormProvider } from 'react-hook-form';
 import { AuthInput, PasswordVisibilityToggle } from '@/features/auth/ui';
 import { useLogin } from '@/features/auth/model';
 import { SocialGuide } from './SocialGuide';
+import { ErrorMessage } from '@/shared/ui';
 
 export const LoginForm = () => {
   const {
@@ -13,6 +14,7 @@ export const LoginForm = () => {
     setIsAnyFieldFocused,
     showPassword,
     setShowPassword,
+    errorMessage,
     onSubmit,
   } = useLogin();
 
@@ -23,7 +25,6 @@ export const LoginForm = () => {
           <AuthInput
             name="username"
             label="아이디"
-            showValidationIcon
             onFocus={() => setIsAnyFieldFocused(true)}
             onBlur={() => setIsAnyFieldFocused(false)}
           />
@@ -32,7 +33,6 @@ export const LoginForm = () => {
             name="password"
             label="비밀번호"
             type={showPassword ? 'text' : 'password'}
-            showValidationIcon
             onFocus={() => setIsAnyFieldFocused(true)}
             onBlur={() => setIsAnyFieldFocused(false)}
             rightAddon={
@@ -43,6 +43,7 @@ export const LoginForm = () => {
             }
           />
 
+          {errorMessage && <ErrorMessage message={errorMessage} />}
           <button
             type="submit"
             className="text-white rounded-xl p-4 my-4 w-full transition-colors duration-200 text-2xl bg-[#003D00] hover:bg-green-600"
