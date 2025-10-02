@@ -6,17 +6,11 @@ interface ValidationIconProps {
 }
 
 export const ValidationIcon = ({ isTouched, isError }: ValidationIconProps) => {
-  return (
-    <>
-      {!isTouched && (
-        <CheckCircleIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 stroke-1 text-gray-400" />
-      )}
-      {isTouched && !isError && (
-        <CheckCircleIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 stroke-1 text-green-500" />
-      )}
-      {isTouched && isError && (
-        <XCircleIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 stroke-1 text-red-500" />
-      )}
-    </>
-  );
+  if (!isTouched) {
+    return <CheckCircleIcon className="w-9 h-9 stroke-1 text-gray-400" />;
+  }
+  if (!isError) {
+    return <CheckCircleIcon className="w-9 h-9 stroke-1 text-green-500" />;
+  }
+  return <XCircleIcon className="w-9 h-9 stroke-1 text-red-500" />;
 };
