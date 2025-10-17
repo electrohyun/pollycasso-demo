@@ -20,7 +20,7 @@ const USERS = [
 ];
 
 export const authHandlers = [
-  http.post('auth/login', async ({ request }) => {
+  http.post('mock/auth/login', async ({ request }) => {
     const { username, password } = (await request.json()) as {
       username: string;
       password: string;
@@ -65,7 +65,7 @@ export const authHandlers = [
       { status: 200 },
     );
   }),
-  http.post('auth/signup', async ({ request }) => {
+  http.post('mock/auth/signup', async ({ request }) => {
     const { username, nickname, password } = (await request.json()) as {
       username: string;
       nickname: string;
