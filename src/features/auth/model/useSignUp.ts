@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,6 +28,15 @@ export const useSignUp = () => {
     handleSubmit,
     formState: { isValid },
   } = methods;
+
+  const password = methods.watch('password');
+  const { touchedFields } = methods.formState;
+
+  useEffect(() => {
+    if (touchedFields.confirmPassword) {
+      methods.trigger('confirmPassword');
+    }
+  }, [password, touchedFields.confirmPassword]);
 
   const { mutate: signup, isPending: isSigningUp } = useMutation({
     ...authQueries.signup(),
