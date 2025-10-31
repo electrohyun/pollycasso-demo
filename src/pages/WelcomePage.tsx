@@ -1,8 +1,17 @@
 import { useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
+import { useAuthStore } from '@/features/auth';
+import { useEffect } from 'react';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
 
   const goToLoginPage = () => {
     navigate('/login');
@@ -22,7 +31,7 @@ const WelcomePage = () => {
       />
 
       <div className="mt-10 text-center font-ssrm font-bold">
-        <span className="text-4xl text-green-500">밥아저씨</span>
+        <span className="text-4xl text-green-500">{user?.nickname}</span>
         <span className="text-4xl">
           님<br />
         </span>

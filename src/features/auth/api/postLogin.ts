@@ -1,7 +1,9 @@
 import { instance } from '@/shared/api/axios';
-import type { LoginCredentials } from '@/features/auth/model/auth.type';
+import type { LoginRequest, LoginResponse } from '@/features/auth/model';
 
-export const postLogin = async (credentials: LoginCredentials) => {
-  const response = await instance.post('auth/login', credentials);
-  return response.data;
+export const postLogin = async (
+  credentials: LoginRequest,
+): Promise<LoginResponse> => {
+  const { data } = await instance.post('auth/login', credentials);
+  return data;
 };

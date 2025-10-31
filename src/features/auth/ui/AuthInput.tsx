@@ -45,7 +45,7 @@ export const AuthInput = <T extends FieldValues>({
   return (
     <div className="w-full mt-3">
       <FormField isFocused={isFocused} isError={!!error}>
-        <div className={clsx(hasIcons && 'pr-12')}>
+        <div className={clsx(hasIcons && 'pr-16')}>
           <Input
             id={name}
             label={label}
@@ -65,18 +65,13 @@ export const AuthInput = <T extends FieldValues>({
           />
         </div>
 
-        {fieldValue && (
-          <>
-            {rightAddon && (
-              <div className="absolute right-14 top-1/2 -translate-y-1/2 flex items-center">
-                {rightAddon}
-              </div>
-            )}
-
+        {fieldValue && hasIcons && (
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            {rightAddon}
             {showValidationIcon && (
               <ValidationIcon isTouched={!!isTouched} isError={!!error} />
             )}
-          </>
+          </div>
         )}
       </FormField>
       <ErrorMessage message={error?.message as string} />

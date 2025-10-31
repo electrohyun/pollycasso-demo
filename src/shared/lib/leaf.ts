@@ -12,7 +12,7 @@ export interface LeafData {
 }
 
 const getRandomLeaf = (): string =>
-  Math.random() < 0.5 ? LeafYellow : LeafGreen;
+  Math.random() < 0.5 ? LeafGreen : LeafYellow;
 const getRandomStartX = (max: number): number => Math.random() * max;
 const getRandomDuration = (): number => 14 + Math.random() * 12;
 const getRandomRotation = (): number => Math.random() * 360;
