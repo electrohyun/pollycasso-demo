@@ -1,4 +1,4 @@
-import RoomCard from '@/features/main/ui/RoomCard';
+import RoomCard from './RoomCard';
 import type { Room } from '@/features/main/model/types';
 
 interface Props {

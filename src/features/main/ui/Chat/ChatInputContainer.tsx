@@ -2,7 +2,7 @@ import type { Friend } from '@/features/main/model/types';
 import ChannelSelect from './ChannelSelect';
 import ChatInput from './ChatInput';
 import ChatSendButton from './ChatSendButton';
-import { MentionDropdown } from '@/features/main/ui/MentionDropdown';
+import { MentionDropdown } from './MentionDropdown';
 
 interface ChatInputContainerProps {
   input: string;
