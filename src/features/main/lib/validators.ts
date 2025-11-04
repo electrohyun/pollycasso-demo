@@ -29,3 +29,5 @@ export const createRoomSchema = z
       }
     }
   });
+
+export type CreateRoomForm = z.infer<typeof createRoomSchema>;

@@ -1,10 +1,5 @@
 import { useEffect, useRef } from 'react';
-
-// UI 제작을 위한 임시 타입으로, 이후 분리 예정입니다.
-interface Friend {
-  id: number;
-  name: string;
-}
+import type { Friend } from '@/features/main/model/types';
 
 interface MentionDropdownProps {
   friends: Friend[];

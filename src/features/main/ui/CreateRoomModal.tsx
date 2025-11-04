@@ -4,23 +4,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createRoomSchema } from '@/features/main/lib/validators';
-import { z } from 'zod';
+import {
+  createRoomSchema,
+  type CreateRoomForm,
+} from '@/features/main/lib/validators';
 import { useNavigate } from 'react-router';
-
-type CreateRoomForm = z.infer<typeof createRoomSchema>;
+import { titlePresets } from '@/features/main/constants/titles';
 
 interface CreateRoomModalProps {
   onClose: () => void;
 }
-
-const basicTitles = [
-  '미대생이 그려드립니다.',
-  '밥아저씨 컴온!',
-  '너만 오면 고고!',
-  '숨 막히는 아트 배틀',
-  '캔버스 파티',
-];
 
 const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
   const navigate = useNavigate();
@@ -48,12 +41,12 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
   // ✅ 랜덤 방 제목
   useEffect(() => {
     const randomTitle =
-      basicTitles[Math.floor(Math.random() * basicTitles.length)];
+      titlePresets[Math.floor(Math.random() * titlePresets.length)];
     setRoomTitle(randomTitle);
     form.setValue('name', randomTitle);
   }, []);
 
-  // 음… allowed players
+  // allowed players
   const allowedPlayers = gameMode === 'team' ? [4, 6] : [3, 4, 5, 6];
   const isMin = maxPlayers === allowedPlayers[0];
   const isMax = maxPlayers === allowedPlayers[allowedPlayers.length - 1];
@@ -70,7 +63,7 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
     form.trigger('maxPlayers');
   };
 
-  const inc = () => {
+  const increaseMaxPlayers = () => {
     const idx = allowedPlayers.indexOf(maxPlayers);
     if (idx < allowedPlayers.length - 1) {
       const newVal = allowedPlayers[idx + 1];
@@ -80,7 +73,7 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
     }
   };
 
-  const dec = () => {
+  const decreaseMaxPlayers = () => {
     const idx = allowedPlayers.indexOf(maxPlayers);
     if (idx > 0) {
       const newVal = allowedPlayers[idx - 1];
@@ -106,9 +99,8 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
 
   const onSubmit = () => {
     const data = form.getValues();
-    console.log('✅ Final payload:', data);
-
-    // TODO: socket.emit('room:create', data)
+    console.log('데이터:', data);
+    // TODO: 소켓IO 구현부분
     onClose();
   };
 
@@ -120,7 +112,7 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50">
-      <div className="relative bg-[#F2F2F2] w-[790px] p-6 rounded-2xl shadow-lg flex flex-col items-center">
+      <div className="relative bg-[#F2F2F2] w-[700px] p-6 rounded-2xl shadow-lg flex flex-col items-center">
         {/* 닫기 */}
         <button
           onClick={onClose}
@@ -134,7 +126,7 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
           {/* 제목 */}
           <div className="flex mt-6">
-            <span className="py-5 px-4 rounded-l-xl bg-[#419341] text-2xl text-white">
+            <span className="py-[18px] px-4 rounded-l-xl bg-[#419341] text-2xl text-white">
               제목
             </span>
             <div className="rounded-r-xl border border-[#419341] font-normal text-xl bg-white">
@@ -208,7 +200,7 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
                 <button
                   type="button"
                   disabled={isMin}
-                  onClick={dec}
+                  onClick={decreaseMaxPlayers}
                   className={`pr-2 py-[50px] ${isMin ? 'opacity-0 cursor-default' : ''}`}
                 >
                   <ChevronLeftIcon className="w-7 h-7 text-gray-500" />
@@ -219,7 +211,7 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
                 <button
                   type="button"
                   disabled={isMax}
-                  onClick={inc}
+                  onClick={increaseMaxPlayers}
                   className={`pl-2 py-[50px] ${isMax ? 'opacity-0 cursor-default' : ''}`}
                 >
                   <ChevronRightIcon className="w-7 h-7 text-gray-500" />
@@ -302,7 +294,7 @@ const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
               const roomId = Math.floor(Math.random() * 9000) + 1000; // 가짜 roomId
               navigate(`/rooms/${roomId}`);
             }}
-            className={`w-[480px] h-[80px] mt-8 text-white py-3 text-3xl rounded-xl
+            className={`w-[480px] h-[75px] mt-8 mb-6 text-white py-3 text-3xl rounded-xl
             ${canCreate ? 'bg-[#003D00] hover:bg-[#002E00]' : 'bg-[#7B9675] cursor-not-allowed'}`}
           >
             방만들기
