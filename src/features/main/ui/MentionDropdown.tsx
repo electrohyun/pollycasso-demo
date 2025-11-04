@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+// UI 제작을 위한 임시 타입으로, 이후 분리 예정입니다.
 interface Friend {
   id: number;
   name: string;
@@ -19,9 +20,9 @@ export const MentionDropdown = ({
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    const el = itemRefs.current[highlightIndex];
-    if (el) {
-      el.scrollIntoView({
+    const element = itemRefs.current[highlightIndex];
+    if (element) {
+      element.scrollIntoView({
         block: 'nearest',
         behavior: 'smooth',
       });
