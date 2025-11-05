@@ -8,13 +8,13 @@ interface SideBarProps {
   onLogout: () => void;
 }
 
-export default function Sidebar({
+export const SideBar = ({
   nickname,
   level,
   currentXp,
   maxXp,
   onLogout,
-}: SideBarProps) {
+}: SideBarProps) => {
   const progress = (currentXp / maxXp) * 100;
 
   return (
@@ -75,4 +75,4 @@ export default function Sidebar({
       </div>
     </div>
   );
-}
+};

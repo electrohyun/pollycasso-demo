@@ -6,11 +6,7 @@ interface SearchBarProps {
   onSearch: () => void;
 }
 
-export default function SearchBar({
-  value,
-  onChange,
-  onSearch,
-}: SearchBarProps) {
+export const SearchBar = ({ value, onChange, onSearch }: SearchBarProps) => {
   return (
     <div className="flex w-[480px]">
       <input
@@ -33,4 +29,4 @@ export default function SearchBar({
       </button>
     </div>
   );
-}
+};

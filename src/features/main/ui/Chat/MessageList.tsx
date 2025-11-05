@@ -5,10 +5,7 @@ interface MessageListProps {
   messagesEndRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export default function MessageList({
-  messages,
-  messagesEndRef,
-}: MessageListProps) {
+export const MessageList = ({ messages, messagesEndRef }: MessageListProps) => {
   return (
     <div
       ref={messagesEndRef}
@@ -46,4 +43,4 @@ export default function MessageList({
       )}
     </div>
   );
-}
+};

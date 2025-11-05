@@ -1,24 +1,20 @@
+import {
+  ROOM_FILTER_COLORS,
+  ROOM_FILTERS,
+} from '@/features/main/constants/filters';
+
 interface RoomFilterTabsProps {
   currentFilter: '전체' | '대기' | '개인' | '팀';
   onChange: (filter: '전체' | '대기' | '개인' | '팀') => void;
 }
 
-const filterStyles = {
-  전체: 'bg-[#464646]',
-  대기: 'bg-[#2ADB75]',
-  개인: 'bg-[#FFB83E]',
-  팀: 'bg-[#73ABFF]',
-} as const;
-
-const filters = ['전체', '대기', '개인', '팀'] as const;
-
-export default function RoomFilterTabs({
+export const RoomFilterTabs = ({
   currentFilter,
   onChange,
-}: RoomFilterTabsProps) {
+}: RoomFilterTabsProps) => {
   return (
     <div className="flex ml-5 p-1 gap-x-1 w-[305px] bg-white/20 rounded-xl">
-      {filters.map((filter) => {
+      {ROOM_FILTERS.map((filter) => {
         const isAll = currentFilter === '전체';
         const isActive = currentFilter === filter;
 
@@ -29,9 +25,9 @@ export default function RoomFilterTabs({
             className={`px-4 rounded-lg text-white text-2xl font-bold 
                 ${
                   isAll
-                    ? filterStyles[filter]
+                    ? ROOM_FILTER_COLORS[filter]
                     : isActive
-                      ? filterStyles[filter]
+                      ? ROOM_FILTER_COLORS[filter]
                       : 'bg-[#464646]'
                 }
               `}
@@ -42,4 +38,4 @@ export default function RoomFilterTabs({
       })}
     </div>
   );
-}
+};

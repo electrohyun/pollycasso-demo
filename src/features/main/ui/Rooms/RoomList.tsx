@@ -1,4 +1,4 @@
-import RoomCard from './RoomCard';
+import { RoomCard } from './RoomCard';
 import type { Room } from '@/features/main/model/types';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   onMenu: (id: number) => void;
 }
 
-export default function RoomList({ rooms, onEnter, onMenu }: Props) {
+export const RoomList = ({ rooms, onEnter, onMenu }: Props) => {
   return (
     <div
       className="
@@ -41,4 +41,4 @@ export default function RoomList({ rooms, onEnter, onMenu }: Props) {
       </div>
     </div>
   );
-}
+};

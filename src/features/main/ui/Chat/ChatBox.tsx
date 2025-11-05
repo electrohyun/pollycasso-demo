@@ -1,7 +1,5 @@
 import type { Friend, ChatMessage } from '@/features/main/model/types';
-
-import MessageList from './MessageList';
-import ChatInputContainer from './ChatInputContainer';
+import { MessageList, ChatInputContainer } from './';
 
 interface ChatBoxProps {
   messages: ChatMessage[];
@@ -27,7 +25,7 @@ interface ChatBoxProps {
   onSelectMention: (friend: Friend) => void;
 }
 
-export default function ChatBox({
+export const ChatBox = ({
   messages,
   input,
   selectedChannel,
@@ -44,7 +42,7 @@ export default function ChatBox({
   onSelectChannel,
   setIsComposing,
   onSelectMention,
-}: ChatBoxProps) {
+}: ChatBoxProps) => {
   return (
     <div className="relative mt-5 w-[1020px] h-[190px] rounded-b-2xl bg-white/70 border border-[#c0c8b0] shadow-sm p-4 flex flex-col justify-between">
       <MessageList messages={messages} messagesEndRef={messagesEndRef} />
@@ -66,4 +64,4 @@ export default function ChatBox({
       />
     </div>
   );
-}
+};

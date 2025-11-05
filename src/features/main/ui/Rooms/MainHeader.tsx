@@ -1,7 +1,7 @@
-import RoomFilterTabs from './RoomFilterTabs';
-import SearchBar from './SearchBar';
-import NotificationButton from './NotificationButton';
-import CreateRoomButton from './CreateRoomButton';
+import { RoomFilterTabs } from './RoomFilterTabs';
+import { SearchBar } from './SearchBar';
+import { NotificationButton } from './NotificationButton';
+import { CreateRoomButton } from './CreateRoomButton';
 
 interface MainHeaderProps {
   searchQuery: string;
@@ -12,14 +12,14 @@ interface MainHeaderProps {
   onClickCreateRoom: () => void;
 }
 
-export default function MainHeader({
+export const MainHeader = ({
   searchQuery,
   onChangeSearch,
   onSearch,
   roomFilter,
   onChangeFilter,
   onClickCreateRoom,
-}: MainHeaderProps) {
+}: MainHeaderProps) => {
   return (
     <div className="flex mt-[6px]">
       <SearchBar
@@ -32,4 +32,4 @@ export default function MainHeader({
       <CreateRoomButton onClick={onClickCreateRoom} />
     </div>
   );
-}
+};

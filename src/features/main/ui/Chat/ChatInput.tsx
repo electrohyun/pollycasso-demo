@@ -5,12 +5,12 @@ interface ChatInputProps {
   setIsComposing: (v: boolean) => void;
 }
 
-export default function ChatInput({
+export const ChatInput = ({
   value,
   onChange,
   onKeyDown,
   setIsComposing,
-}: ChatInputProps) {
+}: ChatInputProps) => {
   return (
     <input
       value={value}
@@ -23,4 +23,4 @@ export default function ChatInput({
       placeholder="메세지 입력…"
     />
   );
-}
+};

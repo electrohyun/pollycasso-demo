@@ -5,10 +5,7 @@ interface ChatSendButtonProps {
   onSend: () => void;
 }
 
-export default function ChatSendButton({
-  disabled,
-  onSend,
-}: ChatSendButtonProps) {
+export const ChatSendButton = ({ disabled, onSend }: ChatSendButtonProps) => {
   return (
     <button
       onClick={onSend}
@@ -24,4 +21,4 @@ export default function ChatSendButton({
       <ArrowUpIcon className="w-5 h-5 text-bold" />
     </button>
   );
-}
+};

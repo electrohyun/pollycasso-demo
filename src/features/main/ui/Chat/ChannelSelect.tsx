@@ -7,12 +7,12 @@ interface ChannelSelectProps {
   onSelect: (value: string) => void;
 }
 
-export default function ChannelSelect({
+export const ChannelSelect = ({
   selected,
   isOpen,
   onToggle,
   onSelect,
-}: ChannelSelectProps) {
+}: ChannelSelectProps) => {
   return (
     <div
       className="flex items-center bg-white rounded-l-xl pl-2 pr-0 h-full cursor-pointer select-none relative"
@@ -60,4 +60,4 @@ export default function ChannelSelect({
       )}
     </div>
   );
-}
+};

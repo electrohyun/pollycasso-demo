@@ -2,7 +2,7 @@ interface CreateRoomButtonProps {
   onClick: () => void;
 }
 
-export default function CreateRoomButton({ onClick }: CreateRoomButtonProps) {
+export const CreateRoomButton = ({ onClick }: CreateRoomButtonProps) => {
   return (
     <div className="flex ml-1 p-1 rounded-xl bg-white/20">
       <button
@@ -13,4 +13,4 @@ export default function CreateRoomButton({ onClick }: CreateRoomButtonProps) {
       </button>
     </div>
   );
-}
+};
