@@ -2,14 +2,12 @@ import { useAuthStore } from '@/features/auth/model';
 import { useMain } from '@/features/main/model/useMain';
 import { useChat } from '@/features/main/model/useChat';
 
-import CreateRoomModal from '@/features/main/ui/CreateRoomModal';
-import Sidebar from '@/features/main/ui/SideBar';
-import RoomList from '@/features/main/ui/RoomList';
-import ChatBox from '@/features/main/ui/ChatBox';
-import MainHeader from '@/features/main/ui/MainHeader';
-
-import { mockRooms } from '@/features/main/constants/mainData';
 import { useState } from 'react';
+import { SideBar } from '@/features/main/ui/Rooms/SideBar';
+import { MainHeader, RoomList } from '@/features/main/ui/Rooms';
+import { ChatBox } from '@/features/main/ui/Chat';
+import { CreateRoomModal } from '@/features/main/ui/CreateRooms';
+import { mockRooms } from '@/features/main/constants/rooms';
 
 const MainPage = () => {
   const { clearAuth } = useAuthStore();
@@ -49,7 +47,6 @@ const MainPage = () => {
   const handleLogout = () => clearAuth();
   const handleSearch = () => setCommitSearch(searchQuery.trim());
 
-  // 방 목록 필터링
   const filteredRooms = mockRooms.filter((room) => {
     const filterMatch =
       roomFilter === '전체' ||
@@ -68,8 +65,8 @@ const MainPage = () => {
 
   return (
     <div className="flex items-center justify-center min-w-[1500px] mx-auto min-h-screen gap-x-10 font-ssrm font-bold">
-      {/* 왼쪽 사이드바 */}
-      <Sidebar
+      {/* 우측 사이드바 */}
+      <SideBar
         nickname={nickname}
         level={currentLv}
         currentXp={currentXp}
@@ -77,9 +74,8 @@ const MainPage = () => {
         onLogout={handleLogout}
       />
 
-      {/* 메인 컨텐츠 */}
+      {/* 좌측 */}
       <div className="w-[1100px] h-[760px] px-10 py-10 rounded-3xl bg-[#1E3411]/40">
-        {/* 상단 헤더 */}
         <MainHeader
           searchQuery={searchQuery}
           onChangeSearch={setSearchQuery}
@@ -89,14 +85,12 @@ const MainPage = () => {
           onClickCreateRoom={() => setIsCreateRoomModalOpen(true)}
         />
 
-        {/* 방 리스트 */}
         <RoomList
           rooms={filteredRooms}
           onEnter={(id) => console.log(`방 입장: ${id}`)}
           onMenu={(id) => console.log(`메뉴 클릭: ${id}`)}
         />
 
-        {/* 채팅 */}
         <ChatBox
           messages={messages}
           input={input}
