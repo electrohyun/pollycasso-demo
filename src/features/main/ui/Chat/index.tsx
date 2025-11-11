@@ -1,68 +1,61 @@
-import type { Friend, ChatMessage } from '@/features/main/model/types';
 import { MessageList } from './MessageList';
-import { ChatInputContainer } from './ChatInputContainer';
+import { useChat } from '@/features/main/model/useChat';
+import { ChannelSelect } from './ChannelSelect';
+import { ChatInput } from './ChatInput';
+import { ChatSendButton } from './ChatSendButton';
+import { MentionDropdown } from './MentionDropdown';
 
-interface ChatProps {
-  messages: ChatMessage[];
-  input: string;
+export const Chat = () => {
+  const {
+    messages,
+    input,
+    selected,
+    isMentionOpen,
+    filteredFriends,
+    highlightIndex,
+    messagesEndRef,
+    handleMentionOpen,
+    handleMentionSelect,
+    handleKeyDown,
+    sendMessage,
+    setIsComposing,
+    isChannelDropdownOpen,
+    onChannelToggle,
+    handleSelectChannel,
+  } = useChat();
 
-  selectedChannel: { label: string; value: string };
-  isDropdownOpen: boolean;
-  isMentionOpen: boolean;
+  const disableSend =
+    input.trim() === '' || /^@[a-zA-Z0-9가-힣_]+$/.test(input.trim());
 
-  filteredFriends: Friend[];
-  highlightIndex: number;
-
-  messagesEndRef: React.RefObject<HTMLDivElement | null>;
-
-  onChangeInput: (value: string) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  onSend: () => void;
-
-  onChannelToggle: () => void;
-  onSelectChannel: (value: string) => void;
-
-  setIsComposing: (v: boolean) => void;
-  onSelectMention: (friend: Friend) => void;
-}
-
-export const Chat = ({
-  messages,
-  input,
-  selectedChannel,
-  isDropdownOpen,
-  isMentionOpen,
-  filteredFriends,
-  highlightIndex,
-  messagesEndRef,
-
-  onChangeInput,
-  onKeyDown,
-  onSend,
-  onChannelToggle,
-  onSelectChannel,
-  setIsComposing,
-  onSelectMention,
-}: ChatProps) => {
   return (
     <div className="relative mt-5 w-[1020px] h-[190px] rounded-b-2xl bg-white/70 border border-[#c0c8b0] shadow-sm p-4 flex flex-col justify-between">
       <MessageList messages={messages} messagesEndRef={messagesEndRef} />
 
-      <ChatInputContainer
-        input={input}
-        selectedChannel={selectedChannel}
-        isDropdownOpen={isDropdownOpen}
-        isMentionOpen={isMentionOpen}
-        filteredFriends={filteredFriends}
-        highlightIndex={highlightIndex}
-        onChangeInput={onChangeInput}
-        onKeyDown={onKeyDown}
-        setIsComposing={setIsComposing}
-        onToggleChannel={onChannelToggle}
-        onSelectChannel={onSelectChannel}
-        onSend={onSend}
-        onSelectMention={onSelectMention}
-      />
+      <div className="flex mt-2 border-2 border-black rounded-xl bg-white h-[55px]">
+        <ChannelSelect
+          selected={selected}
+          isOpen={isChannelDropdownOpen}
+          onToggle={onChannelToggle}
+          onSelect={handleSelectChannel}
+        />
+
+        <ChatInput
+          value={input}
+          onChange={handleMentionOpen}
+          onKeyDown={handleKeyDown}
+          setIsComposing={setIsComposing}
+        />
+
+        {isMentionOpen && (
+          <MentionDropdown
+            friends={filteredFriends}
+            highlightIndex={highlightIndex}
+            onSelect={handleMentionSelect}
+          />
+        )}
+
+        <ChatSendButton disabled={disableSend} onSend={sendMessage} />
+      </div>
     </div>
   );
 };

@@ -12,6 +12,8 @@ export const useChat = () => {
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [isComposing, setIsComposing] = useState(false);
 
+  const [isChannelDropdownOpen, setIsChannelDropdownOpen] = useState(false);
+
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -21,7 +23,6 @@ export const useChat = () => {
     });
   }, [messages]);
 
-  // 멘션
   const handleMentionOpen = (value: string) => {
     setInput(value);
 
@@ -68,6 +69,7 @@ export const useChat = () => {
     return match ? match[1] : null;
   };
 
+  // 기존 selectChannel 로직
   const selectChannel = (value: string) => {
     const ch = mockChannels.find((c) => c.value === value);
     if (!ch) return;
@@ -85,7 +87,13 @@ export const useChat = () => {
     }
   };
 
-  // 메세지
+  const onChannelToggle = () => setIsChannelDropdownOpen((p) => !p);
+
+  const handleSelectChannel = (value: string) => {
+    selectChannel(value);
+    setIsChannelDropdownOpen(false);
+  };
+
   const sendMessage = () => {
     const trimmed = input.trim();
     if (trimmed === '' || /^@\S+$/.test(trimmed)) return;
@@ -112,7 +120,6 @@ export const useChat = () => {
     setHighlightIndex(0);
   };
 
-  // 키보드
   const handleKeyDown = (e: any) => {
     if (isComposing) return;
 
@@ -152,7 +159,7 @@ export const useChat = () => {
     filteredFriends,
     highlightIndex,
     isMentionOpen,
-    selectChannel,
+    isChannelDropdownOpen,
     messagesEndRef,
     setInput,
     setSelected,
@@ -164,5 +171,8 @@ export const useChat = () => {
     handleMentionSelect,
     handleKeyDown,
     sendMessage,
+    selectChannel,
+    onChannelToggle,
+    handleSelectChannel,
   };
 };

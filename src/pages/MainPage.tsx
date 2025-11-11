@@ -1,7 +1,5 @@
 import { useAuthStore } from '@/features/auth/model';
 import { useMain } from '@/features/main/model/useMain';
-import { useChat } from '@/features/main/model/useChat';
-
 import { useState } from 'react';
 import { SideBar } from '@/features/main/ui/Rooms/SideBar';
 import { MainHeader, RoomList } from '@/features/main/ui/Rooms';
@@ -20,23 +18,6 @@ const MainPage = () => {
     setCommitSearch,
   } = useMain();
 
-  const {
-    messages,
-    input,
-    selected,
-    isMentionOpen,
-    filteredFriends,
-    highlightIndex,
-    messagesEndRef,
-    handleMentionOpen,
-    handleMentionSelect,
-    handleKeyDown,
-    sendMessage,
-    setIsComposing,
-    selectChannel,
-  } = useChat();
-
-  const [isChannelDropdownOpen, setIsChannelDropdownOpen] = useState(false);
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
 
   const currentLv = 1;
@@ -91,26 +72,7 @@ const MainPage = () => {
           onMenu={(id) => console.log(`메뉴 클릭: ${id}`)}
         />
 
-        <Chat
-          messages={messages}
-          input={input}
-          selectedChannel={selected}
-          isDropdownOpen={isChannelDropdownOpen}
-          isMentionOpen={isMentionOpen}
-          filteredFriends={filteredFriends}
-          highlightIndex={highlightIndex}
-          messagesEndRef={messagesEndRef}
-          onChangeInput={handleMentionOpen}
-          onKeyDown={handleKeyDown}
-          onSend={sendMessage}
-          setIsComposing={setIsComposing}
-          onChannelToggle={() => setIsChannelDropdownOpen((p) => !p)}
-          onSelectChannel={(value) => {
-            selectChannel(value);
-            setIsChannelDropdownOpen(false);
-          }}
-          onSelectMention={handleMentionSelect}
-        />
+        <Chat />
       </div>
 
       {isCreateRoomModalOpen && (
