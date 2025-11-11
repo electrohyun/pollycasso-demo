@@ -1,6 +1,8 @@
+import type { GameMode } from '@/features/main/model/types';
+
 interface GameModeSelectorProps {
-  gameMode: 'SOLO' | 'TEAM' | null;
-  selectGameMode: (mode: 'SOLO' | 'TEAM') => void;
+  gameMode: GameMode | null;
+  selectGameMode: (mode: GameMode) => void;
 }
 
 export const GameModeSelector = ({

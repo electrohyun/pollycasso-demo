@@ -7,6 +7,7 @@ import {
   createRoomSchema,
   type CreateRoomForm,
 } from '@/features/main/lib/validators';
+import type { GameMode } from '@/features/main/model/types';
 import {
   RoomTitleInput,
   GameModeSelector,
@@ -23,7 +24,7 @@ interface CreateRoomModalProps {
 
 export const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
   const [roomTitle, setRoomTitle] = useState('');
-  const [gameMode, setGameMode] = useState<'SOLO' | 'TEAM' | null>(null);
+  const [gameMode, setGameMode] = useState<GameMode | null>(null);
   const [maxPlayers, setMaxPlayers] = useState(3);
   const [visibility, setVisibility] = useState<'public' | 'private' | null>(
     null,
@@ -53,9 +54,9 @@ export const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
   const isMin = maxPlayers === allowedPlayers[0];
   const isMax = maxPlayers === allowedPlayers[allowedPlayers.length - 1];
 
-  const selectGameMode = (mode: 'SOLO' | 'TEAM') => {
+  const selectGameMode = (mode: GameMode) => {
     setGameMode(mode);
-    form.setValue('mode', mode.toUpperCase() as 'SOLO' | 'TEAM');
+    form.setValue('mode', mode.toUpperCase() as GameMode);
     form.trigger('mode');
 
     const newPlayers = mode === 'TEAM' ? 4 : 3;

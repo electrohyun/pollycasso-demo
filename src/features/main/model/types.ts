@@ -1,7 +1,9 @@
+export type GameMode = 'SOLO' | 'TEAM';
+
 export interface Room {
   id: number;
   name: string;
-  mode: 'SOLO' | 'TEAM';
+  mode: GameMode;
   maxPlayers: number;
   currentPlayers: number;
   isPrivate: boolean;
