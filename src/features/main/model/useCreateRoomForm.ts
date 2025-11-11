@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createRoomSchema } from '@/features/main/lib/validators';
 import type { CreateRoomForm } from '@/features/main/lib/validators';
-import { titlePresets } from '@/features/main/constants/titles';
+import { TITLE_PRESETS } from '@/features/main/constants/titles';
 
 export const useCreateRoomForm = () => {
   const [roomTitle, setRoomTitle] = useState('');
@@ -28,7 +28,7 @@ export const useCreateRoomForm = () => {
 
   useEffect(() => {
     const randomTitle =
-      titlePresets[Math.floor(Math.random() * titlePresets.length)];
+      TITLE_PRESETS[Math.floor(Math.random() * TITLE_PRESETS.length)];
     setRoomTitle(randomTitle);
     form.setValue('name', randomTitle);
   }, []);

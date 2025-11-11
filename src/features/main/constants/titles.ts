@@ -1,4 +1,4 @@
-export const titlePresets = [
+export const TITLE_PRESETS = [
   '미대생이 그려드립니다.',
   '밥아저씨 컴온!',
   '너만 오면 고고!',

@@ -7,7 +7,6 @@ import {
   createRoomSchema,
   type CreateRoomForm,
 } from '@/features/main/lib/validators';
-import { titlePresets } from '@/features/main/constants/titles';
 import {
   RoomTitleInput,
   GameModeSelector,
@@ -16,6 +15,7 @@ import {
   PasswordInput,
   CreateConfirmButton,
 } from './';
+import { TITLE_PRESETS } from '@/features/main/constants/titles';
 
 interface CreateRoomModalProps {
   onClose: () => void;
@@ -44,7 +44,7 @@ export const CreateRoomModal = ({ onClose }: CreateRoomModalProps) => {
 
   useEffect(() => {
     const randomTitle =
-      titlePresets[Math.floor(Math.random() * titlePresets.length)];
+      TITLE_PRESETS[Math.floor(Math.random() * TITLE_PRESETS.length)];
     setRoomTitle(randomTitle);
     form.setValue('name', randomTitle);
   }, []);
