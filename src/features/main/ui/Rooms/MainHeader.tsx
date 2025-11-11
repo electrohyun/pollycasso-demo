@@ -1,3 +1,4 @@
+import type { RoomFilter } from '../../constants/filters';
 import { RoomFilterTabs } from './RoomFilterTabs';
 import { SearchBar } from './SearchBar';
 import { NotificationButton } from './NotificationButton';
@@ -7,8 +8,8 @@ interface MainHeaderProps {
   searchQuery: string;
   onChangeSearch: (v: string) => void;
   onSearch: () => void;
-  roomFilter: '전체' | '대기' | '개인' | '팀';
-  onChangeFilter: (v: '전체' | '대기' | '개인' | '팀') => void;
+  roomFilter: RoomFilter;
+  onChangeFilter: (v: RoomFilter) => void;
   onClickCreateRoom: () => void;
 }
 

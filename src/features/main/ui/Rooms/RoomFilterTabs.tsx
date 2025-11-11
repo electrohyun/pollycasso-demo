@@ -2,10 +2,11 @@ import {
   ROOM_FILTER_COLORS,
   ROOM_FILTERS,
 } from '@/features/main/constants/filters';
+import type { RoomFilter } from '@/features/main/constants/filters';
 
 interface RoomFilterTabsProps {
-  currentFilter: '전체' | '대기' | '개인' | '팀';
-  onChange: (filter: '전체' | '대기' | '개인' | '팀') => void;
+  currentFilter: RoomFilter;
+  onChange: (filter: RoomFilter) => void;
 }
 
 export const RoomFilterTabs = ({

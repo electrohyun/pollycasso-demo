@@ -1,10 +1,9 @@
 import { useState } from 'react';
+import type { RoomFilter } from '../constants/filters';
 
 export const useMain = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [roomFilter, setRoomFilter] = useState<'전체' | '대기' | '개인' | '팀'>(
-    '전체',
-  );
+  const [roomFilter, setRoomFilter] = useState<RoomFilter>('전체');
   const [commitSearch, setCommitSearch] = useState('');
 
   return {
