@@ -1,5 +1,8 @@
 import type { Friend } from '@/features/main/model/types';
-import { ChannelSelect, ChatInput, ChatSendButton, MentionDropdown } from './';
+import { ChannelSelect } from './ChannelSelect';
+import { ChatInput } from './ChatInput';
+import { ChatSendButton } from './ChatSendButton';
+import { MentionDropdown } from './MentionDropdown';
 
 interface ChatInputContainerProps {
   input: string;
@@ -40,7 +43,7 @@ export const ChatInputContainer = ({
     input.trim() === '' || /^@[a-zA-Z0-9가-힣_]+$/.test(input.trim());
 
   return (
-    <div className="flex mt-2 border-2 border-black rounded-xl overflow-hidden bg-white h-[55px]">
+    <div className="flex mt-2 border-2 border-black rounded-xl bg-white h-[55px]">
       <ChannelSelect
         selected={selectedChannel}
         isOpen={isDropdownOpen}

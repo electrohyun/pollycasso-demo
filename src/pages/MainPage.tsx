@@ -5,7 +5,7 @@ import { useChat } from '@/features/main/model/useChat';
 import { useState } from 'react';
 import { SideBar } from '@/features/main/ui/Rooms/SideBar';
 import { MainHeader, RoomList } from '@/features/main/ui/Rooms';
-import { ChatBox } from '@/features/main/ui/Chat';
+import { Chat } from '@/features/main/ui/Chat';
 import { CreateRoomModal } from '@/features/main/ui/CreateRooms';
 import { mockRooms } from '@/features/main/constants/rooms';
 
@@ -91,7 +91,7 @@ const MainPage = () => {
           onMenu={(id) => console.log(`메뉴 클릭: ${id}`)}
         />
 
-        <ChatBox
+        <Chat
           messages={messages}
           input={input}
           selectedChannel={selected}
