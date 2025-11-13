@@ -6,10 +6,9 @@ import type {
 } from '@/entities/room';
 import { http, HttpResponse } from 'msw';
 
-// --- Mock Data (from rooms.ts) ---
 export const mockRooms: Room[] = [
   {
-    id: 2103,
+    id: 2,
     name: '밥아저씨 컴온!',
     mode: 'SOLO',
     currentPlayers: 1,
@@ -76,9 +75,10 @@ export const mockRooms: Room[] = [
 let roomsDB = [...mockRooms];
 
 export const roomHandlers = [
-  http.get('mock/rooms', ({ request }) => {
+  http.get('rooms', ({ request }) => {
     const url = new URL(request.url);
     const cursor = Number(url.searchParams.get('cursor')) || null;
+
     const name = url.searchParams.get('name');
     const mode = url.searchParams.get('mode') as GameMode | null;
     const status = url.searchParams.get('status') as RoomStatus | null;
@@ -92,7 +92,17 @@ export const roomHandlers = [
     }
 
     let filteredRooms = roomsDB.filter((room) => {
-      if (name && !room.name.includes(name)) return false;
+      if (name) {
+        const searchLower = name.toLowerCase();
+
+        const idMatch = room.id.toString().includes(searchLower);
+        const nameMatch = room.name.toLowerCase().includes(searchLower);
+
+        if (!idMatch && !nameMatch) {
+          return false;
+        }
+      }
+
       if (mode && room.mode !== mode) return false;
       if (status && room.status !== status) return false;
       return true;
@@ -104,7 +114,7 @@ export const roomHandlers = [
 
     if (startIndex === -1 || startIndex >= filteredRooms.length) {
       return HttpResponse.json({
-        data: [],
+        rooms: [],
         hasNextPage: false,
         nextCursor: null,
       });
@@ -117,13 +127,13 @@ export const roomHandlers = [
       : null;
 
     return HttpResponse.json({
-      data: slicedData,
+      rooms: slicedData,
       hasNextPage,
       nextCursor,
     });
   }),
 
-  http.post('mock/rooms', async ({ request }) => {
+  http.post('rooms', async ({ request }) => {
     const body = (await request.json()) as CreateRoomPayload;
 
     if (body.name === 'errorroom') {

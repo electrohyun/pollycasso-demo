@@ -30,7 +30,9 @@ export const RoomCard = ({ room, onEnterRoom, onOpenMenu }: RoomCardProps) => {
         <div
           className={`flex items-center justify-center px-3 py-1 rounded-xl ${status.bg}`}
         >
-          <span className="text-xl text-white">{room.id}</span>
+          <span className="text-xl text-white">
+            {room.id.toString().padStart(4, '0')}
+          </span>
         </div>
 
         <p className="ml-2 text-black text-3xl font-bold flex items-center gap-2">
