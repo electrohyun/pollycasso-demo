@@ -1,9 +1,5 @@
-import { instance } from '@/shared/api/axios';
-import type {
-  Room,
-  CreateRoomPayload,
-  RoomFilters,
-} from '@/entities/room/model/types';
+import type { Room, RoomFilters } from '@/entities/room/model';
+import { instance } from '@/shared';
 
 interface GetRoomsResponse {
   data: Room[];
@@ -17,10 +13,5 @@ export const getRooms = async (
   const response = await instance.get<GetRoomsResponse>('rooms', {
     params,
   });
-  return response.data;
-};
-
-export const createRoom = async (data: CreateRoomPayload): Promise<Room> => {
-  const response = await instance.post<Room>('rooms', data);
   return response.data;
 };
