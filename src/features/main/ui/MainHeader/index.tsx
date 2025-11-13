@@ -1,4 +1,4 @@
-import type { RoomFilter } from '../../constants/filters';
+import type { RoomFilter } from '@/features/main/constants/filters';
 import { RoomFilterTabs } from './RoomFilterTabs';
 import { SearchBar } from './SearchBar';
 import { NotificationButton } from './NotificationButton';

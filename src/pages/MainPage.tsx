@@ -1,10 +1,13 @@
-import { useAuthStore } from '@/features/auth/model';
-import { useMain } from '@/features/main/model/useMain';
 import { useState } from 'react';
-import { SideBar } from '@/features/main/ui/Rooms/SideBar';
-import { MainHeader, RoomList } from '@/features/main/ui/Rooms';
-import { Chat } from '@/features/main/ui/Chat';
-import { CreateRoomModal } from '@/features/main/ui/CreateRoomModal';
+import { useAuthStore } from '@/features/auth/model';
+import { useMain } from '@/features/main/model';
+import {
+  SideBar,
+  MainHeader,
+  RoomList,
+  Chat,
+  CreateRoomModal,
+} from '@/features/main/ui';
 import { mockRooms } from '@/features/main/constants/rooms';
 
 const MainPage = () => {
@@ -46,7 +49,7 @@ const MainPage = () => {
 
   return (
     <div className="flex items-center justify-center min-w-[1500px] mx-auto min-h-screen gap-x-10 font-ssrm font-bold">
-      {/* 우측 사이드바 */}
+      {/* 좌측 사이드바 */}
       <SideBar
         nickname={nickname}
         level={currentLv}
@@ -55,7 +58,7 @@ const MainPage = () => {
         onLogout={handleLogout}
       />
 
-      {/* 좌측 */}
+      {/* 우측 */}
       <div className="w-[1100px] h-[760px] px-10 py-10 rounded-3xl bg-[#1E3411]/40">
         <MainHeader
           searchQuery={searchQuery}
