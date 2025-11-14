@@ -7,7 +7,7 @@ import {
   createRoomSchema,
   type CreateRoomForm,
 } from '@/features/main/lib/validators';
-import type { GameMode } from '@/entities/room';
+import type { GameMode, Room } from '@/entities/room';
 import { RoomTitleInput } from './RoomTitleInput';
 import { GameModeSelector } from './GameModeSelector';
 import { MaxPlayerSelector } from './MaxPlayerSelector';
@@ -17,8 +17,10 @@ import { TITLE_PRESETS } from '@/features/main/constants/titles';
 
 import { useCreateRoomModalStore } from '@/features/main/model/useCreateRoomModalStore';
 import { useCreateRoomMutation } from '@/features/main/model/useCreateRoomMutation';
+import { useNavigate } from 'react-router';
 
 export const CreateRoomModal = () => {
+  const navigate = useNavigate();
   const { isOpen, close } = useCreateRoomModalStore();
   const { mutate, isPending } = useCreateRoomMutation();
 
@@ -88,7 +90,15 @@ export const CreateRoomModal = () => {
       delete data.password;
     }
 
-    mutate(data);
+    mutate(data, {
+      onSuccess: (room: Room) => {
+        close();
+        navigate(`/room/${room.id}`);
+      },
+      onError: () => {
+        alert('방 생성에 실패했습니다.');
+      },
+    });
   };
 
   if (!isOpen) return null;
