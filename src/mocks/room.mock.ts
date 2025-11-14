@@ -70,7 +70,7 @@ export const mockRooms: Room[] = [
     status: 'WAITING',
     isPrivate: false,
   },
-];
+] as const;
 
 let roomsDB = [...mockRooms];
 

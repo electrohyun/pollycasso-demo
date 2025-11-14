@@ -9,7 +9,7 @@ interface ChannelOption {
 export const mockChannels: ChannelOption[] = [
   { label: '[전체]', value: '전체' },
   { label: '[친구]', value: '친구' },
-];
+] as const;
 
 export const mockFriends: Friend[] = [
   { id: 1, name: '레전드프론트엔드' },
@@ -17,7 +17,7 @@ export const mockFriends: Friend[] = [
   { id: 3, name: 'aa1' },
   { id: 4, name: 'a' },
   { id: 5, name: 'asdf11' },
-];
+] as const;
 
 export const chatHandlers = [
   http.get('mock/friends', ({ request }) => {
