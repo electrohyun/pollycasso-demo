@@ -1,3 +1,4 @@
+import { flatMap } from '@modern-kit/utils';
 import { useRoomsQuery } from '@/features/main/model/useRoomsQuery';
 import { RoomCard } from './RoomCard';
 
@@ -16,7 +17,7 @@ export const RoomList = ({ onEnter, onMenu }: Props) => {
     isFetchingNextPage,
   } = useRoomsQuery();
 
-  const rooms = data?.pages.flatMap((page) => page.rooms) ?? [];
+  const rooms = flatMap(data?.pages ?? [], (page) => page.rooms);
 
   const renderContent = () => {
     if (isLoading) {
