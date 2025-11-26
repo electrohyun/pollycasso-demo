@@ -3,10 +3,13 @@ export interface Friend {
   name: string;
 }
 
-export type Channel = '전체' | '친구';
+export type Channel = '전체' | '친구' | '시스템';
 
 export interface ChatMessage {
-  channel: Channel;
+  id: string;
+  senderId: string;
+  senderName: string;
   text: string;
+  channel: Channel;
   targetNickname?: string;
 }
