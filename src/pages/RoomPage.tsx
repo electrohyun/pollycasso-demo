@@ -80,13 +80,54 @@ const RoomPage = () => {
     }
   };
 
-  const topGradient = isMyTeamBlue
-    ? 'from-[#0088FF] to-[#005299]'
-    : 'from-[#FF553F] to-[#993326]';
+  const isSolo = roomState.settings?.gameMode === 'SOLO';
 
-  const bottomGradient = isMyTeamBlue
-    ? 'from-[#FF553F] to-[#993326]'
-    : 'from-[#0088FF] to-[#005299]';
+  const topGradient = isSolo
+    ? 'from-transparent to-transparent'
+    : isMyTeamBlue
+      ? 'from-[#0088FF] to-[#005299]'
+      : 'from-[#FF553F] to-[#993326]';
+
+  const bottomGradient = isSolo
+    ? 'from-transparent to-transparent'
+    : isMyTeamBlue
+      ? 'from-[#FF553F] to-[#993326]'
+      : 'from-[#0088FF] to-[#005299]';
+
+  const getTabStyle = (targetTeam: 'BLUE' | 'RED') => {
+    if (me?.teamId === targetTeam) {
+      return 'bg-black text-white/20 cursor-default pointer-events-none';
+    }
+
+    if (targetTeam === 'BLUE') {
+      return 'bg-gradient-to-b from-[#0085FA] to-[#004F94] text-white shadow-md hover:brightness-110 active:scale-95 transition-all';
+    } else {
+      return 'bg-gradient-to-b from-[#FF553F] to-[#993326] text-white shadow-md hover:brightness-110 active:scale-95 transition-all';
+    }
+  };
+
+  // 상단/하단이 각각 어떤 팀인지 정의
+  const topTeamId = isMyTeamBlue ? 'BLUE' : 'RED';
+  const bottomTeamId = !isMyTeamBlue ? 'BLUE' : 'RED';
+
+  // 팀 변경 핸들러
+  const handleChangeTeam = (targetTeam: 'BLUE' | 'RED') => {
+    if (me?.teamId === targetTeam) return;
+
+    // 1. (원래 코드) 서버로 요청 보냄
+    getSocket().emit('changeTeam', { userId: MY_USER_ID, teamId: targetTeam });
+
+    // 2. (테스트용 임시 코드) 서버 응답 기다리지 않고 강제로 내 화면만 바꿔봄
+    setRoomState((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        players: prev.players.map(
+          (p) => (p.userId === MY_USER_ID ? { ...p, teamId: targetTeam } : p), // 내 팀만 강제 변경
+        ),
+      };
+    });
+  };
 
   const renderSlots = (players: Player[]) => {
     return Array.from({ length: 3 }).map((_, index) => {
@@ -157,11 +198,7 @@ const RoomPage = () => {
                 flex items-center justify-center
                 w-full overflow-hidden bg-[#E3DDDD] rounded-lg
                 border-[5px] transition-all duration-300 box-border
-                ${
-                  isReadyVisual
-                    ? 'border-[#2ADB75] shadow-[0_0_15px_rgba(42,219,117,0.6)]'
-                    : 'border-transparent'
-                }
+                ${isReadyVisual ? 'border-[#2ADB75] ' : 'border-transparent'}
               `}
             >
               <img
@@ -192,16 +229,45 @@ const RoomPage = () => {
   return (
     <div className="flex items-center justify-center min-w-[1500px] mx-auto h-screen overflow-hidden gap-x-10 font-ssrm font-bold">
       <div className="flex justify-between w-[1500px] h-[760px] px-6 py-10 rounded-3xl bg-[#1E3411]/40">
-        <div className="w-[840px] rounded-3xl bg-gray-300/40 flex flex-col overflow-hidden">
-          <div className={`flex-1 bg-gradient-to-b ${topGradient} p-4`}>
-            <div className="grid grid-cols-3 gap-4 w-full h-full">
-              {renderSlots(topTeamPlayers)}
-            </div>
-          </div>
+        <div className="relative w-[840px] flex flex-col">
+          {/* 1. 상단 팀 바꾸기 탭 (SOLO 모드 아닐 때만) */}
+          {!isSolo && (
+            <button
+              onClick={() => handleChangeTeam(topTeamId)}
+              className={`absolute top-[100px] -left-10 w-10 py-8 rounded-l-2xl flex flex-col items-center justify-center text-lg leading-5 z-10 ${getTabStyle(topTeamId)}`}
+            >
+              <span>팀</span>
+              <span>바</span>
+              <span>꾸</span>
+              <span>기</span>
+            </button>
+          )}
 
-          <div className={`flex-1 bg-gradient-to-b ${bottomGradient} p-4`}>
-            <div className="grid grid-cols-3 gap-4 w-full h-full">
-              {renderSlots(bottomTeamPlayers)}
+          {/* 2. 하단 팀 바꾸기 탭 (SOLO 모드 아닐 때만) */}
+          {!isSolo && (
+            <button
+              onClick={() => handleChangeTeam(bottomTeamId)}
+              className={`absolute bottom-[100px] -left-10 w-10 py-8 rounded-l-2xl flex flex-col items-center justify-center leading-5 text-lg z-10 ${getTabStyle(bottomTeamId)}`}
+            >
+              <span>팀</span>
+              <span>바</span>
+              <span>꾸</span>
+              <span>기</span>
+            </button>
+          )}
+
+          {/* 3. 기존의 팀 슬롯 컨테이너 (w-[840px] 제거하고 h-full만 유지) */}
+          <div className="w-full h-full rounded-3xl bg-gray-300/40 flex flex-col overflow-hidden">
+            <div className={`flex-1 bg-gradient-to-b ${topGradient} p-4`}>
+              <div className="grid grid-cols-3 gap-4 w-full h-full">
+                {renderSlots(topTeamPlayers)}
+              </div>
+            </div>
+
+            <div className={`flex-1 bg-gradient-to-b ${bottomGradient} p-4`}>
+              <div className="grid grid-cols-3 gap-4 w-full h-full">
+                {renderSlots(bottomTeamPlayers)}
+              </div>
             </div>
           </div>
         </div>
@@ -252,7 +318,11 @@ const RoomPage = () => {
                       : 'bg-[#2ADB75] hover:bg-[#20C064]'
                 }`}
             >
-              {amIHost ? '게임 시작' : me?.isReady ? '준비 취소' : '게임 준비'}
+              {amIHost
+                ? '게임 시작'
+                : me?.isReady
+                  ? '준비 취소'
+                  : '준비 버튼을 눌러주세요!'}
             </button>
             <button
               onClick={handleLeave}

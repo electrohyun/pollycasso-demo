@@ -102,10 +102,9 @@ const MOCK_BONUS: Player = {
 
 export const MOCK_ROOM_STATE: RoomState = {
   roomStatus: 'waiting',
-  hostId: 'user-leaver-111',
+  hostId: 'id-1234',
   timer: null,
   players: [MOCK_ME, MOCK_OPPONENT, MOCK_DISCONNECTED, MOCK_BONUS],
-
   settings: {
     roomTitle: '고수만 (팀전)',
     gameMode: 'TEAM',
@@ -113,9 +112,7 @@ export const MOCK_ROOM_STATE: RoomState = {
     isPrivate: false,
     password: null,
   },
-
   themeSelecting: null,
-
   currentRound: 0,
   totalRounds: 0,
   completedCount: 0,
