@@ -1,8 +1,9 @@
 import type { ChatMessage } from '@/entities/chat';
+import type { RefObject } from 'react';
 
 interface MessageListProps {
   messages: ChatMessage[];
-  messagesEndRef: React.RefObject<HTMLDivElement | null>;
+  messagesEndRef: RefObject<HTMLDivElement | null>;
   className?: string;
   currentUserId?: string;
   showChannelTag?: boolean;

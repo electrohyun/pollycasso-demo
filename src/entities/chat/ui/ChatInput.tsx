@@ -1,7 +1,9 @@
+import type { KeyboardEvent } from 'react';
+
 interface ChatInputProps {
   value: string;
   onChange: (v: string) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   setIsComposing: (v: boolean) => void;
   className?: string;
   placeholder?: string;
