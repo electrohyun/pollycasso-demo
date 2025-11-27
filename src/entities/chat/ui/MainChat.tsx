@@ -1,5 +1,5 @@
 import { MessageList } from './MessageList';
-import { useMainChat } from '@/entities/chat/model/useMainChat';
+import { useMainChat } from '@/entities/chat/model';
 import { ChannelSelect } from './ChannelSelect';
 import { ChatInput } from './ChatInput';
 import { ChatSendButton } from './ChatSendButton';
