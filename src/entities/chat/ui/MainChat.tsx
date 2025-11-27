@@ -1,11 +1,11 @@
 import { MessageList } from './MessageList';
-import { useChat } from '@/features/main/model/useChat';
+import { useMainChat } from '@/entities/chat/model/useMainChat';
 import { ChannelSelect } from './ChannelSelect';
 import { ChatInput } from './ChatInput';
 import { ChatSendButton } from './ChatSendButton';
 import { MentionDropdown } from './MentionDropdown';
 
-export const Chat = () => {
+export const MainChat = () => {
   const {
     messages,
     input,
@@ -22,7 +22,7 @@ export const Chat = () => {
     isChannelDropdownOpen,
     onChannelToggle,
     handleSelectChannel,
-  } = useChat();
+  } = useMainChat();
 
   const disableSend =
     input.trim() === '' || /^@[a-zA-Z0-9가-힣_]+$/.test(input.trim());

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import type { ChatMessage, Friend } from '@/entities/chat/model';
 import { mockChannels, mockFriends } from '@/mocks/chat.mock';
 
-export const useChat = () => {
+export const useMainChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [selected, setSelected] = useState(mockChannels[0]);
