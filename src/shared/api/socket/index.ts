@@ -9,7 +9,6 @@ export const getSocket = () => {
   const useMock = import.meta.env.VITE_USE_MOCK === 'true';
 
   if (useMock) {
-    console.log('MOCK 소켓 사용');
     socketInstance = new MockSocket();
   } else {
     socketInstance = io(
