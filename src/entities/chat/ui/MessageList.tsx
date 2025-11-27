@@ -5,6 +5,7 @@ interface MessageListProps {
   messagesEndRef: React.RefObject<HTMLDivElement | null>;
   className?: string;
   currentUserId?: string;
+  showChannelTag?: boolean;
 }
 
 export const MessageList = ({
@@ -12,6 +13,7 @@ export const MessageList = ({
   messagesEndRef,
   className,
   currentUserId,
+  showChannelTag,
 }: MessageListProps) => {
   return (
     <div
@@ -24,11 +26,18 @@ export const MessageList = ({
         messages.map((msg, i) => {
           const isFriend = msg.channel === '친구';
           const isMe = msg.senderId === currentUserId;
+          const showTag = showChannelTag && !isFriend;
+
           return (
             <p
               key={i}
+              // ▼▼▼ 여기를 수정했습니다 ▼▼▼
               className={`text-base leading-tight px-1 rounded-md ${
-                isFriend ? 'text-[#305946] font-bold' : 'text-black'
+                isFriend
+                  ? 'text-[#305946] font-bold'
+                  : isMe
+                    ? 'text-[#005299]'
+                    : 'text-black'
               }`}
             >
               {isFriend ? (
@@ -36,15 +45,18 @@ export const MessageList = ({
                   <span className="text-[20px]">
                     [친구] {msg.targetNickname}에게 :
                   </span>
-                  <span className="text-[20px]"> {msg.text}</span>
+                  <span className="text-[20px]"> {msg.message}</span>
                 </>
               ) : (
                 <>
-                  <span className="font-bold text-[20px] mr-1">[전체]</span>
+                  {showTag && (
+                    <span className="font-bold text-[20px] mr-1">[전체]</span>
+                  )}
+
                   <span className={`text-[20px] ${isMe ? 'font-bold' : ''}`}>
-                    {isMe ? '당신' : msg.senderName} :{' '}
+                    {isMe ? '나' : msg.nickname} :{' '}
                   </span>
-                  <span className="text-[20px]">{msg.text}</span>
+                  <span className="text-[20px]">{msg.message}</span>
                 </>
               )}
             </p>

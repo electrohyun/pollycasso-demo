@@ -29,7 +29,11 @@ export const Chat = () => {
 
   return (
     <div className="relative mt-5 w-[1020px] h-[190px] rounded-b-2xl bg-white/70 border border-[#c0c8b0] shadow-sm p-4 flex flex-col justify-between">
-      <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+      <MessageList
+        messages={messages}
+        messagesEndRef={messagesEndRef}
+        showChannelTag={true}
+      />
 
       <div className="flex mt-2 border-2 border-black rounded-xl bg-white h-[55px]">
         <ChannelSelect
@@ -44,6 +48,7 @@ export const Chat = () => {
           onChange={handleMentionOpen}
           onKeyDown={handleKeyDown}
           setIsComposing={setIsComposing}
+          className="w-4/5 mr-2 text-base text-black placeholder-gray-500"
         />
 
         {isMentionOpen && (

@@ -20,8 +20,8 @@ export const GameChat = () => {
       const formattedMsg: ChatMessage = {
         id: newMsg.id || Date.now().toString(),
         senderId: newMsg.senderId,
-        senderName: newMsg.senderName,
-        text: newMsg.content,
+        nickname: newMsg.senderName,
+        message: newMsg.content,
         channel: '전체',
       };
       setMessages((prev) => [...prev, formattedMsg]);

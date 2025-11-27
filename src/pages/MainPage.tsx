@@ -3,9 +3,9 @@ import {
   SideBar,
   MainHeader,
   RoomList,
-  Chat,
   CreateRoomModal,
 } from '@/features/main/ui';
+import { Chat } from '@/entities/chat/ui';
 import { useCreateRoomModalStore } from '@/features/main/model/useCreateRoomModalStore';
 import { useSearchStore } from '@/features/main/model/useSearchStore';
 import { useNavigate } from 'react-router';
