@@ -105,14 +105,16 @@ export const useChat = () => {
       ? input.replace(`@${targetName}`, '').trim()
       : input;
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        channel: isPrivate ? '친구' : '전체',
-        text: cleanText,
-        targetNickname: isPrivate ? targetName : undefined,
-      },
-    ]);
+    const newMessage: ChatMessage = {
+      id: Date.now().toString(),
+      senderId: 'my-session-id',
+      nickname: '나',
+      message: cleanText,
+      channel: isPrivate ? '친구' : '전체',
+      targetNickname: isPrivate ? targetName : undefined,
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
 
     setInput('');
     setSelected(mockChannels[0]);
