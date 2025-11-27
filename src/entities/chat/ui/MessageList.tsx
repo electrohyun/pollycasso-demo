@@ -31,7 +31,6 @@ export const MessageList = ({
           return (
             <p
               key={i}
-              // ▼▼▼ 여기를 수정했습니다 ▼▼▼
               className={`text-base leading-tight px-1 rounded-md ${
                 isFriend
                   ? 'text-[#305946] font-bold'

@@ -20,7 +20,6 @@ const RoomPage = () => {
     socket.emit('joinRoom', { roomId });
 
     socket.on('gameState', (newState: RoomState) => {
-      console.log('방 상태 받음:', newState);
       setRoomState(newState);
     });
     return () => {
@@ -61,8 +60,7 @@ const RoomPage = () => {
   const handleMainAction = () => {
     if (amIHost) {
       if (canStartGame) {
-        getSocket().emit('startGame', { roomId }); // 이벤트명은 백엔드와 협의 필요
-        console.log('게임 시작!');
+        getSocket().emit('startGame', { roomId });
       } else {
         alert('모든 플레이어가 준비해야 시작할 수 있습니다!');
       }
@@ -106,24 +104,20 @@ const RoomPage = () => {
     }
   };
 
-  // 상단/하단이 각각 어떤 팀인지 정의
   const topTeamId = isMyTeamBlue ? 'BLUE' : 'RED';
   const bottomTeamId = !isMyTeamBlue ? 'BLUE' : 'RED';
 
-  // 팀 변경 핸들러
   const handleChangeTeam = (targetTeam: 'BLUE' | 'RED') => {
     if (me?.teamId === targetTeam) return;
 
-    // 1. (원래 코드) 서버로 요청 보냄
     getSocket().emit('changeTeam', { userId: MY_USER_ID, teamId: targetTeam });
 
-    // 2. (테스트용 임시 코드) 서버 응답 기다리지 않고 강제로 내 화면만 바꿔봄
     setRoomState((prev) => {
       if (!prev) return null;
       return {
         ...prev,
-        players: prev.players.map(
-          (p) => (p.userId === MY_USER_ID ? { ...p, teamId: targetTeam } : p), // 내 팀만 강제 변경
+        players: prev.players.map((p) =>
+          p.userId === MY_USER_ID ? { ...p, teamId: targetTeam } : p,
         ),
       };
     });
@@ -152,7 +146,6 @@ const RoomPage = () => {
                       `정말 '${player.nickname}'님을 강퇴하시겠습니까?`,
                     )
                   ) {
-                    console.log(`${player.nickname} 강퇴`);
                     getSocket().emit('kickUser', { targetId: player.userId });
                   }
                 }}
@@ -230,7 +223,6 @@ const RoomPage = () => {
     <div className="flex items-center justify-center min-w-[1500px] mx-auto h-screen overflow-hidden gap-x-10 font-ssrm font-bold">
       <div className="flex justify-between w-[1500px] h-[760px] px-6 py-10 rounded-3xl bg-[#1E3411]/40">
         <div className="relative w-[840px] flex flex-col">
-          {/* 1. 상단 팀 바꾸기 탭 (SOLO 모드 아닐 때만) */}
           {!isSolo && (
             <button
               onClick={() => handleChangeTeam(topTeamId)}
@@ -243,7 +235,6 @@ const RoomPage = () => {
             </button>
           )}
 
-          {/* 2. 하단 팀 바꾸기 탭 (SOLO 모드 아닐 때만) */}
           {!isSolo && (
             <button
               onClick={() => handleChangeTeam(bottomTeamId)}
@@ -256,7 +247,6 @@ const RoomPage = () => {
             </button>
           )}
 
-          {/* 3. 기존의 팀 슬롯 컨테이너 (w-[840px] 제거하고 h-full만 유지) */}
           <div className="w-full h-full rounded-3xl bg-gray-300/40 flex flex-col overflow-hidden">
             <div className={`flex-1 bg-gradient-to-b ${topGradient} p-4`}>
               <div className="grid grid-cols-3 gap-4 w-full h-full">

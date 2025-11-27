@@ -34,7 +34,6 @@ export const GameChat = () => {
     };
   }, []);
 
-  // 자동 스크롤
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTo({

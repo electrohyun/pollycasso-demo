@@ -11,7 +11,6 @@ export class MockSocket {
     this.roomState = JSON.parse(JSON.stringify(MOCK_ROOM_STATE));
 
     setTimeout(() => {
-      console.log('소켓 연결됨');
       this.trigger('connect');
       this.trigger('gameState', this.roomState);
     }, 500);
@@ -36,8 +35,6 @@ export class MockSocket {
   }
 
   emit(event: string, ...args: any[]) {
-    console.log(`Emit 진행: ${event}`, args);
-
     if (event === 'toggleReady') {
       const { userId } = args[0];
       const player = this.roomState.players.find((p) => p.userId === userId);
@@ -73,10 +70,8 @@ export class MockSocket {
         timestamp: new Date().toISOString(),
         level: level,
         teamId: teamId,
-        type: 'USER', // 'SYSTEM'이면 시스템 메시지
+        type: 'USER',
       };
-
-      console.log(`[Mock Chat] ${nickname}: ${message}`);
 
       this.trigger('chatMessage', newMessage);
     }
