@@ -1,0 +1,42 @@
+import { PlayerSlot } from './PlayerSlot';
+import type { Player } from '@/entities/game/model/types';
+
+interface TeamSectionProps {
+  gradient: string;
+  players: Player[];
+  hostId?: string | null;
+  amIHost: boolean;
+  myUserId: string;
+  onKick: (userId: string, nickname: string) => void;
+}
+
+export const TeamSection = ({
+  gradient,
+  players,
+  hostId,
+  amIHost,
+  myUserId,
+  onKick,
+}: TeamSectionProps) => {
+  return (
+    <div className={`flex-1 bg-gradient-to-b ${gradient} p-4`}>
+      <div className="grid grid-cols-3 gap-4 w-full h-full">
+        {Array.from({ length: 3 }).map((_, index) => {
+          const player = players[index];
+          const isHost = player ? hostId === player.userId : false;
+          const canKick = amIHost && player && player.userId !== myUserId;
+
+          return (
+            <PlayerSlot
+              key={player?.userId || `empty-${index}`}
+              player={player}
+              isHost={isHost}
+              canKick={!!canKick}
+              onKick={() => player && onKick(player.userId, player.nickname)}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
