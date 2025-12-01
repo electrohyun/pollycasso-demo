@@ -4,13 +4,13 @@ import { ChatSendButton } from '@/entities/chat/ui/ChatSendButton';
 import { useGameChat } from '@/entities/chat/model/useGameChat';
 
 export const GameChat = () => {
-  const { state, actions } = useGameChat();
+  const { state, actions, messagesEndRef } = useGameChat();
 
   return (
     <div className="flex flex-col w-full h-full bg-white/40 rounded-2xl overflow-hidden border border-white/5">
       <MessageList
         messages={state.messages}
-        messagesEndRef={state.messagesEndRef}
+        messagesEndRef={messagesEndRef}
         className="flex-1 p-4 h-full text-white"
         currentUserId={state.myUserId}
       />

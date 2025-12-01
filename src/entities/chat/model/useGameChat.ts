@@ -58,10 +58,10 @@ export const useGameChat = () => {
   };
 
   return {
+    messagesEndRef,
     state: {
       messages,
       input,
-      messagesEndRef,
       myUserId: MY_USER_ID,
     },
     actions: {
