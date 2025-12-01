@@ -1,12 +1,13 @@
-import type { KeyboardEvent } from 'react';
+import type { ComponentProps } from 'react';
 
-interface ChatInputProps {
-  value: string;
+type InputProps = Pick<
+  ComponentProps<'input'>,
+  'value' | 'onKeyDown' | 'className' | 'placeholder'
+>;
+
+interface ChatInputProps extends InputProps {
   onChange: (v: string) => void;
-  onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   setIsComposing: (v: boolean) => void;
-  className?: string;
-  placeholder?: string;
 }
 
 export const ChatInput = ({
@@ -15,6 +16,7 @@ export const ChatInput = ({
   onKeyDown,
   setIsComposing,
   className,
+  placeholder = '메세지를 보내주세요!',
 }: ChatInputProps) => {
   return (
     <input
@@ -25,7 +27,7 @@ export const ChatInput = ({
       onCompositionEnd={() => setIsComposing(false)}
       maxLength={50}
       className={`px-3 outline-none h-full bg-transparent font-normal text-lg ${className}`}
-      placeholder="메세지를 보내주세요!"
+      placeholder={placeholder}
     />
   );
 };
