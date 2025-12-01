@@ -29,12 +29,9 @@ const ScalableText = ({ children, className = '' }: ScalableTextProps) => {
     >
       <span
         ref={textRef}
+        className="origin-left whitespace-nowrap block w-max"
         style={{
           transform: `scale(${scale})`,
-          transformOrigin: 'left center',
-          whiteSpace: 'nowrap',
-          display: 'block',
-          width: 'max-content',
         }}
       >
         {children}
