@@ -1,37 +1,80 @@
-import { useParams, useNavigate } from 'react-router';
+import { useRoomUI } from '@/features/lobby/ui/useRoomUI';
+import { TeamTab } from '@/features/lobby/ui/TeamTab';
+import { RoomActionButtons } from '@/features/lobby/ui/RoomActionButtons';
+import { TeamSection } from '@/features/lobby/ui/TeamSection';
+import { RoomDashboard } from '@/features/lobby/ui/RoomDashboard';
+import { Spinner } from '@/shared';
 
 const RoomPage = () => {
-  const { roomId } = useParams();
-  const navigate = useNavigate();
+  const { roomState, me, derived, actions, topGradient, bottomGradient } =
+    useRoomUI();
 
-  const room = {
-    title: '테스트 방입니다',
-    mode: '개인전',
-    current: 1,
-    max: 4,
-    status: '대기중',
-  };
+  if (!roomState) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner message="방 정보를 불러오는 중입니다..." />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen font-ssrm">
-      <div className="bg-white shadow-xl rounded-2xl p-10 w-[480px] text-center">
-        <h1 className="text-3xl font-bold mb-6">방에 입장했습니다!</h1>
+    <div className="flex items-center justify-center min-w-[1500px] mx-auto h-screen overflow-hidden gap-x-10 font-ssrm font-bold">
+      <div className="flex justify-between w-[1450px] h-[760px] px-8 py-10 rounded-3xl bg-[#1E3411]/40">
+        <div className="relative w-[840px] flex flex-col">
+          {!derived.isSolo && (
+            <>
+              <TeamTab
+                position="top"
+                teamId={derived.topTeamId as 'BLUE' | 'RED'}
+                isMyTeam={me?.teamId === derived.topTeamId}
+                onClick={() =>
+                  actions.handleChangeTeam(derived.topTeamId as 'BLUE' | 'RED')
+                }
+              />
+              <TeamTab
+                position="bottom"
+                teamId={derived.bottomTeamId as 'BLUE' | 'RED'}
+                isMyTeam={me?.teamId === derived.bottomTeamId}
+                onClick={() =>
+                  actions.handleChangeTeam(
+                    derived.bottomTeamId as 'BLUE' | 'RED',
+                  )
+                }
+              />
+            </>
+          )}
 
-        <div className="text-2xl font-bold mb-2">
-          #{roomId} {room.title}
+          <div className="w-full h-full rounded-3xl bg-gray-300/40 flex flex-col overflow-hidden">
+            <TeamSection
+              gradient={topGradient}
+              players={derived.topTeamPlayers}
+              hostId={roomState.hostId}
+              amIHost={derived.amIHost}
+              myUserId={me?.userId ?? ''}
+              onKick={actions.handleKick}
+            />
+            <TeamSection
+              gradient={bottomGradient}
+              players={derived.bottomTeamPlayers}
+              hostId={roomState.hostId}
+              amIHost={derived.amIHost}
+              myUserId={me?.userId ?? ''}
+              onKick={actions.handleKick}
+            />
+          </div>
         </div>
-        <div className="text-xl mb-1">모드: {room.mode}</div>
-        <div className="text-xl mb-1">
-          인원: {room.current}/{room.max}
-        </div>
-        <div className="text-lg text-green-600 font-bold">{room.status}</div>
 
-        <button
-          onClick={() => navigate('/')}
-          className="mt-8 bg-black text-white px-6 py-3 rounded-xl text-xl"
-        >
-          로비로 돌아가기
-        </button>
+        <div className="flex flex-col justify-between w-[560px] p-5 rounded-3xl">
+          <RoomDashboard />
+
+          <RoomActionButtons
+            amIHost={derived.amIHost}
+            canStartGame={derived.canStartGame}
+            isReady={!!me?.isReady}
+            onMainAction={actions.handleMainAction}
+            onLeave={actions.handleLeave}
+          />
+        </div>
       </div>
     </div>
   );

@@ -19,6 +19,12 @@
   font-display: swap;
 }
 
+@layer components {
+  .skeleton {
+    @apply animate-shimmer bg-gradient-custom bg-custom;
+  }
+}
+
 .scrollbar-stable {
   scrollbar-gutter: stable;
 }
