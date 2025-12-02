@@ -1,6 +1,7 @@
-import type { ChatMessage } from '@/entities/chat';
 import type { RefObject } from 'react';
+import type { ChatMessage } from '@/entities/chat/model';
 import clsx from 'clsx';
+import { MessageItem } from '@/entities/chat/ui/MessageItem';
 
 interface MessageListProps {
   messages: ChatMessage[];
@@ -17,53 +18,28 @@ export const MessageList = ({
   currentUserId,
   showChannelTag,
 }: MessageListProps) => {
+  const isEmpty = messages.length === 0;
+
   return (
     <div
       ref={messagesEndRef}
       className={clsx(
-        'flex flex-col gap-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#D3D3D3] scrollbar-track-transparent pr-2 text-sm leading-tight',
+        'flex flex-col gap-1 overflow-y-auto pr-2 text-sm leading-tight',
+        'scrollbar-thin scrollbar-thumb-[#D3D3D3] scrollbar-track-transparent',
         className,
       )}
     >
-      {messages.length === 0 ? (
+      {isEmpty ? (
         <p className="text-[20px] text-gray-400">메세지를 보내주세요!</p>
       ) : (
-        messages.map((msg) => {
-          const isFriend = msg.channel === '친구';
-          const isMe = msg.senderId === currentUserId;
-          const showTag = showChannelTag && !isFriend;
-
-          return (
-            <p
-              key={msg.id}
-              className={clsx('text-base leading-tight px-1 rounded-md', {
-                'text-[#305946] font-bold': isFriend,
-                'text-[#005299]': !isFriend && isMe,
-                'text-black': !isFriend && !isMe,
-              })}
-            >
-              {isFriend ? (
-                <>
-                  <span className="text-[20px]">
-                    [친구] {msg.targetNickname}에게 :
-                  </span>
-                  <span className="text-[20px]"> {msg.message}</span>
-                </>
-              ) : (
-                <>
-                  {showTag && (
-                    <span className="font-bold text-[20px] mr-1">[전체]</span>
-                  )}
-
-                  <span className={clsx('text-[20px]', { 'font-bold': isMe })}>
-                    {isMe ? '나' : msg.nickname} :{' '}
-                  </span>
-                  <span className="text-[20px]">{msg.message}</span>
-                </>
-              )}
-            </p>
-          );
-        })
+        messages.map((msg) => (
+          <MessageItem
+            key={msg.id}
+            msg={msg}
+            currentUserId={currentUserId}
+            showChannelTag={showChannelTag}
+          />
+        ))
       )}
     </div>
   );
