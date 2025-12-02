@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getSocket } from '@/shared/api/socket';
 import type { RoomState } from '@/entities/game/model/types';
+import {
+  selectCanStartGame,
+  selectMe,
+  selectTopBottomTeams,
+} from './roomSelectors';
 
 const MY_USER_ID = 'id-1234'; // 임시 ID
 
@@ -10,44 +15,33 @@ export const useRoom = () => {
   const [roomState, setRoomState] = useState<RoomState | null>(null);
 
   useEffect(() => {
-    const socket = getSocket();
-    socket.emit('joinRoom', { roomId });
+    if (!roomId) return;
 
-    socket.on('gameState', (newState: RoomState) => {
+    const socket = getSocket();
+
+    const handleGameState = (newState: RoomState) => {
       setRoomState(newState);
-    });
+    };
+
+    socket.emit('joinRoom', { roomId });
+    socket.on('gameState', handleGameState);
+
     return () => {
-      socket.off('gameState');
+      socket.off('gameState', handleGameState);
     };
   }, [roomId]);
 
-  const me = roomState?.players.find((p) => p.userId === MY_USER_ID);
-  const myTeamId = me?.teamId || 'BLUE';
-  const isMyTeamBlue = myTeamId === 'BLUE';
+  const me = selectMe(roomState, MY_USER_ID);
   const isSolo = roomState?.settings?.gameMode === 'SOLO';
   const amIHost = roomState?.hostId === MY_USER_ID;
 
-  const bluePlayers =
-    roomState?.players.filter((p) => p.teamId === 'BLUE') || [];
-  const redPlayers = roomState?.players.filter((p) => p.teamId === 'RED') || [];
+  const { topTeamId, bottomTeamId, topTeamPlayers, bottomTeamPlayers } =
+    selectTopBottomTeams(roomState, MY_USER_ID);
 
-  const topTeamPlayers = isMyTeamBlue ? [...bluePlayers] : [...redPlayers];
-  const bottomTeamPlayers = isMyTeamBlue ? [...redPlayers] : [...bluePlayers];
-
-  // 내 팀(Top)일 경우 나를 맨 앞으로 정렬
-  if (me) {
-    topTeamPlayers.sort((a, _) => (a.userId === me.userId ? -1 : 1));
-  }
-
-  const otherPlayers =
-    roomState?.players.filter((p) => p.userId !== roomState?.hostId) || [];
-  const canStartGame =
-    otherPlayers.length > 0 && otherPlayers.every((p) => p.isReady);
-
-  const topTeamId = isMyTeamBlue ? 'BLUE' : 'RED';
-  const bottomTeamId = !isMyTeamBlue ? 'BLUE' : 'RED';
+  const canStartGame = selectCanStartGame(roomState);
 
   const startGame = () => {
+    if (!roomId) return;
     getSocket().emit('startGame', { roomId });
   };
 
