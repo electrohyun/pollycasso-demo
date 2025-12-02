@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams } from 'react-router';
 import { getSocket } from '@/shared/api/socket';
 import type { RoomState } from '@/entities/game/model/types';
 
@@ -7,7 +7,6 @@ const MY_USER_ID = 'id-1234'; // 임시 ID
 
 export const useRoom = () => {
   const { roomId } = useParams();
-  const navigate = useNavigate();
   const [roomState, setRoomState] = useState<RoomState | null>(null);
 
   useEffect(() => {
@@ -45,42 +44,23 @@ export const useRoom = () => {
   const canStartGame =
     otherPlayers.length > 0 && otherPlayers.every((p) => p.isReady);
 
-  const topGradient = isSolo
-    ? 'from-transparent to-transparent'
-    : isMyTeamBlue
-      ? 'from-[#0088FF] to-[#005299]'
-      : 'from-[#FF553F] to-[#993326]';
-
-  const bottomGradient = isSolo
-    ? 'from-transparent to-transparent'
-    : isMyTeamBlue
-      ? 'from-[#FF553F] to-[#993326]'
-      : 'from-[#0088FF] to-[#005299]';
-
   const topTeamId = isMyTeamBlue ? 'BLUE' : 'RED';
   const bottomTeamId = !isMyTeamBlue ? 'BLUE' : 'RED';
 
-  const handleMainAction = () => {
-    if (amIHost) {
-      if (canStartGame) {
-        getSocket().emit('startGame', { roomId });
-      } else {
-        alert('모든 플레이어가 준비해야 시작할 수 있습니다!');
-      }
-    } else {
-      if (!me) return;
-      getSocket().emit('toggleReady', { userId: MY_USER_ID });
-    }
+  const startGame = () => {
+    getSocket().emit('startGame', { roomId });
   };
 
-  const handleLeave = () => {
-    if (window.confirm('정말 방을 나가시겠습니까?')) {
-      getSocket().emit('leaveRoom', { userId: MY_USER_ID });
-      navigate('/');
-    }
+  const toggleReady = () => {
+    if (!me) return;
+    getSocket().emit('toggleReady', { userId: MY_USER_ID });
   };
 
-  const handleChangeTeam = (targetTeam: 'BLUE' | 'RED') => {
+  const leaveRoom = () => {
+    getSocket().emit('leaveRoom', { userId: MY_USER_ID });
+  };
+
+  const changeTeam = (targetTeam: 'BLUE' | 'RED') => {
     if (me?.teamId === targetTeam) return;
     getSocket().emit('changeTeam', { userId: MY_USER_ID, teamId: targetTeam });
 
@@ -96,10 +76,8 @@ export const useRoom = () => {
     });
   };
 
-  const handleKick = (targetId: string, nickname: string) => {
-    if (window.confirm(`정말 '${nickname}'님을 강퇴하시겠습니까?`)) {
-      getSocket().emit('kickUser', { targetId });
-    }
+  const kickUser = (targetId: string) => {
+    getSocket().emit('kickUser', { targetId });
   };
 
   return {
@@ -111,16 +89,15 @@ export const useRoom = () => {
       canStartGame,
       topTeamPlayers,
       bottomTeamPlayers,
-      topGradient,
-      bottomGradient,
       topTeamId,
       bottomTeamId,
     },
     actions: {
-      handleMainAction,
-      handleLeave,
-      handleChangeTeam,
-      handleKick,
+      startGame,
+      toggleReady,
+      leaveRoom,
+      changeTeam,
+      kickUser,
     },
     constants: {
       MY_USER_ID,
