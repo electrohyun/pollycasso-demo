@@ -1,5 +1,5 @@
 import type { ChatMessage } from '@/entities/chat/model';
-import clsx from 'clsx';
+import { cn } from '@/shared/lib/cn';
 
 interface MessageItemProps {
   msg: ChatMessage;
@@ -17,7 +17,7 @@ export const MessageItem = ({
 
   const showTag = showChannelTag && !isFriend;
 
-  const containerClass = clsx('text-base leading-tight px-1 rounded-md mb-1', {
+  const containerClass = cn('text-base leading-tight px-1 rounded-md mb-1', {
     'text-[#305946] font-bold': isFriend,
     'text-[#005299]': !isFriend && isMe,
     'text-black': !isFriend && !isMe,
@@ -35,7 +35,7 @@ export const MessageItem = ({
   return (
     <p className={containerClass}>
       {showTag && <span className="font-bold text-[20px] mr-1">[전체]</span>}
-      <span className={clsx('text-[20px]', { 'font-bold': isMe })}>
+      <span className={cn('text-[20px]', { 'font-bold': isMe })}>
         {isMe ? '나' : msg.nickname} :{' '}
       </span>
       <span className="text-[20px]">{msg.message}</span>

@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/cn';
 import {
   ROOM_FILTER_COLORS,
   ROOM_FILTERS,
@@ -17,15 +18,14 @@ export const RoomFilterTabs = () => {
           <button
             key={filter}
             onClick={() => setFilter(filter)}
-            className={`px-4 rounded-lg text-white text-2xl font-bold 
-                ${
-                  isAll
-                    ? ROOM_FILTER_COLORS[filter]
-                    : isActive
-                      ? ROOM_FILTER_COLORS[filter]
-                      : 'bg-[#464646]'
-                }
-              `}
+            className={cn(
+              'px-4 rounded-lg text-white text-2xl font-bold',
+              isAll
+                ? ROOM_FILTER_COLORS[filter]
+                : isActive
+                  ? ROOM_FILTER_COLORS[filter]
+                  : 'bg-[#464646]',
+            )}
           >
             {filter}
           </button>

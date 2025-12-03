@@ -1,5 +1,5 @@
+import { cn } from '@/shared/lib/cn';
 import { motion } from 'framer-motion';
-import clsx from 'clsx';
 
 interface SpinnerProps {
   message?: string;
@@ -8,7 +8,7 @@ interface SpinnerProps {
 export const Spinner = ({ message }: SpinnerProps) => {
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex',
         'flex-col',
         'justify-center',
@@ -19,7 +19,7 @@ export const Spinner = ({ message }: SpinnerProps) => {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-        className={clsx(
+        className={cn(
           'w-8',
           'h-8',
           'border-4',
@@ -29,7 +29,7 @@ export const Spinner = ({ message }: SpinnerProps) => {
         )}
       />
       {message && (
-        <p className={clsx('mt-2', 'text-gray-500', 'text-sm')}>{message}</p>
+        <p className={cn('mt-2', 'text-gray-500', 'text-sm')}>{message}</p>
       )}
     </div>
   );

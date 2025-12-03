@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/shared/lib/cn';
 
 interface MaxPlayerSelectorProps {
   maxPlayers: number;
@@ -26,9 +27,7 @@ export const MaxPlayerSelector = ({
           type="button"
           disabled={isMin}
           onClick={decrease}
-          className={`pr-2 py-[50px] ${
-            isMin ? 'opacity-0 cursor-default' : ''
-          }`}
+          className={cn('pr-2 py-[50px]', isMin && 'opacity-0 cursor-default')}
         >
           <ChevronLeftIcon className="w-7 h-7 text-gray-500" />
         </button>
@@ -39,9 +38,7 @@ export const MaxPlayerSelector = ({
           type="button"
           disabled={isMax}
           onClick={increase}
-          className={`pl-2 py-[50px] ${
-            isMax ? 'opacity-0 cursor-default' : ''
-          }`}
+          className={cn('pl-2 py-[50px]', isMax && 'opacity-0 cursor-default')}
         >
           <ChevronRightIcon className="w-7 h-7 text-gray-500" />
         </button>

@@ -1,5 +1,6 @@
 import { useRef, useState, useLayoutEffect } from 'react';
 import type { ReactNode } from 'react';
+import { cn } from '@/shared/lib/cn';
 
 interface ScalableTextProps {
   children: ReactNode;
@@ -25,7 +26,10 @@ const ScalableText = ({ children, className = '' }: ScalableTextProps) => {
   return (
     <div
       ref={containerRef}
-      className={`w-full h-full flex items-center overflow-hidden ${className}`}
+      className={cn(
+        'w-full h-full flex items-center overflow-hidden',
+        className,
+      )}
     >
       <span
         ref={textRef}

@@ -1,4 +1,5 @@
 import type { GameMode } from '@/entities/room';
+import { cn } from '@/shared/lib/cn';
 
 interface GameModeSelectorProps {
   gameMode: GameMode | null;
@@ -19,12 +20,12 @@ export const GameModeSelector = ({
         <button
           type="button"
           onClick={() => selectGameMode('SOLO')}
-          className={`border-2 rounded-xl py-3 px-11 font-bold
-            ${
-              gameMode === 'SOLO'
-                ? 'border-[#74A9FF] text-[#3182F6] bg-white'
-                : 'border-transparent text-black bg-white/70'
-            }`}
+          className={cn(
+            'border-2 rounded-xl py-3 px-11 font-bold',
+            gameMode === 'SOLO'
+              ? 'border-[#74A9FF] text-[#3182F6] bg-white'
+              : 'border-transparent text-black bg-white/70',
+          )}
         >
           개인
         </button>
@@ -32,12 +33,12 @@ export const GameModeSelector = ({
         <button
           type="button"
           onClick={() => selectGameMode('TEAM')}
-          className={`border-2 rounded-xl py-3 px-11 font-bold
-            ${
-              gameMode === 'TEAM'
-                ? 'border-[#74A9FF] text-[#3182F6] bg-white'
-                : 'border-transparent text-black bg-white/70'
-            }`}
+          className={cn(
+            'border-2 rounded-xl py-3 px-11 font-bold',
+            gameMode === 'TEAM'
+              ? 'border-[#74A9FF] text-[#3182F6] bg-white'
+              : 'border-transparent text-black bg-white/70',
+          )}
         >
           팀
         </button>

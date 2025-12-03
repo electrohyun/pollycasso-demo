@@ -3,12 +3,14 @@ import {
   DISABLED_STYLE,
   TEAM_COLORS,
 } from '@/features/lobby/constants/colors';
+import { cn } from '@/shared/lib/cn';
 
 interface TeamTabProps {
   teamId: 'BLUE' | 'RED';
   isMyTeam: boolean;
   position: 'top' | 'bottom';
   onClick: () => void;
+  className?: string;
 }
 
 export const TeamTab = ({
@@ -16,18 +18,22 @@ export const TeamTab = ({
   isMyTeam,
   position,
   onClick,
+  className,
 }: TeamTabProps) => {
   const positionClass = position === 'top' ? 'top-[100px]' : 'bottom-[100px]';
-
-  const colorClass = isMyTeam
-    ? DISABLED_STYLE
-    : `bg-gradient-to-b ${TEAM_COLORS[teamId]} ${ACTIVE_STYLE}`;
 
   return (
     <button
       onClick={onClick}
       disabled={isMyTeam}
-      className={`absolute ${positionClass} -left-10 w-10 py-8 rounded-l-2xl flex flex-col items-center justify-center text-lg leading-5 z-10 ${colorClass}`}
+      className={cn(
+        'absolute -left-10 w-10 py-8 rounded-l-2xl flex flex-col items-center justify-center text-lg leading-5 z-10',
+        positionClass,
+        isMyTeam
+          ? DISABLED_STYLE
+          : cn('bg-gradient-to-b', TEAM_COLORS[teamId], ACTIVE_STYLE),
+        className,
+      )}
     >
       {'팀바꾸기'.split('').map((char, index) => (
         <span key={index}>{char}</span>

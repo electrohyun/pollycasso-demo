@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { Friend } from '@/entities/chat';
+import { cn } from '@/shared/lib/cn';
 
 interface MentionDropdownProps {
   friends: Friend[];
@@ -26,11 +27,9 @@ export const MentionDropdown = ({
 
   return (
     <div
-      className="
-          absolute top-[175px] left-[160px]
-          w-[200px] bg-white border border-gray-300 rounded-lg 
-          shadow-lg max-h-[125px] overflow-y-auto z-50
-        "
+      className={cn(
+        'absolute top-[175px] left-[160px] w-[200px] bg-white border border-gray-300 rounded-lg shadow-lg max-h-[125px] overflow-y-auto z-50',
+      )}
     >
       {friends.map((friend, idx) => (
         <div
@@ -39,10 +38,10 @@ export const MentionDropdown = ({
             itemRefs.current[idx] = el;
           }}
           onClick={() => onSelect(friend)}
-          className={`
-              px-3 py-2 cursor-pointer text-[16px] flex items-center gap-2
-              ${highlightIndex === idx ? 'bg-gray-200' : 'hover:bg-gray-100'}
-            `}
+          className={cn(
+            'px-3 py-2 cursor-pointer text-[16px] flex items-center gap-2',
+            highlightIndex === idx ? 'bg-gray-200' : 'hover:bg-gray-100',
+          )}
         >
           <div className="w-2 h-2 bg-green-500 rounded-full" />
           <span>{friend.name}</span>

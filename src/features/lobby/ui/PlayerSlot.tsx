@@ -2,12 +2,14 @@ import { Crown } from '@/assets';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import ScalableText from '@/features/lobby/ui/ScalableText';
 import type { Player } from '@/entities/game/model/types';
+import { cn } from '@/shared/lib/cn';
 
 interface PlayerSlotProps {
   player?: Player;
   isHost: boolean;
   canKick: boolean;
   onKick: () => void;
+  className?: string;
 }
 
 export const PlayerSlot = ({
@@ -15,6 +17,7 @@ export const PlayerSlot = ({
   isHost,
   canKick,
   onKick,
+  className,
 }: PlayerSlotProps) => {
   if (!player) {
     return (
@@ -31,11 +34,14 @@ export const PlayerSlot = ({
   const isReadyVisual = player.isReady || isHost;
 
   return (
-    <div className="w-full px-4 pt-6 rounded-2xl bg-white relative group">
+    <div className={cn('w-full px-4 pt-6 rounded-2xl bg-white relative group', className)}>
       {canKick && (
         <button
           onClick={onKick}
-          className="absolute -top-3 -right-3 z-20 flex items-center justify-center w-8 h-8 rounded-full bg-[#FF553F] border-2 border-white text-white shadow-md transition-all duration-200 hover:bg-[#FF331F] hover:scale-110 active:scale-95"
+          className={cn(
+            'absolute -top-3 -right-3 z-20 flex items-center justify-center w-8 h-8 rounded-full bg-[#FF553F] border-2 border-white text-white shadow-md transition-all duration-200',
+            'hover:bg-[#FF331F] hover:scale-110 active:scale-95',
+          )}
         >
           <XMarkIcon className="w-5 h-5" />
         </button>
@@ -60,11 +66,11 @@ export const PlayerSlot = ({
         {!isHost && (
           <div className="shrink-0 ml-2">
             {player.isReady ? (
-              <span className="px-2.5 py-1 rounded-full bg-[#2ADB75] text-white text-md font-bold">
+              <span className={cn('px-2.5 py-1 rounded-full text-md font-bold text-white', 'bg-[#2ADB75]')}>
                 준비
               </span>
             ) : (
-              <span className="px-2.5 py-1 rounded-full bg-gray-200 text-gray-500 text-md font-bold">
+              <span className={cn('px-2.5 py-1 rounded-full text-md font-bold', 'bg-gray-200 text-gray-500')}>
                 대기
               </span>
             )}
@@ -73,12 +79,10 @@ export const PlayerSlot = ({
       </div>
 
       <div
-        className={`
-          flex items-center justify-center
-          w-full overflow-hidden bg-[#E3DDDD] rounded-lg
-          border-[5px] transition-all duration-300 box-border
-          ${isReadyVisual ? 'border-[#2ADB75] ' : 'border-transparent'}
-        `}
+        className={cn(
+          'flex items-center justify-center w-full overflow-hidden bg-[#E3DDDD] rounded-lg border-[5px] transition-all duration-300 box-border',
+          isReadyVisual ? 'border-[#2ADB75]' : 'border-transparent',
+        )}
       >
         <img src="" alt="캐릭터" className="w-[200px] h-[200px] object-cover" />
       </div>
