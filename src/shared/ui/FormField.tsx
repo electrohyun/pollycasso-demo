@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/shared/lib/cn';
 
 interface FormFieldProps {
   isFocused: boolean;
@@ -16,12 +16,13 @@ export const FormField = ({
 }: FormFieldProps) => {
   return (
     <div
-      className={clsx(
+      className={cn(
         'relative w-full rounded-xl border bg-white transition-all duration-200',
-        isFocused
-          ? 'ring-2 ring-[#419341] border-transparent'
-          : 'ring-transparent',
-        isError && 'border-red-500 ring-red-500',
+        {
+          'ring-2 ring-[#419341] border-transparent': isFocused,
+          'ring-transparent': !isFocused,
+          'border-red-500 ring-red-500': isError,
+        },
         className,
       )}
     >

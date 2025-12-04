@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
+import { cn } from '@/shared/lib/cn';
 
 interface RoomActionButtonsProps {
   amIHost: boolean;
@@ -18,7 +19,10 @@ const BigButton = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`w-full h-[79px] rounded-2xl text-3xl text-white font-bold shadow-md transition active:scale-95 flex items-center justify-center gap-2 ${className}`}
+      className={cn(
+        'w-full h-[79px] rounded-2xl text-3xl text-white font-bold shadow-md transition active:scale-95 flex items-center justify-center gap-2',
+        className,
+      )}
     >
       {children}
     </button>

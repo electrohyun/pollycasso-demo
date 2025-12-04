@@ -1,5 +1,5 @@
 import type { InputHTMLAttributes } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/shared/lib/cn';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -12,6 +12,7 @@ export const Input = ({
   isFocused,
   hasValue,
   id,
+  className,
   ...props
 }: InputProps) => {
   return (
@@ -19,12 +20,15 @@ export const Input = ({
       <input
         id={id}
         autoComplete="off"
-        className="w-full px-6 pt-[20px] pb-[16px] bg-transparent focus:outline-none"
+        className={cn(
+          'w-full px-6 pt-[20px] pb-[16px] bg-transparent focus:outline-none',
+          className,
+        )}
         {...props}
       />
       <label
         htmlFor={id}
-        className={clsx(
+        className={cn(
           'absolute left-6 transition-all duration-200 pointer-events-none font-pretendard',
           {
             'text-xs text-[#8C8C8C] top-[6px]': isFocused || hasValue,

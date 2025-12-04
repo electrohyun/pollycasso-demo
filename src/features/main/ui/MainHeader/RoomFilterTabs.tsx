@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/cn';
 import {
   ROOM_FILTER_COLORS,
   ROOM_FILTERS,
@@ -10,22 +11,21 @@ export const RoomFilterTabs = () => {
   return (
     <div className="flex ml-5 p-1 gap-x-1 w-[305px] bg-white/20 rounded-xl">
       {ROOM_FILTERS.map((filter) => {
-        const isAll = selectedFilter === '전체';
-        const isActive = selectedFilter === filter;
+        const isSelected =
+          selectedFilter === '전체' || selectedFilter === filter;
+
+        const buttonColorClassName = isSelected
+          ? ROOM_FILTER_COLORS[filter]
+          : 'bg-[#464646]';
 
         return (
           <button
             key={filter}
             onClick={() => setFilter(filter)}
-            className={`px-4 rounded-lg text-white text-2xl font-bold 
-                ${
-                  isAll
-                    ? ROOM_FILTER_COLORS[filter]
-                    : isActive
-                      ? ROOM_FILTER_COLORS[filter]
-                      : 'bg-[#464646]'
-                }
-              `}
+            className={cn(
+              'px-4 rounded-lg text-white text-2xl font-bold',
+              buttonColorClassName,
+            )}
           >
             {filter}
           </button>

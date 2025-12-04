@@ -1,7 +1,7 @@
 // src/shared/ui/Button.tsx
 
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/shared/lib/cn';
 
 // cva 대신 사용할 타입과 스타일 객체
 type ButtonVariant = 'primary' | 'kakao' | 'google' | 'destructive';
@@ -26,7 +26,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={clsx(
+      className={cn(
         'inline-flex h-14 items-center justify-center rounded-md px-4 py-4 text-lg font-pretendard transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed',
         variantStyles[variant],
         className,

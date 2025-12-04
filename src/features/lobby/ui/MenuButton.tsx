@@ -1,5 +1,6 @@
 import { COLOR_MAP } from '@/features/lobby/constants/colors';
 import type { ReactNode } from 'react';
+import { cn } from '@/shared/lib/cn';
 
 interface MenuButtonProps {
   icon: ReactNode;
@@ -18,7 +19,10 @@ export const MenuButton = ({
     <div className="p-2 bg-white/50 rounded-xl h-full">
       <button
         onClick={onClick}
-        className={`flex justify-between w-full h-full items-center py-2 px-4 rounded-xl transition-colors ${COLOR_MAP[color]}`}
+        className={cn(
+          'flex justify-between w-full h-full items-center py-2 px-4 rounded-xl transition-colors',
+          COLOR_MAP[color],
+        )}
       >
         <div className="w-8 h-8 text-white">{icon}</div>
         <span className="text-2xl font-bold text-white">{label}</span>
