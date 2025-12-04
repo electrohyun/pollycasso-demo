@@ -28,8 +28,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const token = useAuthStore((state) => state.accessToken);
-  // TODO: 토큰 만료 시 강제 로그아웃
-  // const clearAuth = useAuthStore((state) => state.clearAuth);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   useEffect(() => {
     if (!token) {
@@ -53,7 +52,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     socketInstance.on('error', (err: any) => {
       if (err === 'Invalid token' || err === 'No token provided') {
-        // TODO: clearAuth();
+        clearAuth();
       }
     });
 
