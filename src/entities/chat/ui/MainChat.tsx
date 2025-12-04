@@ -4,6 +4,7 @@ import { ChannelSelect } from './ChannelSelect';
 import { ChatInput } from './ChatInput';
 import { ChatSendButton } from './ChatSendButton';
 import { MentionDropdown } from './MentionDropdown';
+import { useAuthStore } from '@/features/auth';
 
 export const MainChat = () => {
   const {
@@ -24,6 +25,8 @@ export const MainChat = () => {
     handleSelectChannel,
   } = useMainChat();
 
+  const myId = useAuthStore((state) => state.user?.id);
+
   const disableSend =
     input.trim() === '' || /^@[a-zA-Z0-9가-힣_]+$/.test(input.trim());
 
@@ -32,6 +35,7 @@ export const MainChat = () => {
       <MessageList
         messages={messages}
         messagesEndRef={messagesEndRef}
+        currentUserId={myId}
         showChannelTag={true}
       />
 
