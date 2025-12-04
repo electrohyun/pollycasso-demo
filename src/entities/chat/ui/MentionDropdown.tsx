@@ -26,11 +26,7 @@ export const MentionDropdown = ({
   }, [highlightIndex]);
 
   return (
-    <div
-      className={cn(
-        'absolute top-[175px] left-[160px] w-[200px] bg-white border border-gray-300 rounded-lg shadow-lg max-h-[125px] overflow-y-auto z-50',
-      )}
-    >
+    <div className="absolute top-[175px] left-[160px] w-[200px] bg-white border border-gray-300 rounded-lg shadow-lg max-h-[125px] overflow-y-auto z-50">
       {friends.map((friend, idx) => (
         <div
           key={friend.id}
