@@ -44,17 +44,14 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     socketInstance.on('connect', () => {
-      console.log('Socket Connected:', socketInstance.id);
       setIsConnected(true);
     });
 
-    socketInstance.on('disconnect', (reason) => {
-      console.log('Socket Disconnected:', reason);
+    socketInstance.on('disconnect', () => {
       setIsConnected(false);
     });
 
     socketInstance.on('error', (err: any) => {
-      console.error('Socket Error:', err);
       if (err === 'Invalid token' || err === 'No token provided') {
         // TODO: clearAuth();
       }
