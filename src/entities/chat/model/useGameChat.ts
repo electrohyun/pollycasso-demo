@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { KeyboardEvent } from 'react';
 import { getSocket } from '@/shared/api/socket';
-import type { ChatMessage } from '@/entities/chat/model/types';
+import type { ChatMessage } from '@/shared/model/types';
 
 const MY_USER_ID = 'id-1234';
 

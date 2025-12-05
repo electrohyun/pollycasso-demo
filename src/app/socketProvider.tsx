@@ -1,4 +1,4 @@
-import type { ChatMessage } from '@/entities/chat';
+import type { ChatMessage } from '@/shared/model/types';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';

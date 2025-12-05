@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import type { ChatMessage } from '@/entities/chat/model';
+import type { ChatMessage } from '@/shared/model/types';
 import clsx from 'clsx';
 import { MessageItem } from '@/entities/chat/ui/MessageItem';
 

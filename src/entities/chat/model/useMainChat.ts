@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import type { Friend } from '@/entities/chat/model';
+import type { Friend } from '@/shared/model/types';
 import { mockChannels, mockFriends } from '@/mocks/chat.mock';
 import { useSocket } from '@/shared/api/socket/socketContext';
 
