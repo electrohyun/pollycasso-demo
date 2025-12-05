@@ -19,6 +19,7 @@ import { useCreateRoomModalStore } from '@/features/main/model/useCreateRoomModa
 import { useCreateRoomMutation } from '@/features/main/model/useCreateRoomMutation';
 import { useNavigate } from 'react-router';
 import { Spinner } from '@/shared';
+import { cn } from '@/shared/lib/cn';
 
 export const CreateRoomModal = () => {
   const navigate = useNavigate();
@@ -106,7 +107,6 @@ export const CreateRoomModal = () => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/60 z-50">
-      {isPending && <Spinner fixed message="방을 생성하고 있습니다..." />}
       <div className="relative bg-[#F2F2F2] w-[700px] p-6 rounded-2xl shadow-lg flex flex-col items-center">
         <button
           onClick={close}
@@ -156,11 +156,21 @@ export const CreateRoomModal = () => {
           <button
             type="submit"
             disabled={!formState.isValid || isPending}
-            className="mt-8 mb-4 bg-[#003D00] text-white text-3xl font-bold py-6 rounded-xl
-                       hover:scale-105 transition
-                       disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className={cn(
+              'relative',
+              'mt-8 mb-4 text-white text-3xl font-bold py-6 rounded-xl transition',
+              isPending || formState.isValid
+                ? 'bg-[#003D00]'
+                : 'bg-gray-400 cursor-not-allowed',
+              !isPending && formState.isValid && 'hover:scale-105',
+            )}
           >
-            방만들기
+            <span className={isPending ? 'opacity-0' : 'opacity-100'}>
+              방만들기
+            </span>
+            {isPending && (
+              <Spinner overlay={true} transparent={true} size="md" />
+            )}
           </button>
         </form>
       </div>
