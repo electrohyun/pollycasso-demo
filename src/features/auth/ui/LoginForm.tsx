@@ -2,8 +2,7 @@ import { FormProvider } from 'react-hook-form';
 import { AuthInput, PasswordVisibilityToggle } from '@/features/auth/ui';
 import { useLogin } from '@/features/auth/model';
 import { SocialGuide } from './SocialGuide';
-import { ErrorMessage } from '@/shared/ui';
-import { cn } from '@/shared/lib/cn';
+import { ErrorMessage, Spinner } from '@/shared/ui';
 
 export const LoginForm = () => {
   const {
@@ -49,14 +48,15 @@ export const LoginForm = () => {
           <button
             type="submit"
             disabled={isPending}
-            className={cn(
-              'text-white rounded-xl p-4 my-4 w-full transition-colors duration-200 text-2xl',
-              isPending
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-[#003D00] hover:bg-green-600',
-            )}
+            className={`text-white rounded-xl p-4 my-4 w-full transition-colors duration-200 text-2xl ${
+              isPending ? 'bg-gray-400' : 'bg-[#003D00] hover:bg-green-600'
+            }`}
           >
-            {isPending ? '로그인 중...' : '로그인'}
+            {isPending ? (
+              <Spinner fixed size="xl" message="로그인 중..." />
+            ) : (
+              '로그인'
+            )}
           </button>
         </form>
       </FormProvider>
