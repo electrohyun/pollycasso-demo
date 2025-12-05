@@ -18,6 +18,7 @@ import { TITLE_PRESETS } from '@/features/main/constants/titles';
 import { useCreateRoomModalStore } from '@/features/main/model/useCreateRoomModalStore';
 import { useCreateRoomMutation } from '@/features/main/model/useCreateRoomMutation';
 import { useNavigate } from 'react-router';
+import { Spinner } from '@/shared';
 
 export const CreateRoomModal = () => {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ export const CreateRoomModal = () => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/60 z-50">
+      {isPending && <Spinner fixed message="방을 생성하고 있습니다..." />}
       <div className="relative bg-[#F2F2F2] w-[700px] p-6 rounded-2xl shadow-lg flex flex-col items-center">
         <button
           onClick={close}
@@ -158,7 +160,7 @@ export const CreateRoomModal = () => {
                        hover:scale-105 transition
                        disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {isPending ? '방 생성 중...' : '방만들기'}
+            방만들기
           </button>
         </form>
       </div>

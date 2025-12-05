@@ -73,22 +73,16 @@ export const RoomList = ({ onEnter, onMenu }: Props) => {
             {renderContent()}
           </div>
 
+          {/* TODO: 추후 무한스크롤 구현(스피너 및 더보기 버튼 불필요) */}
           {hasNextPage && (
             <div className="flex justify-center mt-4 mb-2">
               <button
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
-                className="flex items-center justify-center gap-2 px-6 py-2 bg-white/30 text-white text-xl font-bold rounded-lg
-                           hover:bg-white/40 disabled:opacity-50 min-w-[140px]"
+                className="px-6 py-2 bg-white/30 text-white text-xl font-bold rounded-lg
+                       hover:bg-white/40 disabled:opacity-50"
               >
-                {isFetchingNextPage ? (
-                  <>
-                    <Spinner overlay={false} size="sm" transparent={true} />
-                    <span>불러오는 중...</span>
-                  </>
-                ) : (
-                  '더보기'
-                )}
+                {isFetchingNextPage ? '불러오는 중...' : '더보기'}
               </button>
             </div>
           )}
