@@ -12,7 +12,7 @@ const RoomPage = lazy(() => import('@/pages/RoomPage'));
 const router = createBrowserRouter([
   {
     element: (
-      <Suspense fallback={<Spinner message="로딩중..." />}>
+      <Suspense fallback={<Spinner fixed size="xl" message="로딩중..." />}>
         <RootLayout />
       </Suspense>
     ),

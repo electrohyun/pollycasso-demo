@@ -11,7 +11,7 @@ const RoomPage = () => {
 
   // TODO: 방 정보 로딩을 위해 스켈레톤 애니메이션 구현 예정
   if (!roomState) {
-    return <Spinner message="방 정보를 불러오는 중입니다..." />;
+    return <Spinner fixed overlay message="방 정보를 불러오는 중입니다..." />;
   }
 
   return (
