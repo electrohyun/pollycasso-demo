@@ -1,6 +1,7 @@
 import type { RefObject } from 'react';
 import type { ChatMessage } from '@/shared/model/types';
-import clsx from 'clsx';
+import { cn } from '@/shared/lib/cn';
+
 import { MessageItem } from '@/entities/chat/ui/MessageItem';
 
 interface MessageListProps {
@@ -22,7 +23,7 @@ export const MessageList = ({
   return (
     <div
       ref={messagesEndRef}
-      className={clsx(
+      className={cn(
         'flex flex-col gap-1 overflow-y-auto pr-2 text-sm leading-tight',
         'scrollbar-thin scrollbar-thumb-[#D3D3D3] scrollbar-track-transparent',
         className,

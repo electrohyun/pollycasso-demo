@@ -19,11 +19,11 @@ export const GameModeSelector = ({
         <button
           type="button"
           onClick={() => selectGameMode('SOLO')}
-          className={`border-2 rounded-xl py-3 px-11 font-bold
+          className={`border-2 rounded-xl py-3 px-11 font-bold bg-white
             ${
               gameMode === 'SOLO'
-                ? 'border-[#74A9FF] text-[#3182F6] bg-white'
-                : 'border-transparent text-black bg-white/70'
+                ? 'border-[#74A9FF] text-[#3182F6]'
+                : 'border-transparent text-black'
             }`}
         >
           개인
@@ -32,11 +32,11 @@ export const GameModeSelector = ({
         <button
           type="button"
           onClick={() => selectGameMode('TEAM')}
-          className={`border-2 rounded-xl py-3 px-11 font-bold
+          className={`border-2 rounded-xl py-3 px-11 font-bold bg-white
             ${
               gameMode === 'TEAM'
-                ? 'border-[#74A9FF] text-[#3182F6] bg-white'
-                : 'border-transparent text-black bg-white/70'
+                ? 'border-[#74A9FF] text-[#3182F6]'
+                : 'border-transparent text-black'
             }`}
         >
           팀

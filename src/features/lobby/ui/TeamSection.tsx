@@ -1,5 +1,6 @@
 import { PlayerSlot } from './PlayerSlot';
 import type { Player } from '@/entities/game/model/types';
+import { cn } from '@/shared/lib/cn';
 
 interface TeamSectionProps {
   gradient: string;
@@ -19,7 +20,7 @@ export const TeamSection = ({
   onKick,
 }: TeamSectionProps) => {
   return (
-    <div className={`flex-1 bg-gradient-to-b ${gradient} p-4`}>
+    <div className={cn('flex-1 bg-gradient-to-b p-4', gradient)}>
       <div className="grid grid-cols-3 gap-4 w-full h-full">
         {Array.from({ length: 3 }).map((_, index) => {
           const player = players[index];

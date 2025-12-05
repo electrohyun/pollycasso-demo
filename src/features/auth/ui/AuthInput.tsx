@@ -3,7 +3,7 @@ import type { ReactNode, FocusEvent } from 'react';
 import { useFormContext, get } from 'react-hook-form';
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import { FormField, Input, ValidationIcon, ErrorMessage } from '@/shared/ui';
-import clsx from 'clsx';
+import { cn } from '@/shared/lib/cn';
 
 interface AuthInputProps<T extends FieldValues> {
   name: Path<T>;
@@ -45,7 +45,7 @@ export const AuthInput = <T extends FieldValues>({
   return (
     <div className="w-full mt-3">
       <FormField isFocused={isFocused} isError={!!error}>
-        <div className={clsx(hasIcons && 'pr-16')}>
+        <div className={cn(hasIcons && 'pr-16')}>
           <Input
             id={name}
             label={label}

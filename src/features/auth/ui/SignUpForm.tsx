@@ -1,5 +1,5 @@
 import { FormProvider } from 'react-hook-form';
-import clsx from 'clsx';
+import { cn } from '@/shared/lib/cn';
 import { PasswordVisibilityToggle } from './PasswordVisibilityToggle';
 import { AuthInput } from '@/features/auth/ui';
 import { useSignUp } from '@/features/auth/model';
@@ -60,7 +60,7 @@ export const SignUpForm = () => {
         <button
           type="submit"
           disabled={!isValid || isSigningUp}
-          className={clsx(
+          className={cn(
             'text-white rounded-xl p-4 mb-8 w-[450px] h-[80px] transition-colors duration-200 text-2xl',
             {
               'bg-[#003D00] hover:bg-green-600': isValid && !isSigningUp,

@@ -7,6 +7,7 @@ import {
   ROOM_MODE,
   ROOM_STATUS,
 } from '@/entities/room/constants/roomConstants';
+import { cn } from '@/shared/lib/cn';
 
 interface RoomCardProps {
   room: Room;
@@ -28,7 +29,10 @@ export const RoomCard = ({ room, onEnterRoom, onOpenMenu }: RoomCardProps) => {
     >
       <div className="flex items-center">
         <div
-          className={`flex items-center justify-center px-3 py-1 rounded-xl ${status.bg}`}
+          className={cn(
+            'flex items-center justify-center px-3 py-1 rounded-xl',
+            status.bg,
+          )}
         >
           <span className="text-xl text-white">
             {room.id.toString().padStart(4, '0')}
@@ -55,12 +59,15 @@ export const RoomCard = ({ room, onEnterRoom, onOpenMenu }: RoomCardProps) => {
 
       <div className="flex justify-end items-center gap-x-3 mt-6 pr-2">
         <div
-          className={`px-3 rounded-xl text-white text-lg font-bold ${mode.bg}`}
+          className={cn(
+            'px-3 rounded-xl text-white text-lg font-bold',
+            mode.bg,
+          )}
         >
           {mode.label}
         </div>
 
-        <span className={`text-xl font-normal ${status.text}`}>
+        <span className={cn('text-xl font-normal', status.text)}>
           {status.label}
         </span>
 

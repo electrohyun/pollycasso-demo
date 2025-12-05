@@ -1,3 +1,5 @@
+import { cn } from '@/shared/lib/cn';
+
 interface VisibilitySelectorProps {
   visibility: 'public' | 'private' | null;
   selectVisibility: (v: 'public' | 'private') => void;
@@ -17,12 +19,12 @@ export const VisibilitySelector = ({
         <button
           type="button"
           onClick={() => selectVisibility('public')}
-          className={`border-2 rounded-xl py-3 px-8 font-bold
-            ${
-              visibility === 'public'
-                ? 'border-[#027DFF] text-[#027DFF] bg-white'
-                : 'border-transparent text-black bg-white/70'
-            }`}
+          className={cn(
+            'border-2 rounded-xl py-3 px-8 font-bold bg-white',
+            visibility === 'public'
+              ? 'border-[#027DFF] text-[#027DFF]'
+              : 'border-transparent text-black',
+          )}
         >
           공개
         </button>
@@ -30,12 +32,12 @@ export const VisibilitySelector = ({
         <button
           type="button"
           onClick={() => selectVisibility('private')}
-          className={`border-2 rounded-xl py-3 px-8 font-bold
-            ${
-              visibility === 'private'
-                ? 'border-[#027DFF] text-[#027DFF] bg-white'
-                : 'border-transparent text-black bg-white/70'
-            }`}
+          className={cn(
+            'border-2 rounded-xl py-3 px-8 font-bold bg-white',
+            visibility === 'private'
+              ? 'border-[#027DFF] text-[#027DFF]'
+              : 'border-transparent text-black',
+          )}
         >
           비공개
         </button>

@@ -1,4 +1,5 @@
 import { UserIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/shared/lib/cn';
 
 interface ChannelSelectProps {
   selected: { label: string; value: string };
@@ -13,23 +14,26 @@ export const ChannelSelect = ({
   onToggle,
   onSelect,
 }: ChannelSelectProps) => {
+  const isFriendClassName =
+    selected.value === '친구' ? 'text-[#305946]' : 'text-gray-800';
+  const isOpenClassName = isOpen
+    ? 'bg-white text-[#305946]'
+    : 'bg-[#305946] text-white';
+
   return (
     <div
       className="flex items-center bg-white rounded-l-xl pl-2 pr-0 h-full cursor-pointer select-none relative"
       onClick={onToggle}
     >
-      <span
-        className={`text-[30px] font-bold pr-2 ${
-          selected.value === '친구' ? 'text-[#305946]' : 'text-gray-800'
-        }`}
-      >
+      <span className={cn('text-[30px] font-bold pr-2', isFriendClassName)}>
         {selected.label}
       </span>
 
       <span
-        className={`w-10 h-full flex items-center justify-center text-xl border-l border-r border-[#305946] ${
-          isOpen ? 'bg-white text-[#305946]' : 'bg-[#305946] text-white'
-        }`}
+        className={cn(
+          'w-10 h-full flex items-center justify-center text-xl border-l border-r border-[#305946]',
+          isOpenClassName,
+        )}
       >
         {isOpen ? '▲' : '▼'}
       </span>
