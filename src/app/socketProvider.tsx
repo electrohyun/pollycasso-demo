@@ -1,34 +1,8 @@
 import type { ChatMessage } from '@/entities/chat';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
-
-interface SocketContextProps {
-  socket: Socket | null;
-  isConnected: boolean;
-  messages: ChatMessage[];
-  sendMessage: (message: string) => void;
-}
-
-const SocketContext = createContext<SocketContextProps | null>(null);
-
-export const useSocket = () => {
-  const context = useContext(SocketContext);
-
-  if (!context) {
-    throw new Error('Socket Context Not Found');
-  }
-
-  return context;
-};
+import { SocketContext } from '@/shared/api/socket/socketContext';
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const socketRef = useRef<Socket | null>(null);

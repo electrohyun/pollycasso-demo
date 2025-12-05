@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Friend } from '@/entities/chat/model';
 import { mockChannels, mockFriends } from '@/mocks/chat.mock';
-import { useSocket } from '@/app/socketProvider';
+import { useSocket } from '@/shared/api/socket/socketContext';
 
 export const useMainChat = () => {
   const { messages, sendMessage: emitMessage } = useSocket();
