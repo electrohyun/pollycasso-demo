@@ -1,18 +1,45 @@
 import { motion } from 'framer-motion';
+import { Spinner as SpinnerIcon } from '@/assets';
+import { cn } from '@/shared/lib/cn';
 
 interface SpinnerProps {
   message?: string;
+  overlay?: boolean;
+  transparent?: boolean;
 }
 
-export const Spinner = ({ message }: SpinnerProps) => {
+export const Spinner = ({
+  message,
+  overlay = true,
+  transparent = false,
+}: SpinnerProps) => {
+  const layoutClassName = overlay
+    ? cn(
+        'absolute inset-0 z-50 h-full w-full',
+        transparent ? '' : 'bg-white/80 backdrop-blur-[2px]',
+      )
+    : 'w-full py-10';
+
   return (
-    <div className="flex flex-col justify-center items-center py-10">
-      <motion.div
+    <div
+      className={cn(
+        'flex flex-col justify-center items-center',
+        layoutClassName,
+      )}
+    >
+      <motion.img
+        src={SpinnerIcon}
+        alt="Loading Spinner"
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-        className="w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full"
+        className="w-24 h-24 rounded-full object-contain"
       />
-      {message && <p className="mt-2 text-gray-500 text-sm">{message}</p>}
+
+      {message && (
+        <p className="mt-4 font-ssrm font-bold text-lg animate-pulse">
+          {message}
+        </p>
+      )}
     </div>
   );
 };
