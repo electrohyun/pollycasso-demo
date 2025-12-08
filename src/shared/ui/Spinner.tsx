@@ -1,22 +1,13 @@
 import { motion } from 'framer-motion';
 import { Spinner as SpinnerIcon } from '@/assets';
 import { cn } from '@/shared/lib/cn';
+import { getSpinnerStyles } from './Spinner.utils';
+import type { SpinnerStyleProps } from './Spinner.utils';
 
-interface SpinnerProps {
+interface SpinnerProps extends SpinnerStyleProps {
   message?: string;
-  overlay?: boolean;
-  fixed?: boolean;
-  transparent?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
 }
-
-const sizeClasses = {
-  sm: 'w-8 h-8',
-  md: 'w-12 h-12',
-  lg: 'w-16 h-16',
-  xl: 'w-24 h-24',
-};
 
 export const Spinner = ({
   message,
@@ -26,18 +17,12 @@ export const Spinner = ({
   size = 'xl',
   className,
 }: SpinnerProps) => {
-  let positionClass = '';
-
-  if (fixed) {
-    positionClass = 'fixed inset-0 z-[9999]';
-  } else if (overlay) {
-    positionClass = 'absolute inset-0 z-50';
-  } else {
-    positionClass = 'w-full py-10';
-  }
-
-  const bgClass =
-    (fixed || overlay) && !transparent ? 'bg-white/80 backdrop-blur-[2px]' : '';
+  const { positionClass, bgClass, iconSizeClass } = getSpinnerStyles({
+    fixed,
+    overlay,
+    transparent,
+    size,
+  });
 
   return (
     <div
@@ -53,7 +38,7 @@ export const Spinner = ({
         alt="Loading Spinner"
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-        className={cn('rounded-full object-contain', sizeClasses[size])}
+        className={cn('rounded-full object-contain', iconSizeClass)}
       />
 
       {message && (
