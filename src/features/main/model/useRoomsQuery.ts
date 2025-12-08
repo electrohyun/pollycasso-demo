@@ -18,7 +18,7 @@ export const useRoomsQuery = () => {
 
   const apiFilters: RoomFilters = {
     ...translateFilterToParams(selectedFilter),
-    name: commitSearch.trim() || undefined,
+    q: commitSearch.trim() || undefined,
   };
 
   const queryOptions = roomQueries.list(apiFilters);
