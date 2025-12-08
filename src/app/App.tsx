@@ -1,10 +1,13 @@
 import Router from './Router';
 import QueryProvider from './queryProvider';
+import { SocketProvider } from './socketProvider'; // 방금 만든 파일 import
 
 const App = () => {
   return (
     <QueryProvider>
-      <Router />
+      <SocketProvider>
+        <Router />
+      </SocketProvider>
     </QueryProvider>
   );
 };

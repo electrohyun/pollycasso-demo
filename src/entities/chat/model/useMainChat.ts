@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import type { ChatMessage, Friend } from '@/entities/chat/model';
+import type { Friend } from '@/shared/model/types';
 import { mockChannels, mockFriends } from '@/mocks/chat.mock';
+import { useSocket } from '@/shared/api/socket/socketContext';
 
 export const useMainChat = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const { messages, sendMessage: emitMessage } = useSocket();
+
   const [input, setInput] = useState('');
   const [selected, setSelected] = useState(mockChannels[0]);
 
@@ -34,6 +36,7 @@ export const useMainChat = () => {
     }
 
     const mentionCandidate = value.slice(lastAtIndex + 1);
+
     if (mentionCandidate === '') {
       setFilteredFriends(mockFriends);
       setIsMentionOpen(true);
@@ -54,6 +57,7 @@ export const useMainChat = () => {
 
     setFilteredFriends(filtered);
     setIsMentionOpen(filtered.length > 0);
+
     if (filtered.length > 0) setSelected(mockChannels[1]);
   };
 
@@ -64,19 +68,12 @@ export const useMainChat = () => {
     setHighlightIndex(0);
   };
 
-  const extractValidMention = (text: string) => {
-    const match = text.match(/@([\p{Script=Hangul}a-zA-Z0-9_]+)/u);
-    return match ? match[1] : null;
-  };
-
-  // 기존 selectChannel 로직
   const selectChannel = (value: string) => {
     const ch = mockChannels.find((c) => c.value === value);
     if (!ch) return;
 
     setSelected(ch);
 
-    // 친구 채널이면 @ 자동 입력
     if (ch.value === '친구' && !input.startsWith('@')) {
       setInput('@');
       setIsMentionOpen(true);
@@ -98,26 +95,9 @@ export const useMainChat = () => {
     const trimmed = input.trim();
     if (trimmed === '' || /^@\S+$/.test(trimmed)) return;
 
-    const targetName = extractValidMention(input);
-    const isPrivate = selected.value === '친구' && targetName;
-
-    const cleanText = isPrivate
-      ? input.replace(`@${targetName}`, '').trim()
-      : input;
-
-    const newMessage: ChatMessage = {
-      id: Date.now().toString(),
-      senderId: 'my-session-id',
-      nickname: '나',
-      message: cleanText,
-      channel: isPrivate ? '친구' : '전체',
-      targetNickname: isPrivate ? targetName : undefined,
-    };
-
-    setMessages((prev) => [...prev, newMessage]);
+    emitMessage(trimmed);
 
     setInput('');
-    setSelected(mockChannels[0]);
     setIsMentionOpen(false);
     setHighlightIndex(0);
   };

@@ -1,4 +1,4 @@
-import type { ChatMessage } from '@/entities/chat/model';
+import type { ChatMessage } from '@/shared/model/types';
 import { cn } from '@/shared/lib/cn';
 
 interface MessageItemProps {

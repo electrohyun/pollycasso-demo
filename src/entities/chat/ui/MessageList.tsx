@@ -1,6 +1,7 @@
 import type { RefObject } from 'react';
-import type { ChatMessage } from '@/entities/chat/model';
+import type { ChatMessage } from '@/shared/model/types';
 import { cn } from '@/shared/lib/cn';
+
 import { MessageItem } from '@/entities/chat/ui/MessageItem';
 
 interface MessageListProps {
@@ -19,7 +20,6 @@ export const MessageList = ({
   showChannelTag,
 }: MessageListProps) => {
   const isEmpty = messages.length === 0;
-
   return (
     <div
       ref={messagesEndRef}
