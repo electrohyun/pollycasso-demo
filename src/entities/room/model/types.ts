@@ -21,7 +21,7 @@ export interface CreateRoomPayload {
 }
 
 export interface RoomFilters {
-  name?: string;
+  q?: string;
   mode?: GameMode;
   isPrivate?: boolean;
   status?: RoomStatus;
