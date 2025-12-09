@@ -1,23 +1,18 @@
-import { io, Socket } from 'socket.io-client';
+import { io as realIo, Socket as RealSocket } from 'socket.io-client';
+import type { ManagerOptions, SocketOptions } from 'socket.io-client';
 import { MockSocket } from './mockSocket';
 
-let socketInstance: Socket | MockSocket | null = null;
+export type Socket = RealSocket;
 
-export const getSocket = () => {
-  if (socketInstance) return socketInstance;
-
+export const io = (
+  uri: string,
+  opts?: Partial<ManagerOptions & SocketOptions>,
+): RealSocket => {
   const useMock = import.meta.env.VITE_USE_MOCK === 'true';
 
   if (useMock) {
-    socketInstance = new MockSocket();
-  } else {
-    socketInstance = io(
-      import.meta.env.VITE_API_URL || 'http://localhost:3000',
-      {
-        transports: ['websocket'],
-      },
-    );
+    return new MockSocket() as unknown as RealSocket;
   }
 
-  return socketInstance;
+  return realIo(uri, opts);
 };

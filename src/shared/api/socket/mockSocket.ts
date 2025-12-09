@@ -7,13 +7,26 @@ export class MockSocket {
   private listeners: Record<string, Listener[]> = {};
   private roomState: RoomState;
 
+  public connected: boolean = false;
+  public auth: { token?: string } = {};
+
   constructor() {
     this.roomState = JSON.parse(JSON.stringify(MOCK_ROOM_STATE));
+    this.connect();
+  }
 
+  connect() {
+    if (this.connected) return;
+    this.connected = true;
     setTimeout(() => {
       this.trigger('connect');
-      this.trigger('gameState', this.roomState);
-    }, 500);
+      this.trigger('room:stateSync', this.roomState);
+    }, 100);
+  }
+
+  disconnect() {
+    this.connected = false;
+    this.trigger('disconnect');
   }
 
   on(event: string, callback: Listener) {
@@ -35,46 +48,80 @@ export class MockSocket {
   }
 
   emit(event: string, ...args: any[]) {
-    if (event === 'toggleReady') {
-      const { userId } = args[0];
+    const payload = args[0] || {};
+
+    if (event === 'lobby:send') {
+      const { message } = payload;
+
+      const mainChatMsg = {
+        id: Date.now().toString(),
+        senderId: 'test-user',
+        nickname: '테스트유저(Mock1)',
+        message: message,
+      };
+      this.trigger('lobby:message', mainChatMsg);
+    }
+
+    if (event === 'room:join') {
+      this.broadcastRoomState();
+    }
+
+    if (event === 'room:readyToggle') {
+      const userId = payload.userId || this.roomState.players[0]?.userId;
+
       const player = this.roomState.players.find((p) => p.userId === userId);
       if (player) {
         player.isReady = !player.isReady;
-        const newState = JSON.parse(JSON.stringify(this.roomState));
-        this.trigger('gameState', newState);
+        this.broadcastRoomState();
       }
     }
 
-    if (event === 'kickUser') {
-      const { targetId } = args[0];
-      this.roomState.players = this.roomState.players.filter(
-        (p) => p.userId !== targetId,
+    if (event === 'room:changeTeam') {
+      const { targetTeamId, userId } = payload;
+      const targetUser = userId || this.roomState.players[0]?.userId;
+
+      const player = this.roomState.players.find(
+        (p) => p.userId === targetUser,
       );
-      const newState = JSON.parse(JSON.stringify(this.roomState));
-      this.trigger('gameState', newState);
+      if (player) {
+        player.teamId = targetTeamId;
+        player.isReady = false;
+        this.broadcastRoomState();
+      }
     }
 
-    if (event === 'sendChat') {
-      const { message, userId } = args[0];
+    if (event === 'room:kickUser') {
+      const { targetUserId } = payload;
+      this.roomState.players = this.roomState.players.filter(
+        (p) => p.userId !== targetUserId,
+      );
+      this.broadcastRoomState();
+    }
 
-      const sender = this.roomState.players.find((p) => p.userId === userId);
-      const nickname = sender ? sender.nickname : '알 수 없음';
-      const level = sender ? sender.level : 0;
-      const teamId = sender ? sender.teamId : null;
+    if (event === 'room:leave') {
+      console.log('[Mock] 유저 퇴장');
+    }
 
-      const newMessage = {
+    if (event === 'chat:sendMessage') {
+      const { message, userId } = payload;
+      const sender =
+        this.roomState.players.find((p) => p.userId === userId) ||
+        this.roomState.players[0];
+
+      const newChatMessage = {
         id: Date.now().toString(),
-        senderId: userId,
-        senderName: nickname,
-        content: message,
-        timestamp: new Date().toISOString(),
-        level: level,
-        teamId: teamId,
-        type: 'USER',
+        senderId: sender?.userId,
+        nickname: sender?.nickname,
+        message: message,
       };
 
-      this.trigger('chatMessage', newMessage);
+      this.trigger('chat:newMessage', newChatMessage);
     }
+  }
+
+  private broadcastRoomState() {
+    const newState = JSON.parse(JSON.stringify(this.roomState));
+    this.trigger('room:stateSync', newState);
   }
 
   private trigger(event: string, ...args: any[]) {
