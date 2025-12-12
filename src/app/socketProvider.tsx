@@ -1,6 +1,7 @@
 import type { ChatMessage } from '@/shared/model/types';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { io } from '@/shared/api/socket';
+import type { Socket } from '@/shared/api/socket';
 import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import { SocketContext } from '@/shared/api/socket/socketContext';
 
@@ -33,6 +34,8 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const socket = socketRef.current;
+
+    if (!socket) return;
 
     const handleConnect = () => setIsConnected(true);
     const handleDisconnect = () => setIsConnected(false);
