@@ -1,0 +1,64 @@
+import { useInventory } from './useInventory';
+import { ItemIcon } from '@/entities/game/ui/ItemIcon';
+import { COLORS, UI_TEXT } from '@/features/game/constants/game';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+
+interface InventoryPanelProps {
+  myItems: any;
+  onComplete?: () => void;
+}
+
+export const InventoryPanel = ({
+  myItems,
+  onComplete,
+}: InventoryPanelProps) => {
+  const { visibleItems, handlePrev, handleNext, canPrev, canNext } =
+    useInventory(myItems);
+
+  return (
+    <aside className="h-auto flex flex-col gap-4">
+      <div
+        className="py-8 px-8 rounded-2xl flex flex-col gap-4 items-center justify-center min-w-[140px]"
+        style={{ backgroundColor: COLORS.PRIMARY_DARK }}
+      >
+        <button
+          onClick={handlePrev}
+          disabled={!canPrev}
+          className={`transition-all p-1 ${
+            canPrev
+              ? 'text-white hover:text-green-200 hover:-translate-y-1'
+              : 'text-white/30 cursor-not-allowed'
+          }`}
+        >
+          <ChevronUpIcon className="w-10 h-10 stroke-2" />
+        </button>
+
+        <div className="flex flex-col gap-6 my-2 h-[450px]">
+          {visibleItems.map((item: any) => (
+            <ItemIcon key={item.id} {...item} />
+          ))}
+        </div>
+
+        <button
+          onClick={handleNext}
+          disabled={!canNext}
+          className={`transition-all p-1 ${
+            canNext
+              ? 'text-white hover:text-green-200 hover:translate-y-1'
+              : 'text-white/30 cursor-not-allowed'
+          }`}
+        >
+          <ChevronDownIcon className="w-10 h-10 stroke-2" />
+        </button>
+      </div>
+
+      <button
+        onClick={onComplete}
+        className="w-full h-14 bg-white rounded-full text-xl font-extrabold shadow-lg hover:bg-gray-100 transition-colors"
+        style={{ color: COLORS.PRIMARY_DARK }}
+      >
+        {UI_TEXT.BTN_COMPLETE}
+      </button>
+    </aside>
+  );
+};
