@@ -1,3 +1,5 @@
+import { cn } from '@/shared/lib/cn';
+
 export interface ItemIconProps {
   id: string;
   name: string;
@@ -16,18 +18,22 @@ export const ItemIcon = ({
 }: ItemIconProps) => {
   return (
     <div
-      className={`flex flex-col items-center animate-fadeIn transition-all ${
-        isOwned ? 'opacity-100' : 'opacity-40 grayscale'
-      } ${className}`}
       onClick={onClick}
+      className={cn(
+        'flex flex-col items-center animate-fadeIn transition-all',
+        isOwned ? 'opacity-100' : 'opacity-40 grayscale',
+        className,
+      )}
     >
       <div
-        className={`relative w-[70px] h-[70px] rounded-full mx-auto shadow-md flex items-center justify-center font-bold text-sm select-none transition-transform duration-200
-        ${
+        className={cn(
+          'relative w-[70px] h-[70px] rounded-full mx-auto shadow-md',
+          'flex items-center justify-center font-bold text-sm select-none',
+          'transition-transform duration-200',
           isOwned
             ? 'bg-white text-gray-700 hover:scale-105 cursor-pointer hover:shadow-lg'
-            : 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-inner'
-        }`}
+            : 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-inner',
+        )}
       >
         {name}
 

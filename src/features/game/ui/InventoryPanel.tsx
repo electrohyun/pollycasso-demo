@@ -1,8 +1,9 @@
 import type { MyItems } from '@/entities/game/model';
 import { useInventory } from './useInventory';
-import { ItemIcon } from '@/entities/game/ui/ItemIcon';
+import { ItemIcon, type ItemIconProps } from '@/entities/game/ui/ItemIcon';
 import { COLORS, UI_TEXT } from '@/features/game/constants/game';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+import { cn } from '@/shared/lib/cn';
 
 interface InventoryPanelProps {
   myItems: MyItems | null;
@@ -25,17 +26,18 @@ export const InventoryPanel = ({
         <button
           onClick={handlePrev}
           disabled={!canPrev}
-          className={`transition-all p-1 ${
+          className={cn(
+            'transition-all p-1',
             canPrev
               ? 'text-white hover:text-green-200 hover:-translate-y-1'
-              : 'text-white/30 cursor-not-allowed'
-          }`}
+              : 'text-white/30 cursor-not-allowed',
+          )}
         >
           <ChevronUpIcon className="w-10 h-10 stroke-2" />
         </button>
 
         <div className="flex flex-col gap-6 my-2 h-[450px]">
-          {visibleItems.map((item: any) => (
+          {visibleItems.map((item: ItemIconProps) => (
             <ItemIcon key={item.id} {...item} />
           ))}
         </div>
@@ -43,11 +45,12 @@ export const InventoryPanel = ({
         <button
           onClick={handleNext}
           disabled={!canNext}
-          className={`transition-all p-1 ${
+          className={cn(
+            'transition-all p-1',
             canNext
               ? 'text-white hover:text-green-200 hover:translate-y-1'
-              : 'text-white/30 cursor-not-allowed'
-          }`}
+              : 'text-white/30 cursor-not-allowed',
+          )}
         >
           <ChevronDownIcon className="w-10 h-10 stroke-2" />
         </button>
@@ -55,7 +58,10 @@ export const InventoryPanel = ({
 
       <button
         onClick={onComplete}
-        className="w-full h-14 bg-white rounded-full text-xl font-extrabold shadow-lg hover:bg-gray-100 transition-colors"
+        className={cn(
+          'w-full h-14 bg-white rounded-full text-xl font-extrabold shadow-lg',
+          'hover:bg-gray-100 transition-colors',
+        )}
         style={{ color: COLORS.PRIMARY_DARK }}
       >
         {UI_TEXT.BTN_COMPLETE}
