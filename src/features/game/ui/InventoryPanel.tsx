@@ -1,10 +1,11 @@
+import type { MyItems } from '@/entities/game/model';
 import { useInventory } from './useInventory';
 import { ItemIcon } from '@/entities/game/ui/ItemIcon';
 import { COLORS, UI_TEXT } from '@/features/game/constants/game';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 
 interface InventoryPanelProps {
-  myItems: any;
+  myItems: MyItems | null;
   onComplete?: () => void;
 }
 

@@ -1,7 +1,8 @@
+import type { MyItems } from '@/entities/game/model';
 import { ALL_ITEMS_META, GAME_CONFIG } from '@/features/game/constants/game';
 import { useMemo, useState } from 'react';
 
-export const useInventory = (myItems: any) => {
+export const useInventory = (myItems: MyItems | null) => {
   const [startIndex, setStartIndex] = useState(0);
 
   const processedItems = useMemo(() => {
