@@ -127,3 +127,61 @@ export const MOCK_ROOM_STATE: RoomState = {
 };
 
 export const chatHandlers = [];
+
+export const GAME_DATA: RoomState = {
+  roomStatus: 'drawing',
+  hostId: 'user-1',
+  timer: 60,
+  currentRound: 1,
+  totalRounds: 3,
+  completedCount: 0,
+  currentTheme: '우주비행사들의 대축제',
+  settings: {
+    roomTitle: '즐거운 게임방',
+    gameMode: 'SOLO',
+    maxPlayers: 8,
+    isPrivate: false,
+  },
+  themeSelecting: null,
+  teamScores: null,
+  players: [
+    {
+      userId: 'user-1',
+      nickname: 'Kim',
+      level: 10,
+      outfit: [],
+      isConnected: true,
+      teamId: null,
+      totalScore: 0,
+      isReady: false,
+      score: null,
+      rank: null,
+      expGained: null,
+      coinsGained: null,
+      didLevelUp: null,
+      newLevel: null,
+    },
+    {
+      userId: 'user-2',
+      nickname: 'Lim',
+      level: 5,
+      outfit: [],
+      isConnected: true,
+      teamId: null,
+      totalScore: 0,
+      isReady: false,
+      score: null,
+      rank: null,
+      expGained: null,
+      coinsGained: null,
+      didLevelUp: null,
+      newLevel: null,
+    },
+  ],
+  myItems: {
+    usable: ['blur', 'ink_splash'],
+    cooldowns: {},
+    coins: 100,
+    inventory: { blur: 1, ink_splash: 2 },
+  },
+};
