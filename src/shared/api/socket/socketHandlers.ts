@@ -1,4 +1,4 @@
-import { SOCKET_EVENTS } from '@/shared/api/socket/constants';
+import { SOCKET_EVENTS } from '@/shared/api/socket';
 import type { MockSocket } from './mockSocket';
 
 export const handleLobbySend = (socket: MockSocket, payload: any) => {

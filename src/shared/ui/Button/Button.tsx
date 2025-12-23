@@ -1,9 +1,7 @@
-// src/shared/ui/Button.tsx
-
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { cn } from '@/shared/lib/cn';
 
-// cva 대신 사용할 타입과 스타일 객체
+import { cn } from '@/shared/lib';
+
 type ButtonVariant = 'primary' | 'kakao' | 'google' | 'destructive';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

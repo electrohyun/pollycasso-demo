@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
+
 import { Background, BackgroundMain } from '@/assets';
-import { Leaf } from '@/shared/ui';
-import { createLeafData } from '@/shared/lib/leaf';
-import type { LeafData } from '@/shared/lib/leaf';
-import { cn } from '@/shared/lib/cn';
+import type { LeafData } from '@/shared/lib';
+import { cn, createLeafData } from '@/shared/lib';
+import { Leaf } from '@/shared/ui/Leaf';
 
 export const RootLayout = () => {
   const { pathname } = useLocation();

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import type { LeafData } from '@/shared/lib/leaf';
+
+import type { LeafData } from '@/shared/lib';
 
 export const Leaf = ({
   src,
