@@ -1,187 +1,157 @@
-import type { RoomState, Player } from '@/entities/game/model/types';
+import type {
+  RoomState,
+  Player,
+  Outfit,
+  GameItem,
+} from '@/entities/game/model/types';
+
+const MOCK_OUTFIT_ME: Outfit = {
+  bird: 'bird_blue',
+  hat: 'hat_chef',
+  accessory: 'glasses_1',
+  top: 'shirt_check',
+  bottom: 'pants_jean',
+  shoes: 'shoes_sneakers',
+  effect: 'effect_sparkle',
+};
+
+const MOCK_OUTFIT_OPPONENT: Outfit = {
+  bird: 'bird_pink',
+  hat: 'hat_beret',
+  accessory: null,
+  top: 'shirt_stripe',
+  bottom: 'pants_black',
+  shoes: 'shoes_boots',
+  effect: null,
+};
+
+const MOCK_OUTFIT_DEFAULT: Outfit = {
+  bird: 'bird_green',
+  hat: null,
+  accessory: null,
+  top: null,
+  bottom: null,
+  shoes: null,
+  effect: null,
+};
+
+const MOCK_INVENTORY_ME: GameItem[] = [
+  { itemId: 'blur', count: 1, cooldownEndsAt: 0 },
+  { itemId: 'ink_splash', count: 2, cooldownEndsAt: Date.now() + 1000 * 30 },
+  { itemId: 'bomb', count: 5, cooldownEndsAt: 0 },
+];
 
 const MOCK_ME: Player = {
   userId: 'id-2',
   nickname: '밥아저씨',
   level: 30,
-  outfit: [
-    'bird_blue',
-    'glasses_1',
-    'hat_chef',
-    'shirt_check',
-    'pants_jean',
-    'shoes_sneakers',
-    'effect_sparkle',
-  ],
+  exp: 1500,
+  coins: 500,
+  outfit: MOCK_OUTFIT_ME,
+  inventory: MOCK_INVENTORY_ME,
+
+  status: 'IDLE',
   isConnected: true,
+  isReady: true,
   teamId: 'BLUE',
   totalScore: 1200,
-  isReady: false,
-  score: 0,
-  rank: null,
-  expGained: null,
-  coinsGained: null,
-  didLevelUp: false,
-  newLevel: null,
 };
 
 const MOCK_OPPONENT: Player = {
   userId: 'user-guest-456',
   nickname: '그림고수',
   level: 12,
-  outfit: [
-    'bird_pink',
-    'none',
-    'hat_beret',
-    'shirt_stripe',
-    'pants_black',
-    'shoes_boots',
-    'none',
-  ],
+  exp: 400,
+  coins: 100,
+  outfit: MOCK_OUTFIT_OPPONENT,
+  inventory: [],
+
+  status: 'IDLE',
   isConnected: true,
+  isReady: true,
   teamId: 'RED',
   totalScore: 850,
-  isReady: false,
-  score: 0,
-  rank: null,
-  expGained: null,
-  coinsGained: null,
-  didLevelUp: null,
-  newLevel: null,
 };
 
 const MOCK_DISCONNECTED: Player = {
   userId: 'user-leaver-789',
   nickname: '탈주닌자',
   level: 5,
-  outfit: [
-    'bird_green',
-    'none',
-    'none',
-    'shirt_basic',
-    'pants_short',
-    'shoes_slipper',
-    'none',
-  ],
+  exp: 100,
+  coins: 0,
+  outfit: MOCK_OUTFIT_DEFAULT,
+  inventory: [],
+
+  status: 'IDLE',
   isConnected: false,
+  isReady: false,
   teamId: 'BLUE',
   totalScore: 100,
-  isReady: false,
-  score: null,
-  rank: null,
-  expGained: null,
-  coinsGained: null,
-  didLevelUp: null,
-  newLevel: null,
 };
 
 const MOCK_BONUS: Player = {
   userId: 'user-leaver-111',
   nickname: '보너스',
   level: 5,
-  outfit: [
-    'bird_green',
-    'none',
-    'none',
-    'shirt_basic',
-    'pants_short',
-    'shoes_slipper',
-    'none',
-  ],
+  exp: 50,
+  coins: 0,
+  outfit: MOCK_OUTFIT_DEFAULT,
+  inventory: [],
+
+  status: 'IDLE',
   isConnected: false,
+  isReady: false,
   teamId: 'BLUE',
   totalScore: 100,
-  isReady: false,
-  score: null,
-  rank: null,
-  expGained: null,
-  coinsGained: null,
-  didLevelUp: null,
-  newLevel: null,
 };
 
-export const MOCK_ROOM_STATE: RoomState = {
-  roomStatus: 'waiting',
-  hostId: 'user-leaver-111',
-  timer: null,
-  players: [MOCK_ME, MOCK_OPPONENT, MOCK_DISCONNECTED, MOCK_BONUS],
+export const MOCK_ROOM_WAITING: RoomState = {
+  status: 'WAITING',
+  hostId: 'id-2',
+  endsAt: null,
+
+  currentRound: 0,
+  totalRounds: 3,
+
   settings: {
     roomTitle: '고수만 (팀전)',
     gameMode: 'TEAM',
     maxPlayers: 8,
     isPrivate: false,
-    password: null,
   },
-  themeSelecting: null,
-  currentRound: 0,
-  totalRounds: 0,
-  completedCount: 0,
-  currentTheme: null,
 
-  myItems: null,
+  players: [MOCK_ME, MOCK_OPPONENT, MOCK_DISCONNECTED, MOCK_BONUS],
 
-  teamScores: {
-    BLUE: 0,
-    RED: 0,
+  phaseContext: null,
+
+  teamScore: {
+    blue: 0,
+    red: 0,
   },
 };
 
-export const chatHandlers = [];
+export const MOCK_GAME_DRAWING: RoomState = {
+  status: 'DRAWING',
+  hostId: 'id-2',
+  endsAt: Date.now() + 1000 * 92,
 
-export const GAME_DATA: RoomState = {
-  roomStatus: 'drawing',
-  hostId: 'user-1',
-  timer: 60,
   currentRound: 1,
   totalRounds: 3,
-  completedCount: 0,
-  currentTheme: '우주비행사들의 대축제',
+
   settings: {
     roomTitle: '즐거운 게임방',
     gameMode: 'SOLO',
     maxPlayers: 8,
     isPrivate: false,
   },
-  themeSelecting: null,
-  teamScores: null,
-  players: [
-    {
-      userId: 'user-1',
-      nickname: 'Kim',
-      level: 10,
-      outfit: [],
-      isConnected: true,
-      teamId: null,
-      totalScore: 0,
-      isReady: false,
-      score: null,
-      rank: null,
-      expGained: null,
-      coinsGained: null,
-      didLevelUp: null,
-      newLevel: null,
-    },
-    {
-      userId: 'user-2',
-      nickname: 'Lim',
-      level: 5,
-      outfit: [],
-      isConnected: true,
-      teamId: null,
-      totalScore: 0,
-      isReady: false,
-      score: null,
-      rank: null,
-      expGained: null,
-      coinsGained: null,
-      didLevelUp: null,
-      newLevel: null,
-    },
-  ],
-  myItems: {
-    usable: ['blur', 'ink_splash'],
-    cooldowns: {},
-    coins: 100,
-    inventory: { blur: 1, ink_splash: 2 },
+
+  players: [MOCK_ME, MOCK_OPPONENT],
+
+  phaseContext: {
+    currentTheme: '우주비행사들의 대축제',
   },
+
+  teamScore: null,
 };
+
+export const chatHandlers = [];
