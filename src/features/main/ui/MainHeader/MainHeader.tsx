@@ -1,7 +1,7 @@
+import { CreateRoomButton } from './CreateRoomButton';
+import { NotificationButton } from './NotificationButton';
 import { RoomFilterTabs } from './RoomFilterTabs';
 import { SearchBar } from './SearchBar';
-import { NotificationButton } from './NotificationButton';
-import { CreateRoomButton } from './CreateRoomButton';
 
 interface MainHeaderProps {
   searchQuery: string;

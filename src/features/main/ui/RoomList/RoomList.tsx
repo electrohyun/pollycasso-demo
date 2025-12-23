@@ -1,7 +1,8 @@
 import { flatMap } from '@modern-kit/utils';
-import { useRoomsQuery } from '@/features/main/model/useRoomsQuery';
-import { RoomCard } from './RoomCard';
+
 import { Spinner } from '@/shared/ui/Spinner';
+import { useRoomsQuery } from '../../model/useRoomsQuery';
+import { RoomCard } from './RoomCard';
 
 interface Props {
   onEnter: (id: number) => void;

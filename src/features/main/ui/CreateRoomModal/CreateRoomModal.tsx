@@ -1,25 +1,23 @@
-import { XMarkIcon } from '@heroicons/react/24/solid';
-import title from '@/assets/title.svg';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  createRoomSchema,
-  type CreateRoomForm,
-} from '@/features/main/lib/validators';
-import type { GameMode, Room } from '@/entities/room';
-import { RoomTitleInput } from './RoomTitleInput';
-import { GameModeSelector } from './GameModeSelector';
-import { MaxPlayerSelector } from './MaxPlayerSelector';
-import { VisibilitySelector } from './VisibilitySelector';
-import { PasswordInput } from './PasswordInput';
-import { TITLE_PRESETS } from '@/features/main/constants/titles';
-
-import { useCreateRoomModalStore } from '@/features/main/model/useCreateRoomModalStore';
-import { useCreateRoomMutation } from '@/features/main/model/useCreateRoomMutation';
 import { useNavigate } from 'react-router';
+import { XMarkIcon } from '@heroicons/react/24/solid';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import title from '@/assets/title.svg';
+import type { GameMode, Room } from '@/entities/room';
 import { Spinner } from '@/shared';
 import { cn } from '@/shared/lib/cn';
+import { TITLE_PRESETS } from '../../constants/titles';
+import type { CreateRoomForm } from '../../lib/validators';
+import { createRoomSchema } from '../../lib/validators';
+import { useCreateRoomModalStore } from '../../model/useCreateRoomModalStore';
+import { useCreateRoomMutation } from '../../model/useCreateRoomMutation';
+import { GameModeSelector } from './GameModeSelector';
+import { MaxPlayerSelector } from './MaxPlayerSelector';
+import { PasswordInput } from './PasswordInput';
+import { RoomTitleInput } from './RoomTitleInput';
+import { VisibilitySelector } from './VisibilitySelector';
 
 export const CreateRoomModal = () => {
   const navigate = useNavigate();
