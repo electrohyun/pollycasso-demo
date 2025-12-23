@@ -1,6 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 
-import type { GameItem, ItemIconProps } from '@/entities/game';
+import type { GameItem, InventoryUIItem } from '@/entities/game';
 import { ItemIcon } from '@/entities/game';
 import { cn } from '@/shared/lib';
 import { COLORS, UI_TEXT } from '../constants/game';
@@ -38,9 +38,16 @@ export const InventoryPanel = ({
         </button>
 
         <div className="flex flex-col gap-6 my-2 h-[450px]">
-          {/* TODO: 데이터 전용 타입 설계 */}
-          {visibleItems.map((item: ItemIconProps) => (
-            <ItemIcon key={item.id} {...item} />
+          {visibleItems.map((item: InventoryUIItem) => (
+            <ItemIcon
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              imagePath={item.imagePath}
+              effect={item.effect}
+              count={item.count}
+              isOwned={item.isOwned}
+            />
           ))}
         </div>
 
