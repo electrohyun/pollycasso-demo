@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
-import type { GameItem } from '@/entities/game/model/types';
-import { ALL_ITEMS_META, GAME_CONFIG } from '@/features/game/constants/game';
+
+import type { GameItem } from '@/entities/game';
+import { ALL_ITEMS_META, GAME_CONFIG } from '../constants/game';
 
 export const useInventory = (inventory: GameItem[]) => {
   const [startIndex, setStartIndex] = useState(0);
