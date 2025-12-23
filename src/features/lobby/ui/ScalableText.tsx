@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
 
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 
 interface ScalableTextProps {
   children: ReactNode;

@@ -1,6 +1,6 @@
 import { FormProvider } from 'react-hook-form';
 
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 import { Spinner } from '@/shared/ui/Spinner';
 import { useSignup } from '../model/useSignup';
 import { AuthInput } from './AuthInput';

@@ -5,7 +5,7 @@ import {
   TeamTab,
   useRoomUI,
 } from '@/features/lobby';
-import { Spinner } from '@/shared';
+import { Spinner } from '@/shared/ui/Spinner';
 
 const RoomPage = () => {
   const { roomState, me, derived, actions, topGradient, bottomGradient } =

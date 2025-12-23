@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import title from '@/assets/title.svg';
 import type { GameMode, Room } from '@/entities/room';
-import { Spinner } from '@/shared';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
+import { Spinner } from '@/shared/ui/Spinner';
 import { TITLE_PRESETS } from '../../constants/titles';
 import type { CreateRoomForm } from '../../lib/validators';
 import { createRoomSchema } from '../../lib/validators';

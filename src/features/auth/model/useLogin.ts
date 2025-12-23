@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 
-import { parseAccessToken } from '@/shared/lib/jwt';
+import { parseAccessToken } from '@/shared/lib';
 import type { LoginFormValues } from '../lib/validators';
 import { loginSchema } from '../lib/validators';
 import type { LoginFailureResponse } from '../model/types';

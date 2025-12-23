@@ -1,6 +1,7 @@
 import { FormProvider } from 'react-hook-form';
 
-import { ErrorMessage, Spinner } from '@/shared/ui';
+import { ErrorMessage } from '@/shared/ui/ErrorMessage';
+import { Spinner } from '@/shared/ui/Spinner';
 import { useLogin } from '../model/useLogin';
 import { AuthInput } from './AuthInput';
 import { PasswordVisibilityToggle } from './PasswordVisibilityToggle';

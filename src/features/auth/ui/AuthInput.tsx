@@ -3,8 +3,11 @@ import { useState } from 'react';
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import { get, useFormContext } from 'react-hook-form';
 
-import { cn } from '@/shared/lib/cn';
-import { ErrorMessage, FormField, Input, ValidationIcon } from '@/shared/ui';
+import { cn } from '@/shared/lib';
+import { ErrorMessage } from '@/shared/ui/ErrorMessage';
+import { FormField } from '@/shared/ui/FormField';
+import { Input } from '@/shared/ui/Input';
+import { ValidationIcon } from '@/shared/ui/ValidationIcon';
 
 interface AuthInputProps<T extends FieldValues> {
   name: Path<T>;

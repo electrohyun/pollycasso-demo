@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 import { ROOM_FILTER_COLORS, ROOM_FILTERS } from '../../constants/filters';
 import { useRoomFilterStore } from '../../model/useRoomFilterStore';
 

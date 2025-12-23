@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useAuthStore } from '@/features/auth'; // TODO: 오류!! useAuthStore 위치 변경 해야함(shared)
 import { mockChannels, mockFriends } from '@/mocks/chat.mock';
-import { useSocket } from '@/shared/api/socket/socketContext';
-import type { Friend } from '@/shared/model/types';
+import { useSocket } from '@/shared/api/socket';
+import type { Friend } from '@/shared/model';
 
 export const useMainChat = () => {
   const { messages, sendMessage: emitMessage } = useSocket();

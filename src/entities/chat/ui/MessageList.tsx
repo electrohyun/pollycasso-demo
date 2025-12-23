@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 
-import { cn } from '@/shared/lib/cn';
-import type { ChatMessage } from '@/shared/model/types';
+import { cn } from '@/shared/lib';
+import type { ChatMessage } from '@/shared/model';
 import { MessageItem } from './MessageItem';
 
 interface MessageListProps {

@@ -2,7 +2,7 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 
 import { Crown } from '@/assets';
 import type { Player } from '@/entities/game';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 import ScalableText from './ScalableText';
 
 interface PlayerSlotProps {

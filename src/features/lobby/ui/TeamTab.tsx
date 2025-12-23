@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 import { ACTIVE_STYLE, DISABLED_STYLE, TEAM_COLORS } from '../constants/colors';
 
 interface TeamTabProps {

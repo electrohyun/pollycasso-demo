@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
 import googleIcon from '@/assets/google.svg';
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared/ui/Button';
 
 export const GoogleLoginButton = () => {
   const navigate = useNavigate();

@@ -1,7 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
-import { RootLayout, Spinner } from '@/shared/ui';
+import { RootLayout } from '@/shared/ui/RootLayout';
+import { Spinner } from '@/shared/ui/Spinner';
 import PrivateRoute from './PrivateRoute';
 
 const LoginPage = lazy(() => import('@/pages/LoginPage'));

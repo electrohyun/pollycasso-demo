@@ -1,5 +1,5 @@
 import type { Player } from '@/entities/game';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 import { PlayerSlot } from './PlayerSlot';
 
 interface TeamSectionProps {

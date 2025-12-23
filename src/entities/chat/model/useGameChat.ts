@@ -2,8 +2,8 @@ import type { KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAuthStore } from '@/features/auth'; // TODO: 오류!! useAuthStore 위치변경(shared)
-import { useSocket } from '@/shared/api/socket/socketContext';
-import type { ChatMessage } from '@/shared/model/types';
+import { useSocket } from '@/shared/api/socket';
+import type { ChatMessage } from '@/shared/model';
 
 export const useGameChat = () => {
   const { socket } = useSocket();

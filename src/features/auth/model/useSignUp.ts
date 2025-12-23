@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { parseAccessToken } from '@/shared/lib/jwt';
+import { parseAccessToken } from '@/shared/lib';
 import { AUTH_MESSAGES } from '../constants/messages';
 import type { SignupFormValues } from '../lib/validators';
 import { signUpSchema } from '../lib/validators';

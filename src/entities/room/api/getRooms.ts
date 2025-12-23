@@ -1,4 +1,4 @@
-import { instance } from '@/shared';
+import { instance } from '@/shared/api';
 import type { Room, RoomFilters } from '../model/types';
 
 interface GetRoomsResponse {

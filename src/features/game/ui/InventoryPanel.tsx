@@ -2,7 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 
 import type { GameItem, ItemIconProps } from '@/entities/game';
 import { ItemIcon } from '@/entities/game';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 import { COLORS, UI_TEXT } from '../constants/game';
 import { useInventory } from './useInventory';
 
