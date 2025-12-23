@@ -1,5 +1,5 @@
-import type { ChatMessage } from '@/shared/model/types';
 import { cn } from '@/shared/lib/cn';
+import type { ChatMessage } from '@/shared/model/types';
 
 interface MessageItemProps {
   msg: ChatMessage;
