@@ -5,11 +5,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 
+import { useAuthStore } from '@/entities/user';
 import { parseAccessToken } from '@/shared/lib';
 import type { LoginFormValues } from '../lib/validators';
 import { loginSchema } from '../lib/validators';
 import type { LoginFailureResponse } from '../model/types';
-import { useAuthStore } from '../model/useAuthStore';
 import { authQueries } from '../queries/authQueries';
 
 export const useLogin = () => {

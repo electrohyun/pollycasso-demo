@@ -1,7 +1,7 @@
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import { useAuthStore } from '@/features/auth'; // TODO: 오류!! useAuthStore 위치변경(shared)
+import { useAuthStore } from '@/entities/user';
 import { useSocket } from '@/shared/api/socket';
 import type { ChatMessage } from '@/shared/model';
 

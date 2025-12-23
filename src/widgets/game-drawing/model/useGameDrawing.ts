@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import type { DrawingContext, Player } from '@/entities/game';
-import { useAuthStore } from '@/features/auth'; // TODO: useAuthStore 위치변경(shared)
+import { useAuthStore } from '@/entities/user';
 import { MOCK_GAME_DRAWING } from '@/mocks/game.mock';
 
 export const useGameDrawing = () => {

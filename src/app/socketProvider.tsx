@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { useAuthStore } from '@/features/auth/model/useAuthStore';
+import { useAuthStore } from '@/entities/user';
 import type { Socket } from '@/shared/api/socket';
 import { io } from '@/shared/api/socket';
 import { SocketContext } from '@/shared/api/socket';

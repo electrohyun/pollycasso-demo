@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import { useAuthStore } from '@/entities/user';
 import { parseAccessToken } from '@/shared/lib';
 import { AUTH_MESSAGES } from '../constants/messages';
 import type { SignupFormValues } from '../lib/validators';
 import { signUpSchema } from '../lib/validators';
 import type { SignupFailureResponse } from '../model/types';
-import { useAuthStore } from '../model/useAuthStore';
 import { authQueries } from '../queries/authQueries';
 
 export const useSignup = () => {
