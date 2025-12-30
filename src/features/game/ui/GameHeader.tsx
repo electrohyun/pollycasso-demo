@@ -17,16 +17,14 @@ export const GameHeader = ({
 }: GameHeaderProps) => {
   const timeLeft = useGameTimer(endsAt);
 
-  const safeTotalTime = totalTime || 1;
-
-  const timeProgress = (timeLeft / safeTotalTime) * 100;
+  const timeProgress = (timeLeft / totalTime) * 100;
 
   const timerColor = useMemo(() => {
-    const ratio = timeLeft / safeTotalTime;
+    const ratio = timeLeft / totalTime;
     if (ratio <= 1 / 3) return COLORS.TIMER_RED;
     if (ratio <= 2 / 3) return COLORS.TIMER_YELLOW;
     return COLORS.TIMER_GREEN;
-  }, [timeLeft, safeTotalTime]);
+  }, [timeLeft, totalTime]);
 
   const timerStyle = {
     background: `conic-gradient(${timerColor} ${timeProgress}%, transparent 0)`,
