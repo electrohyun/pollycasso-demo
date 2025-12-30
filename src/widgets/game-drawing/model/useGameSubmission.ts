@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { Player } from '@/entities/game';
 import { useGameDrawing } from './useGameDrawing';
 
-export interface UseGameSessionReturn {
+interface GameSubmissionState {
   players: Player[];
   isMeReady: boolean;
   completedCount: number;
@@ -11,7 +11,7 @@ export interface UseGameSessionReturn {
   toggleReady: () => void;
 }
 
-export const useGameSession = (): UseGameSessionReturn => {
+export const useGameSubmission = (): GameSubmissionState => {
   const { players: initialPlayers } = useGameDrawing();
 
   const MOCK_ID = 'id-2';
