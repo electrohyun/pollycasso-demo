@@ -30,7 +30,12 @@ const GameWidget = () => {
   };
 
   const handleComplete = useCallback(() => {
-    if (!localInput || !isMyTurn) return;
+    if (!isMyTurn) return;
+
+    if (!localInput.trim()) {
+      alert('주제를 입력해주세요!');
+      return;
+    }
 
     socket?.emit(SOCKET_EVENTS.GAME_THEME_SUBMIT, { theme: localInput });
   }, [localInput, isMyTurn, socket]);
