@@ -92,3 +92,11 @@ export const ALL_ITEMS_META: ItemMeta[] = [
     effect: '현재 적용 중인 조작 방해(거울, 흔들림) 효과를 즉시 해제합니다.',
   },
 ];
+
+export const PHASE_TIME = {
+  THEME_SELECT: 22,
+  DRAWING: 92,
+  EVALUATING: 92,
+  ROUND_SUMMARY: 32,
+  FINISHED: 32,
+} as const;
