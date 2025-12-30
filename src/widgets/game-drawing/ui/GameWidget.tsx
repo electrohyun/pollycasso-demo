@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   GameCanvas,
@@ -7,6 +7,7 @@ import {
   InventoryPanel,
   PHASE_TIME,
   PlayerSidebar,
+  RANDOM_THEMES,
 } from '@/features/game';
 import { ThemeSelector } from '@/features/game/ui/ThemeSelector';
 import { useGameState } from '../model/useGameState';
@@ -26,6 +27,16 @@ const GameWidget = () => {
     }
   }, [isMyTurn, selectingValue]);
 
+  const handleRandomTheme = useCallback(() => {
+    const randomIndex = Math.floor(Math.random() * RANDOM_THEMES.length);
+    const randomTheme = RANDOM_THEMES[randomIndex];
+
+    setLocalInput(randomTheme);
+
+    // TODO: 백엔드 구현 이후 소켓 전송 진행
+    // socket.emit('typing', randomTheme);
+  }, []);
+
   const totalTime = useMemo(() => {
     switch (status) {
       case 'THEME_SELECTING':
@@ -43,6 +54,8 @@ const GameWidget = () => {
     }
   }, [status]);
 
+  const isThemeSelecting = status === 'THEME_SELECTING';
+
   return (
     <div className="w-full h-screen flex justify-between items-center font-ssrm px-20 py-4 overflow-hidden gap-16">
       <PlayerSidebar players={players} />
@@ -54,13 +67,13 @@ const GameWidget = () => {
           totalTime={totalTime}
         />
 
-        <div className="flex-1 flex justify-center bg-white pt-52">
+        <div className="flex-1 flex justify-center bg-white pt-32">
           {status === 'THEME_SELECTING' ? (
             <ThemeSelector
               isSelector={isMyTurn}
               inputValue={localInput}
               onChange={setLocalInput}
-              onRandom={() => console.log('Random Theme!')}
+              onRandom={handleRandomTheme}
             />
           ) : (
             <GameCanvas />
@@ -76,6 +89,7 @@ const GameWidget = () => {
           completedCount={completedCount}
           totalCount={totalCount}
           isReady={isMeReady}
+          showBadge={!isThemeSelecting}
         />
       </aside>
     </div>
