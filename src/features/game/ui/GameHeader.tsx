@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import Marquee from 'react-fast-marquee';
 
 import { COLORS, UI_TEXT } from '../constants/game';
+import { useGameNotification } from '../model/useGameNotification';
 import { useGameTimer } from './useGameTimer';
 
 interface GameHeaderProps {
@@ -16,7 +17,9 @@ export const GameHeader = ({
   totalTime,
 }: GameHeaderProps) => {
   const timeLeft = useGameTimer(endsAt);
+  const { message, type } = useGameNotification();
 
+  const isAttack = type === 'ATTACK';
   const timeProgress = (timeLeft / totalTime) * 100;
 
   const timerColor = useMemo(() => {
@@ -31,11 +34,28 @@ export const GameHeader = ({
     transform: 'scaleX(-1)',
   };
 
+  const renderMessage = () => {
+    const parts = message.split(/(\[.*?\])/g);
+
+    return parts.map((part, index) => {
+      if (part.startsWith('[') && part.endsWith(']')) {
+        return (
+          <span key={index} style={{ color: '#FF2323' }}>
+            {part}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   return (
     <>
       <div className="mt-4 py-1 text-black bg-[#D9D9D9]/45 shadow-sm shadow-black/40">
-        <Marquee gradient={false} speed={50}>
-          <span className="text-lg mx-4 font-bold">{UI_TEXT.NOTICE}</span>
+        <Marquee gradient={false} speed={isAttack ? 120 : 50}>
+          <span className="text-lg mx-4 font-bold text-black">
+            {renderMessage()}
+          </span>
         </Marquee>
       </div>
 
