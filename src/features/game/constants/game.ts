@@ -1,4 +1,4 @@
-import type { ItemMeta } from '@/entities/game';
+import type { ItemMeta } from '@/shared/model';
 
 export const COLORS = {
   PRIMARY_DARK: '#003D00',

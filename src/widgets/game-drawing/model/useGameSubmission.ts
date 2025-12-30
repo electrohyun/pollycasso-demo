@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { Player } from '@/entities/game';
+import type { Player } from '@/shared/model';
 import { useGameDrawing } from './useGameDrawing';
 
 interface GameSubmissionState {

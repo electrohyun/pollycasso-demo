@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import type { ThemeSelectingContext } from '@/entities/game';
 import { useAuthStore } from '@/entities/user';
 import { MOCK_GAME_SELECTING } from '@/mocks/game.mock';
+import type { ThemeSelectingContext } from '@/shared/model';
 
 export const useThemeSelecting = () => {
   const user = useAuthStore((state) => state.user);
