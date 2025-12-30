@@ -1,13 +1,10 @@
-import { useNavigate } from 'react-router';
-
 import kakaoIcon from '@/assets/kakao.svg';
 import { Button } from '@/shared/ui/Button';
 
 export const KakaoLoginButton = () => {
-  const navigate = useNavigate();
-
   const handleLogin = () => {
-    navigate('/welcome');
+    const baseUrl = import.meta.env.VITE_SOCIAL_LOGIN_URL;
+    window.location.href = `${baseUrl}/auth/kakao`;
   };
 
   return (

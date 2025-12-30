@@ -1,13 +1,10 @@
-import { useNavigate } from 'react-router';
-
 import googleIcon from '@/assets/google.svg';
 import { Button } from '@/shared/ui/Button';
 
 export const GoogleLoginButton = () => {
-  const navigate = useNavigate();
-
   const handleLogin = () => {
-    navigate('/welcome');
+    const baseUrl = import.meta.env.VITE_SOCIAL_LOGIN_URL;
+    window.location.href = `${baseUrl}/auth/google`;
   };
 
   return (
