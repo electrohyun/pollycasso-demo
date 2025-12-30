@@ -19,7 +19,7 @@ export const useGameDrawing = () => {
 
   const currentTheme = useMemo(() => {
     const context = phaseContext as DrawingContext;
-    return context?.currentTheme || '주제 대기 중...';
+    return context?.currentTheme || null;
   }, [phaseContext]);
 
   return {
