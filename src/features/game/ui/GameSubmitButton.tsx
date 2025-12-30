@@ -34,7 +34,7 @@ export const GameSubmitButton = ({
           backgroundColor: isReady ? COLORS.TIMER_RED : undefined,
         }}
       >
-        {isReady ? '취소' : UI_TEXT.BTN_COMPLETE}
+        {isReady ? UI_TEXT.BUTTON.CANCEL : UI_TEXT.BUTTON.COMPLETE}
       </button>
     </div>
   );
