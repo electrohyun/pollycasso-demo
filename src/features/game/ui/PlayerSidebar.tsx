@@ -2,6 +2,7 @@ import type { DragEvent } from 'react';
 import { useState } from 'react';
 
 import { PlayerAvatar } from '@/entities/game';
+import { useSocket } from '@/shared/api/socket';
 import { cn } from '@/shared/lib';
 import type { Player } from '@/shared/model';
 import { COLORS } from '../constants/game';
@@ -13,8 +14,9 @@ interface PlayerSidebarProps {
 export const PlayerSidebar = ({ players }: PlayerSidebarProps) => {
   const [hoveredUserId, setHoveredUserId] = useState<string | null>(null);
 
+  const { socket } = useSocket();
+
   const handleDragOver = (e: DragEvent, userId: string) => {
-    e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
     setHoveredUserId(userId);
   };
@@ -29,9 +31,14 @@ export const PlayerSidebar = ({ players }: PlayerSidebarProps) => {
 
     const itemId = e.dataTransfer.getData('item-id');
 
-    if (itemId) {
-      alert(`${targetPlayer.nickname}님에게 아이템(${itemId})을 사용했습니다!`);
+    if (!socket) {
+      return;
     }
+
+    socket.emit('game:useItem', {
+      itemId,
+      targetUserId: targetPlayer.userId,
+    });
   };
 
   return (

@@ -1,4 +1,4 @@
-import type { DragEvent } from 'react';
+import { type DragEvent, useEffect, useState } from 'react'; // useState, useEffect 추가
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 import { ItemIcon } from '@/entities/game';
@@ -19,10 +19,28 @@ export const InventoryPanel = ({
   const { visibleItems, handlePrev, handleNext, canPrev, canNext } =
     useInventory(inventory ?? []);
 
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTick((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const handleDragStart = (
     e: DragEvent<HTMLDivElement>,
     item: InventoryUIItem,
   ) => {
+    const now = Date.now();
+
+    if (item.cooldownEndsAt && item.cooldownEndsAt > now) {
+      e.preventDefault();
+      const leftSec = Math.ceil((item.cooldownEndsAt - now) / 1000);
+      alert(`(${leftSec}초 남음)`);
+      return;
+    }
+
     if (!isDraggable) {
       e.preventDefault();
       return;
@@ -58,7 +76,13 @@ export const InventoryPanel = ({
 
         <div className="flex flex-col gap-6 my-2 h-[450px]">
           {visibleItems.map((item: InventoryUIItem) => {
-            const canDrag = isDraggable && item.isOwned && item.count > 0;
+            const now = Date.now();
+            const isCoolingDown = item.cooldownEndsAt
+              ? item.cooldownEndsAt > now
+              : false;
+
+            const canDrag =
+              !isCoolingDown && isDraggable && item.isOwned && item.count > 0;
 
             return (
               <div
@@ -66,12 +90,18 @@ export const InventoryPanel = ({
                 draggable={canDrag}
                 onDragStart={(e) => handleDragStart(e, item)}
                 className={cn(
-                  'transition-all duration-200',
+                  'transition-all duration-200 relative',
                   canDrag
                     ? 'cursor-grab active:cursor-grabbing hover:scale-105 active:scale-95'
-                    : 'cursor-not-allowed opacity-40 grayscale',
+                    : 'cursor-not-allowed opacity-50 grayscale',
                 )}
               >
+                {isCoolingDown && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center text-xs font-bold text-white bg-black/40 rounded-full">
+                    {Math.ceil((item.cooldownEndsAt! - now) / 1000)}s
+                  </div>
+                )}
+
                 <ItemIcon
                   id={item.id}
                   name={item.name}
