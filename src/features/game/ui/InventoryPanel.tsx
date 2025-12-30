@@ -1,3 +1,4 @@
+import type { DragEvent } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 import { ItemIcon } from '@/entities/game';
@@ -8,14 +9,33 @@ import { useInventory } from './useInventory';
 
 interface InventoryPanelProps {
   inventory: GameItem[] | null;
-  onComplete?: () => void;
-  completedCount?: number;
-  totalCount?: number;
+  isDraggable?: boolean;
 }
 
-export const InventoryPanel = ({ inventory }: InventoryPanelProps) => {
+export const InventoryPanel = ({
+  inventory,
+  isDraggable = false,
+}: InventoryPanelProps) => {
   const { visibleItems, handlePrev, handleNext, canPrev, canNext } =
     useInventory(inventory ?? []);
+
+  const handleDragStart = (
+    e: DragEvent<HTMLDivElement>,
+    item: InventoryUIItem,
+  ) => {
+    if (!isDraggable) {
+      e.preventDefault();
+      return;
+    }
+
+    if (!item.isOwned || item.count <= 0) {
+      e.preventDefault();
+      return;
+    }
+
+    e.dataTransfer.setData('item-id', item.id);
+    e.dataTransfer.effectAllowed = 'copy';
+  };
 
   return (
     <aside className="h-auto flex flex-col gap-4">
@@ -37,17 +57,32 @@ export const InventoryPanel = ({ inventory }: InventoryPanelProps) => {
         </button>
 
         <div className="flex flex-col gap-6 my-2 h-[450px]">
-          {visibleItems.map((item: InventoryUIItem) => (
-            <ItemIcon
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              imagePath={item.imagePath}
-              effect={item.effect}
-              count={item.count}
-              isOwned={item.isOwned}
-            />
-          ))}
+          {visibleItems.map((item: InventoryUIItem) => {
+            const canDrag = isDraggable && item.isOwned && item.count > 0;
+
+            return (
+              <div
+                key={item.id}
+                draggable={canDrag}
+                onDragStart={(e) => handleDragStart(e, item)}
+                className={cn(
+                  'transition-all duration-200',
+                  canDrag
+                    ? 'cursor-grab active:cursor-grabbing hover:scale-105 active:scale-95'
+                    : 'cursor-not-allowed opacity-40 grayscale',
+                )}
+              >
+                <ItemIcon
+                  id={item.id}
+                  name={item.name}
+                  imagePath={item.imagePath}
+                  effect={item.effect}
+                  count={item.count}
+                  isOwned={item.isOwned}
+                />
+              </div>
+            );
+          })}
         </div>
 
         <button

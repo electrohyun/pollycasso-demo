@@ -21,6 +21,7 @@ const GameWidget = () => {
     useGameSubmission();
   const { socket } = useSocket();
   const [localInput, setLocalInput] = useState('');
+  const isDrawingPhase = status === 'DRAWING';
 
   const handleInputChange = (value: string) => {
     setLocalInput(value);
@@ -119,7 +120,7 @@ const GameWidget = () => {
       </main>
 
       <aside className="h-full flex flex-col justify-center gap-y-20">
-        <InventoryPanel inventory={inventory} />
+        <InventoryPanel inventory={inventory} isDraggable={isDrawingPhase} />
 
         <GameSubmitButton
           onComplete={handleComplete}

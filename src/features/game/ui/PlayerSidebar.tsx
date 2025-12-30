@@ -1,4 +1,8 @@
+import type { DragEvent } from 'react';
+import { useState } from 'react';
+
 import { PlayerAvatar } from '@/entities/game';
+import { cn } from '@/shared/lib';
 import type { Player } from '@/shared/model';
 import { COLORS } from '../constants/game';
 
@@ -7,18 +11,56 @@ interface PlayerSidebarProps {
 }
 
 export const PlayerSidebar = ({ players }: PlayerSidebarProps) => {
+  const [hoveredUserId, setHoveredUserId] = useState<string | null>(null);
+
+  const handleDragOver = (e: DragEvent, userId: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    setHoveredUserId(userId);
+  };
+
+  const handleDragLeave = () => {
+    setHoveredUserId(null);
+  };
+
+  const handleDrop = (e: DragEvent, targetPlayer: Player) => {
+    e.preventDefault();
+    setHoveredUserId(null);
+
+    const itemId = e.dataTransfer.getData('item-id');
+
+    if (itemId) {
+      alert(`${targetPlayer.nickname}님에게 아이템(${itemId})을 사용했습니다!`);
+    }
+  };
+
   return (
     <aside
       className="py-16 px-6 w-auto h-auto rounded-2xl flex flex-col gap-6 justify-center min-w-[120px]"
       style={{ backgroundColor: COLORS.PRIMARY_DARK }}
     >
       {players.map((player) => (
-        <PlayerAvatar
+        <div
           key={player.userId}
-          nickname={player.nickname}
-          level={player.level}
-          isConnected={player.isConnected}
-        />
+          onDragOver={(e) => handleDragOver(e, player.userId)}
+          onDragLeave={handleDragLeave}
+          onDrop={(e) => handleDrop(e, player)}
+          className={cn(
+            'rounded-xl transition-all duration-200 border-4 border-transparent p-2 flex flex-col items-center justify-center',
+
+            hoveredUserId === player.userId
+              ? 'border-yellow-400 bg-white/10 scale-105 shadow-[0_0_15px_rgba(250,204,21,0.5)]'
+              : '',
+          )}
+        >
+          <div className="pointer-events-none">
+            <PlayerAvatar
+              nickname={player.nickname}
+              level={player.level}
+              isConnected={player.isConnected}
+            />
+          </div>
+        </div>
       ))}
     </aside>
   );
