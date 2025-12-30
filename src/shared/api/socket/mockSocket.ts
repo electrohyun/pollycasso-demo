@@ -7,6 +7,7 @@ import {
   handleGameThemeAutoSelect,
   handleGameThemeSubmit,
   handleGameTyping,
+  handleGameUseItem,
   handleLobbySend,
   handleRoomChangeTeam,
   handleRoomJoin,
@@ -136,6 +137,10 @@ export class MockSocket {
       case SOCKET_EVENTS.GAME_THEME_SUBMIT:
         if (this.phaseTimer) clearTimeout(this.phaseTimer);
         handleGameThemeSubmit(this, payload);
+        break;
+
+      case SOCKET_EVENTS.GAME_USE_ITEM:
+        handleGameUseItem(this, payload);
         break;
 
       default:
