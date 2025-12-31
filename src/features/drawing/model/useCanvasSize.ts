@@ -1,33 +1,33 @@
-import type { RefObject } from 'react';
+import type { ComponentRef, RefObject } from 'react';
 import { useEffect, useState } from 'react';
 
 export const useCanvasSize = (
-  containerRef: RefObject<HTMLDivElement | null>,
+  containerRef: RefObject<ComponentRef<'div'> | null>,
 ) => {
   const [size, setSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+    const containerElement = containerRef.current;
+    if (!containerElement) return;
 
-    const updateFromEl = () => {
-      const rect = el.getBoundingClientRect();
+    const updateSize = () => {
+      const rect = containerElement.getBoundingClientRect();
       setSize({
         width: Math.floor(rect.width),
         height: Math.floor(rect.height),
       });
     };
 
-    updateFromEl();
+    updateSize();
 
-    const ro = new ResizeObserver(() => {
-      updateFromEl();
+    const resizeObserver = new ResizeObserver(() => {
+      updateSize();
     });
 
-    ro.observe(el);
+    resizeObserver.observe(containerElement);
 
     return () => {
-      ro.disconnect();
+      resizeObserver.disconnect();
     };
   }, [containerRef]);
 

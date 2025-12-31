@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { type ComponentRef, useRef } from 'react';
 import { Layer, Line, Stage } from 'react-konva';
 
 import { Mannequin } from '@/assets';
@@ -7,7 +7,7 @@ import { useCanvasSize } from '../model/useCanvasSize';
 import { useDrawing } from '../model/useDrawing';
 
 export const GameCanvas = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<ComponentRef<'div'>>(null);
   const size = useCanvasSize(containerRef);
   const { lines, handleDown, handleMove, handleUp } = useDrawing();
 
