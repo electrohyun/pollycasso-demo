@@ -93,6 +93,7 @@ export const PHASE_TIME = {
   EVALUATING: 92,
   ROUND_SUMMARY: 32,
   FINISHED: 32,
+  DEFAULT: 90,
 } as const;
 
 export const UI_TEXT = {
