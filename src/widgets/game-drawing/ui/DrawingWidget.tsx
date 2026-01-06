@@ -103,7 +103,7 @@ const DrawingWidget = () => {
 
         <div
           className={`flex-1 flex justify-center bg-white ${
-            isThemeSelecting ? 'pt-44' : 'py-5 items-center'
+            isThemeSelecting ? 'pt-44' : 'pt-0 items-start'
           }`}
         >
           {isThemeSelecting ? (

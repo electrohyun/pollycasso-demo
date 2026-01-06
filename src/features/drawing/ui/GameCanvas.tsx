@@ -16,7 +16,7 @@ export const GameCanvas = () => {
     <div
       ref={containerRef}
       style={{ touchAction: 'none' }}
-      className="flex-1 w-full h-full flex items-center justify-center text-gray-300 bg-gray-50 m-6 rounded-xl border border-dashed border-gray-300 overflow-hidden relative"
+      className="w-3/4 h-3/4 flex items-center justify-center text-gray-300 bg-gray-50 mx-6 rounded-xl border border-dashed border-gray-300 overflow-hidden relative"
     >
       <div className="absolute inset-0">
         {size.width > 0 && size.height > 0 ? (
