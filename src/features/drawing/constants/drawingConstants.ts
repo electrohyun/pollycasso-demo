@@ -8,15 +8,19 @@ export const DRAWING_CONSTANTS = {
 
 export const DRAWING_COLORS = [
   '#0C0C0C',
-  '#FFFFFF',
+  '#FF7777',
   '#91D492',
-  '#FF5D41',
   '#FFC6BC',
-  '#34C6D0',
-  '#EEC643',
+  '#F9E25D',
+  '#22CEDA',
+  '#6857FF',
+  '#FFFFFF',
+  '#FFA953',
+  '#172E89',
+  '#623A32',
+  '#898F92',
+  '#F060D6',
   '#C9AAFF',
-  '#FB3D89',
-  '#3376FC',
-] as const;
+];
 
 export const BRUSH_SIZES = [2, 5, 10, 20, 30] as const;
