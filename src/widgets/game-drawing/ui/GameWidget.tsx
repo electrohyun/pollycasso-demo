@@ -83,7 +83,7 @@ const GameWidget = () => {
       case 'FINISHED':
         return PHASE_TIME.FINISHED;
       default:
-        return 90;
+        return PHASE_TIME.DEFAULT;
     }
   }, [status]);
 
