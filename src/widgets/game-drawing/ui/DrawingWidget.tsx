@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { DrawingToolbox, GameCanvas } from '@/features/drawing';
 import {
@@ -10,25 +10,33 @@ import {
   ThemeSelector,
 } from '@/features/game';
 import { SOCKET_EVENTS, useSocket } from '@/shared/api/socket';
-import { PHASE_TIME, RANDOM_THEMES } from '@/shared/model';
+import { PHASE_TIME } from '@/shared/model';
+import { useDrawingTools } from '../model/useDrawingTools';
 import { useGameState } from '../model/useGameState';
 import { useGameSubmission } from '../model/useGameSubmission';
+import { useThemeInput } from '../model/useThemeInput';
 import { useThemeSelecting } from '../model/useThemeSelecting';
 
 const DrawingWidget = () => {
   const { status, players, endsAt, inventory, currentTheme } = useGameState();
+  const { socket } = useSocket();
+
   const { isMyTurn } = useThemeSelecting();
+
   const { completedCount, totalCount, isMeReady, toggleReady } =
     useGameSubmission();
-  const { socket } = useSocket();
-  const [localInput, setLocalInput] = useState('');
 
-  const handleInputChange = (value: string) => {
-    setLocalInput(value);
-    if (isMyTurn) {
-      socket?.emit(SOCKET_EVENTS.GAME_TYPING, { value });
-    }
-  };
+  const {
+    activeTool,
+    setActiveTool,
+    strokeWidth,
+    setStrokeWidth,
+    selectedColor,
+    setSelectedColor,
+  } = useDrawingTools();
+
+  const { localInput, handleInputChange, handleRandomTheme } =
+    useThemeInput(isMyTurn);
 
   const handleComplete = useCallback(() => {
     if (status === 'THEME_SELECTING') {
@@ -40,36 +48,8 @@ const DrawingWidget = () => {
       socket?.emit(SOCKET_EVENTS.GAME_THEME_SUBMIT, { theme: localInput });
       return;
     }
-
     toggleReady();
   }, [status, isMyTurn, localInput, socket, toggleReady]);
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleTypingShare = (data: { value: string }) => {
-      if (!isMyTurn) {
-        setLocalInput(data.value);
-      }
-    };
-
-    socket.on(SOCKET_EVENTS.GAME_TYPING_SHARE, handleTypingShare);
-
-    return () => {
-      socket.off(SOCKET_EVENTS.GAME_TYPING_SHARE, handleTypingShare);
-    };
-  }, [socket, isMyTurn]);
-
-  const handleRandomTheme = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * RANDOM_THEMES.length);
-    const randomTheme = RANDOM_THEMES[randomIndex];
-
-    setLocalInput(randomTheme);
-
-    if (socket) {
-      socket.emit(SOCKET_EVENTS.GAME_TYPING, { value: randomTheme });
-    }
-  }, [socket]);
 
   const totalTime = useMemo(() => {
     switch (status) {
@@ -88,7 +68,6 @@ const DrawingWidget = () => {
     }
   }, [status]);
 
-  //const isThemeSelecting = status === 'THEME_SELECTING';
   const isThemeSelecting = false;
 
   return (
@@ -104,9 +83,7 @@ const DrawingWidget = () => {
 
         <GameHeader currentTheme={currentTheme} />
 
-        <div
-          className={`flex-1 flex justify-center bg-white pt-0 items-start relative`}
-        >
+        <div className="flex-1 flex justify-center bg-white pt-0 items-start relative">
           {isThemeSelecting ? (
             <ThemeSelector
               isSelector={isMyTurn}
@@ -116,10 +93,21 @@ const DrawingWidget = () => {
             />
           ) : (
             <>
-              <GameCanvas />
+              <GameCanvas
+                activeTool={activeTool}
+                strokeWidth={strokeWidth}
+                selectedColor={selectedColor}
+              />
 
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
-                <DrawingToolbox />
+                <DrawingToolbox
+                  activeTool={activeTool}
+                  onToolChange={setActiveTool}
+                  strokeWidth={strokeWidth}
+                  onWidthChange={setStrokeWidth}
+                  selectedColor={selectedColor}
+                  onColorChange={setSelectedColor}
+                />
               </div>
             </>
           )}
@@ -128,7 +116,6 @@ const DrawingWidget = () => {
 
       <aside className="h-full flex flex-col justify-center gap-y-20">
         <InventoryPanel inventory={inventory} />
-
         <GameSubmitButton
           onComplete={handleComplete}
           completedCount={completedCount}
