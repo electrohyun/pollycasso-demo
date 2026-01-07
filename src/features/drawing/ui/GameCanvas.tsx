@@ -1,6 +1,6 @@
 import type { ComponentRef } from 'react';
 import { useRef } from 'react';
-import { Layer, Line, Stage } from 'react-konva';
+import { Image as KonvaImage, Layer, Line, Stage } from 'react-konva';
 
 import { Mannequin } from '@/assets';
 import type { DrawingTool } from '../model/types';
@@ -62,6 +62,18 @@ export const GameCanvas = ({
 
             <Layer>
               {lines.map((line, i) => {
+                if (line.tool === 'bucket' && line.filledImage) {
+                  return (
+                    <KonvaImage
+                      key={i}
+                      image={line.filledImage}
+                      x={0}
+                      y={0}
+                      listening={false}
+                    />
+                  );
+                }
+
                 const texture = textures[line.tool];
 
                 if (texture && line.tool !== 'eraser') {
