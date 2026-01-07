@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { GameCanvas } from '@/features/drawing';
+import { DrawingToolbox, GameCanvas } from '@/features/drawing';
 import {
-  DrawingToolbox,
   GameHeader,
   GameSubmitButton,
   GameTimer,

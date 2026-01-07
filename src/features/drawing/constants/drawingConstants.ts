@@ -1,10 +1,16 @@
 export const DRAWING_CONSTANTS = {
-  DEFAULT_TOOL: 'pen' as const,
+  DEFAULT_TOOL: 'pen',
   DEFAULT_COLOR: '#0C0C0C',
   DEFAULT_SIZE: 5,
   MIN_SIZE: 1,
-  MAX_SIZE: 50,
+  MAX_SIZE: 100,
 } as const;
+
+export const DRAWING_TOOLS = [
+  { id: 'pen', Icon: 'PencilIcon' },
+  { id: 'brush', Icon: 'PaintBrushIcon' },
+  { id: 'marker', Icon: 'MarkerIcon' },
+] as const;
 
 export const DRAWING_COLORS = [
   '#0C0C0C',
@@ -23,4 +29,4 @@ export const DRAWING_COLORS = [
   '#C9AAFF',
 ];
 
-export const BRUSH_SIZES = [2, 5, 10, 20, 30] as const;
+export const BRUSH_SIZES = [1, 25, 50, 75, 100] as const;
