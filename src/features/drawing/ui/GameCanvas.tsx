@@ -1,12 +1,13 @@
 import type { ComponentRef } from 'react';
 import { useRef } from 'react';
-import { Image as KonvaImage, Layer, Line, Stage } from 'react-konva';
+import { Layer, Line, Stage } from 'react-konva';
 
 import { Mannequin } from '@/assets';
 import type { DrawingTool } from '../model/types';
 import { useCanvasSize } from '../model/useCanvasSize';
 import { useDrawing } from '../model/useDrawing';
 import { useTextureLoader } from '../model/useTextureLoader';
+import { BucketResult } from '../ui/BucketResult';
 import { CanvasBackground } from './CanvasBackground';
 import { TexturedLine } from './TexturedLine';
 
@@ -63,15 +64,7 @@ export const GameCanvas = ({
             <Layer>
               {lines.map((line, i) => {
                 if (line.tool === 'bucket' && line.filledImage) {
-                  return (
-                    <KonvaImage
-                      key={i}
-                      image={line.filledImage}
-                      x={0}
-                      y={0}
-                      listening={false}
-                    />
-                  );
+                  return <BucketResult key={i} image={line.filledImage} />;
                 }
 
                 const texture = textures[line.tool];
