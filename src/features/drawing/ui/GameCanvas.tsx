@@ -7,7 +7,7 @@ import type { DrawingTool } from '../model/types';
 import { useCanvasSize } from '../model/useCanvasSize';
 import { useDrawing } from '../model/useDrawing';
 import { useTextureLoader } from '../model/useTextureLoader';
-import { BucketResult } from '../ui/BucketResult';
+import { BucketResult } from './BucketResult';
 import { CanvasBackground } from './CanvasBackground';
 import { TexturedLine } from './TexturedLine';
 
@@ -33,6 +33,8 @@ export const GameCanvas = ({
     size: strokeWidth,
   });
 
+  const isCanvasReady = size.width > 0 && size.height > 0;
+
   return (
     <div
       ref={containerRef}
@@ -40,7 +42,7 @@ export const GameCanvas = ({
       className="w-3/5 h-4/5 flex items-center justify-center text-gray-300 bg-gray-50 mx-6 rounded-xl border border-dashed border-gray-300 overflow-hidden relative"
     >
       <div className="absolute inset-0">
-        {size.width > 0 && size.height > 0 ? (
+        {isCanvasReady && (
           <Stage
             width={size.width}
             height={size.height}
@@ -118,8 +120,6 @@ export const GameCanvas = ({
               })}
             </Layer>
           </Stage>
-        ) : (
-          <span>Canvas Area</span>
         )}
       </div>
     </div>
