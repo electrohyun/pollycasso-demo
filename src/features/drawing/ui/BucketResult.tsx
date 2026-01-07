@@ -10,9 +10,17 @@ export const BucketResult = ({ image }: BucketResultProps) => {
   const imageRef = useRef<Konva.Image>(null);
 
   useEffect(() => {
-    if (imageRef.current) {
-      imageRef.current.cache();
-    }
+    const node = imageRef.current;
+    if (!node) return;
+
+    node.clearCache();
+
+    node.cache({
+      pixelRatio: 1,
+      imageSmoothingEnabled: true,
+    });
+
+    node.getLayer()?.batchDraw();
   }, [image]);
 
   return (
@@ -23,8 +31,8 @@ export const BucketResult = ({ image }: BucketResultProps) => {
       y={0}
       listening={false}
       filters={[Konva.Filters.Blur, Konva.Filters.Threshold]}
-      blurRadius={2}
-      threshold={0.5}
+      blurRadius={4}
+      threshold={0.6}
     />
   );
 };
