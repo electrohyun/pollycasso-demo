@@ -27,6 +27,10 @@ export const useDrawing = ({ tool, color, size }: UseDrawingProps) => {
       if (!pos || !stage) return;
 
       if (tool === 'bucket') {
+        const backgroundLayer = stage.getLayers()[0];
+
+        backgroundLayer.hide();
+
         const width = stage.width();
         const height = stage.height();
 
@@ -37,6 +41,8 @@ export const useDrawing = ({ tool, color, size }: UseDrawingProps) => {
           width,
           height,
         });
+
+        backgroundLayer.show();
 
         const ctx = tempCanvas.getContext('2d');
         if (!ctx) return;
