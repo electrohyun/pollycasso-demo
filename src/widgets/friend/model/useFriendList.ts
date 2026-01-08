@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import type { FriendRelation } from '@/entities/friend';
 
@@ -41,6 +41,7 @@ const DUMMY_DATA = [
 ] as const;
 
 export const useFriendList = (searchKeyword: string) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [friends, setFriends] = useState<any[]>(DUMMY_DATA as any);
 
   const acceptFriend = (id: number) => {
@@ -90,10 +91,20 @@ export const useFriendList = (searchKeyword: string) => {
     });
   }, [searchKeyword, friends]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFriends(DUMMY_DATA as any);
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return {
     processedFriends,
     acceptFriend,
     removeFriend,
     blockFriend,
+    isLoading,
   };
 };

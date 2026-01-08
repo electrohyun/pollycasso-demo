@@ -3,18 +3,26 @@ import { FaceFrownIcon } from '@heroicons/react/24/outline';
 import type { FriendRelation } from '@/entities/friend';
 import { FriendCard } from '@/entities/friend';
 import { useFriendList } from '../model/useFriendList';
+import { FriendListSkeleton } from './FriendListSkeleton';
 
 interface FriendListProps {
   searchKeyword: string;
 }
 
 export const FriendList = ({ searchKeyword }: FriendListProps) => {
-  const { processedFriends, acceptFriend, removeFriend, blockFriend } =
-    useFriendList(searchKeyword);
+  const {
+    processedFriends,
+    acceptFriend,
+    removeFriend,
+    blockFriend,
+    isLoading,
+  } = useFriendList(searchKeyword);
 
   return (
     <div className="flex-1 px-5 pb-10 overflow-y-auto custom-scrollbar">
-      {processedFriends.length > 0 ? (
+      {isLoading ? (
+        <FriendListSkeleton />
+      ) : processedFriends.length > 0 ? (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
           {processedFriends.map((friend) => (
             <FriendCard
