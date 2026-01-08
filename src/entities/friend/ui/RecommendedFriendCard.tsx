@@ -9,6 +9,7 @@ interface RecommendedFriendCardProps {
   outfit?: string;
   className?: string;
   onAdd?: () => void;
+  isRequested?: boolean;
 }
 
 export const RecommendedFriendCard = ({
@@ -18,6 +19,7 @@ export const RecommendedFriendCard = ({
   outfit,
   className,
   onAdd,
+  isRequested = false,
 }: RecommendedFriendCardProps) => {
   const [displayName, displayTag] = nickname.split('#');
   const safeTag = displayTag || '0000';
@@ -29,7 +31,7 @@ export const RecommendedFriendCard = ({
           {outfit ? (
             <img
               src={outfit}
-              alt="outfit"
+              alt={`${displayName}의 아바타`}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -58,8 +60,20 @@ export const RecommendedFriendCard = ({
         </div>
       </div>
 
-      <button onClick={onAdd} className="shrink-0 p-1 group">
-        <PlusIcon className="w-6 h-6 text-white bg-gray-700 rounded-full p-0.5 group-hover:bg-black transition-colors" />
+      <button
+        onClick={isRequested ? undefined : onAdd}
+        disabled={isRequested}
+        className={`shrink-0 p-1 transition-all duration-200 ${isRequested ? 'cursor-default' : 'group cursor-pointer'}`}
+      >
+        <PlusIcon
+          className={`w-6 h-6 text-white rounded-full p-0.5 transition-colors
+              ${
+                isRequested
+                  ? 'bg-[#BABABA]'
+                  : 'bg-gray-700 group-hover:bg-black'
+              }
+            `}
+        />
       </button>
     </div>
   );
