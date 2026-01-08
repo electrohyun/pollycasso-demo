@@ -3,7 +3,7 @@ import { BellIcon } from '@heroicons/react/24/solid';
 
 export const FriendHeader = () => {
   return (
-    <div className="flex items-center justify-between pl-4 pr-11 pt-10 w-full">
+    <div className="flex items-center justify-between pl-4 pr-5 pt-10 w-full">
       <span className="mb-10 text-white text-5xl font-bold tracking-tight">
         친구
       </span>
@@ -19,7 +19,7 @@ export const FriendHeader = () => {
           </button>
         </div>
 
-        <div className="flex items-center w-[450px] h-12 bg-white rounded-2xl overflow-hidden shadow-xl">
+        <div className="flex items-center w-[460px] h-12 bg-white rounded-2xl overflow-hidden shadow-xl">
           <input
             type="text"
             placeholder="태그나 이름을 입력해주세요."
