@@ -47,7 +47,7 @@ export const FriendCard = ({
 
           <div className="flex items-center gap-x-2 mt-1">
             <span
-              className={`w-12 lg:w-14 h-6 lg:h-7 flex items-center justify-center text-sm lg:text-base rounded-[6px] font-medium tabular-nums ${getLevelBadgeColor(level)}`}
+              className={`w-12 lg:w-14 h-6 lg:h-7 flex items-center justify-center text-sm text-white lg:text-base rounded-[6px] tabular-nums ${getLevelBadgeColor(level)}`}
             >
               {safeTag}
             </span>
