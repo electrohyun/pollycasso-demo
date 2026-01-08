@@ -1,32 +1,88 @@
-import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
+import { useMemo } from 'react';
+
+import type { FriendRelation } from '@/entities/friend';
+import { FriendCard } from '@/entities/friend';
+
+const DUMMY_DATA = [
+  {
+    id: 1,
+    nickname: '차단한사람#1111',
+    level: 10,
+    relation: 'BLOCKED',
+    isOnline: false,
+  },
+  {
+    id: 2,
+    nickname: '짱친#1234',
+    level: 60,
+    relation: 'FRIEND',
+    isOnline: true,
+  },
+  {
+    id: 3,
+    nickname: '친구신청받아#5555',
+    level: 1,
+    relation: 'REQUEST_RECEIVED',
+    isOnline: true,
+  },
+  {
+    id: 4,
+    nickname: '내가신청보냄#7777',
+    level: 25,
+    relation: 'REQUEST_SENT',
+    isOnline: false,
+  },
+  {
+    id: 5,
+    nickname: '자러감#9999',
+    level: 40,
+    relation: 'FRIEND',
+    isOnline: false,
+  },
+] as const;
 
 export const FriendList = () => {
+  const sortedFriends = useMemo(() => {
+    return [...DUMMY_DATA].sort((a, b) => {
+      const getPriority = (relation: FriendRelation, isOnline: boolean) => {
+        switch (relation) {
+          case 'REQUEST_RECEIVED':
+            return 1;
+          case 'REQUEST_SENT':
+            return 2;
+          case 'FRIEND':
+            return isOnline ? 3 : 4;
+          case 'BLOCKED':
+            return 5;
+          default:
+            return 99;
+        }
+      };
+
+      const priorityA = getPriority(a.relation as FriendRelation, a.isOnline);
+      const priorityB = getPriority(b.relation as FriendRelation, b.isOnline);
+
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
+      }
+
+      return a.nickname.localeCompare(b.nickname);
+    });
+  }, []);
+
   return (
     <div className="flex-1 px-5 pb-10 overflow-y-auto custom-scrollbar">
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="flex justify-between p-4 h-24 lg:h-28 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-x-3 lg:gap-x-4 overflow-hidden">
-            <div className="shrink-0 w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gray-200" />
-            <div className="flex flex-col justify-center h-full py-1 overflow-hidden">
-              <span className="text-xl lg:text-2xl font-bold truncate pr-2">
-                엄청나게긴닉네임입니다
-              </span>
-
-              <div className="flex items-center gap-x-2 mt-1">
-                <span className="px-2 lg:px-3 py-0.5 bg-green-400 text-sm lg:text-lg text-white rounded text-center">
-                  1234
-                </span>
-                <span className="text-lg lg:text-xl text-green-500 truncate">
-                  게임 중
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <button className="shrink-0 self-start mt-1 ml-1">
-            <EllipsisVerticalIcon className="w-6 h-6 lg:w-8 lg:h-8 text-gray-400 hover:text-gray-600 transition-colors" />
-          </button>
-        </div>
+        {sortedFriends.map((friend) => (
+          <FriendCard
+            key={friend.id}
+            userId={friend.id}
+            nickname={friend.nickname}
+            level={friend.level}
+            relation={friend.relation as FriendRelation}
+            isOnline={friend.isOnline}
+          />
+        ))}
       </div>
     </div>
   );
