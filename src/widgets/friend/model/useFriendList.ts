@@ -1,76 +1,72 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { FriendProfile, FriendRelation } from '@/entities/friend';
+import { io, SOCKET_EVENTS } from '@/shared/api/socket';
 
 type Friend = FriendProfile & { relation: FriendRelation };
 
-const DUMMY_DATA: Friend[] = [
-  {
-    userId: 1,
-    nickname: '차단한사람#1111',
-    level: 10,
-    relation: 'BLOCKED',
-    isOnline: false,
-    outfit: undefined,
-  },
-  {
-    userId: 2,
-    nickname: '짱친#1234',
-    level: 60,
-    relation: 'FRIEND',
-    isOnline: true,
-    outfit: undefined,
-  },
-  {
-    userId: 3,
-    nickname: '친구신청받아#5555',
-    level: 1,
-    relation: 'REQUEST_RECEIVED',
-    isOnline: true,
-    outfit: undefined,
-  },
-  {
-    userId: 4,
-    nickname: '내가신청보냄#7777',
-    level: 25,
-    relation: 'REQUEST_SENT',
-    isOnline: false,
-    outfit: undefined,
-  },
-  {
-    userId: 5,
-    nickname: '자러감#9999',
-    level: 40,
-    relation: 'FRIEND',
-    isOnline: false,
-    outfit: undefined,
-  },
-];
-
 export const useFriendList = (searchKeyword: string) => {
   const [isLoading, setIsLoading] = useState(true);
-
   const [friends, setFriends] = useState<Friend[]>([]);
 
-  const acceptFriend = (targetId: number | string) => {
-    setFriends((prev) =>
-      prev.map((f) =>
-        f.userId === targetId ? { ...f, relation: 'FRIEND' } : f,
-      ),
-    );
-  };
+  const socket = useMemo(() => io(import.meta.env.VITE_SOCKET_URL), []);
 
-  const removeFriend = (targetId: number | string) => {
-    setFriends((prev) => prev.filter((f) => f.userId !== targetId));
-  };
+  useEffect(() => {
+    const handleListResponse = (data: Friend[]) => {
+      setFriends(data);
+      setIsLoading(false);
+    };
 
-  const blockFriend = (targetId: number | string) => {
-    setFriends((prev) =>
-      prev.map((f) =>
-        f.userId === targetId ? { ...f, relation: 'BLOCKED' } : f,
-      ),
-    );
-  };
+    const handleStatusUpdate = ({
+      userId,
+      relation,
+    }: {
+      userId: number | string;
+      relation: FriendRelation | 'NONE';
+    }) => {
+      setFriends((prev) => {
+        if (relation === 'NONE') {
+          return prev.filter((f) => f.userId !== userId);
+        }
+        return prev.map((f) =>
+          f.userId === userId
+            ? { ...f, relation: relation as FriendRelation }
+            : f,
+        );
+      });
+    };
+
+    socket.on(SOCKET_EVENTS.FRIEND_GET_ALL_RESPONSE, handleListResponse);
+    socket.on(SOCKET_EVENTS.FRIEND_STATUS_UPDATE, handleStatusUpdate);
+
+    socket.emit(SOCKET_EVENTS.FRIEND_GET_ALL);
+
+    return () => {
+      socket.off(SOCKET_EVENTS.FRIEND_GET_ALL_RESPONSE, handleListResponse);
+      socket.off(SOCKET_EVENTS.FRIEND_STATUS_UPDATE, handleStatusUpdate);
+    };
+  }, [socket]);
+
+  const acceptFriend = useCallback(
+    (requesterId: number | string) => {
+      socket.emit(SOCKET_EVENTS.FRIEND_ACCEPT, { requesterId });
+    },
+    [socket],
+  );
+
+  const removeFriend = useCallback(
+    (targetId: number | string) => {
+      socket.emit(SOCKET_EVENTS.FRIEND_DELETE, { targetId });
+    },
+    [socket],
+  );
+
+  const blockFriend = useCallback(
+    (targetId: number | string) => {
+      socket.emit(SOCKET_EVENTS.FRIEND_BLOCK, { targetId });
+    },
+    [socket],
+  );
 
   const processedFriends = useMemo(() => {
     const filtered = friends.filter((friend) => {
@@ -103,15 +99,6 @@ export const useFriendList = (searchKeyword: string) => {
       return a.nickname.localeCompare(b.nickname);
     });
   }, [searchKeyword, friends]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFriends(DUMMY_DATA);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return {
     processedFriends,
