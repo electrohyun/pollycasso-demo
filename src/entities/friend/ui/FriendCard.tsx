@@ -77,8 +77,11 @@ export const FriendCard = ({
       <div className="shrink-0 flex flex-col items-end justify-start h-full mt-1">
         {relation === 'FRIEND' && (
           <div className="relative">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <EllipsisVerticalIcon className="w-6 h-6 lg:w-8 lg:h-8 text-gray-400 hover:text-gray-600 transition-colors" />
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex items-center"
+            >
+              <EllipsisVerticalIcon className="w-6 h-6 lg:w-8 lg:h-8 text-gray-400 hover:text-gray-600 transition-colors -mr-2" />
             </button>
 
             {isMenuOpen && (
