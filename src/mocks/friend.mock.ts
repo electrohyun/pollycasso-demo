@@ -73,6 +73,14 @@ export const MOCK_RECOMMENDED: FriendProfile[] = [
   },
 ];
 
+const MOCK_ALL_USERS = [
+  { userId: 1001, nickname: '검색테스트1#1111', level: 5, isOnline: true },
+  { userId: 1002, nickname: '검색테스트2#2222', level: 10, isOnline: false },
+  { userId: 1003, nickname: '숨은고수#9999', level: 99, isOnline: true },
+  { userId: 1004, nickname: '폴리카소#7777', level: 1, isOnline: false },
+  { userId: 1005, nickname: '아이유#1004', level: 50, isOnline: true },
+];
+
 export const handleFriendGetList = (socket: MockSocket) => {
   socket.trigger(SOCKET_EVENTS.FRIEND_GET_ALL_RESPONSE, MOCK_FRIENDS);
 };
@@ -114,4 +122,25 @@ export const handleFriendDelete = (socket: MockSocket, payload: any) => {
     userId: targetId,
     relation: 'NONE',
   });
+};
+
+export const handleFriendSearch = (socket: MockSocket, payload: any) => {
+  const { keyword } = payload;
+
+  if (!keyword) {
+    socket.trigger(SOCKET_EVENTS.FRIEND_SEARCH_RESPONSE, []);
+    return;
+  }
+
+  const foundUsers = MOCK_ALL_USERS.filter((user) =>
+    user.nickname.includes(keyword),
+  );
+
+  const myRelationIds = new Set(MOCK_FRIENDS.map((f) => f.userId));
+
+  const finalResults = foundUsers.filter(
+    (user) => !myRelationIds.has(user.userId),
+  );
+
+  socket.trigger(SOCKET_EVENTS.FRIEND_SEARCH_RESPONSE, finalResults);
 };

@@ -5,6 +5,7 @@ import {
   handleFriendGetList,
   handleFriendGetRecommended,
   handleFriendRequestSend,
+  handleFriendSearch,
 } from '@/mocks/friend.mock';
 import { MOCK_GAME_SELECTING } from '@/mocks/game.mock';
 import { SOCKET_EVENTS } from '@/shared/api/socket';
@@ -172,6 +173,10 @@ export class MockSocket {
 
       case SOCKET_EVENTS.FRIEND_DELETE:
         handleFriendDelete(this, payload);
+        break;
+
+      case SOCKET_EVENTS.FRIEND_SEARCH:
+        handleFriendSearch(this, payload);
         break;
 
       default:

@@ -25,6 +25,9 @@ export const SOCKET_EVENTS = {
   FRIEND_GET_RECOMMENDED: 'friends:getRecommendedList',
   FRIEND_GET_RECOMMENDED_RESPONSE: 'friends:getRecommendedList',
 
+  FRIEND_SEARCH: 'friends:search',
+  FRIEND_SEARCH_RESPONSE: 'friends:search',
+
   FRIEND_REQUEST_SEND: 'friends:requestSend',
   FRIEND_ACCEPT: 'friends:requestAccept',
   FRIEND_REJECT: 'friends:requestReject',
