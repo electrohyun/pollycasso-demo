@@ -18,6 +18,20 @@ export const SOCKET_EVENTS = {
   GAME_TYPING: 'game:typing',
   GAME_TYPING_SHARE: 'game:shareTyping',
   GAME_THEME_SUBMIT: 'game:themeSubmit',
+
+  FRIEND_GET_ALL: 'friends:getList',
+  FRIEND_GET_ALL_RESPONSE: 'friends:getList',
+
+  FRIEND_GET_RECOMMENDED: 'friends:getRecommendedList',
+  FRIEND_GET_RECOMMENDED_RESPONSE: 'friends:getRecommendedList',
+
+  FRIEND_REQUEST_SEND: 'friends:requestSend',
+  FRIEND_ACCEPT: 'friends:requestAccept',
+  FRIEND_REJECT: 'friends:requestReject',
+  FRIEND_BLOCK: 'friends:block',
+  FRIEND_DELETE: 'friends:delete',
+
+  FRIEND_STATUS_UPDATE: 'friends:statusUpdate',
 } as const;
 
 export type SocketEventName =
