@@ -18,6 +18,7 @@ export const SOCKET_EVENTS = {
   GAME_TYPING: 'game:typing',
   GAME_TYPING_SHARE: 'game:shareTyping',
   GAME_THEME_SUBMIT: 'game:themeSubmit',
+  GAME_USE_ITEM: 'game:useItem',
 } as const;
 
 export type SocketEventName =
