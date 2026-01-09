@@ -26,19 +26,19 @@ export const FriendList = ({ searchKeyword }: FriendListProps) => {
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
           {processedFriends.map((friend) => (
             <FriendCard
-              key={friend.id}
-              userId={friend.id}
+              key={friend.userId}
+              userId={friend.userId}
               nickname={friend.nickname}
               outfit={friend.outfit}
               level={friend.level}
               relation={friend.relation as FriendRelation}
               isOnline={friend.isOnline}
-              onAccept={() => acceptFriend(friend.id)}
-              onReject={() => removeFriend(friend.id)}
-              onCancel={() => removeFriend(friend.id)}
-              onDelete={() => removeFriend(friend.id)}
-              onBlock={() => blockFriend(friend.id)}
-              onUnblock={() => removeFriend(friend.id)}
+              onAccept={() => acceptFriend(friend.userId)}
+              onReject={() => removeFriend(friend.userId)}
+              onCancel={() => removeFriend(friend.userId)}
+              onDelete={() => removeFriend(friend.userId)}
+              onBlock={() => blockFriend(friend.userId)}
+              onUnblock={() => removeFriend(friend.userId)}
             />
           ))}
         </div>
