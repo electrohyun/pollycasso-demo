@@ -21,6 +21,7 @@ const GameWidget = () => {
     useGameSubmission();
   const { socket } = useSocket();
   const [localInput, setLocalInput] = useState('');
+  const isDrawingPhase = status === 'DRAWING';
 
   const handleInputChange = (value: string) => {
     setLocalInput(value);
@@ -91,7 +92,7 @@ const GameWidget = () => {
 
   return (
     <div className="w-full h-screen flex justify-between items-center font-ssrm px-20 py-4 overflow-hidden gap-16">
-      <PlayerSidebar players={players} />
+      <PlayerSidebar players={players} currentUserId={socket?.id || ''} />
 
       <main className="w-full h-full rounded-3xl bg-white shadow-xl flex flex-col relative overflow-hidden">
         <GameHeader
@@ -119,7 +120,7 @@ const GameWidget = () => {
       </main>
 
       <aside className="h-full flex flex-col justify-center gap-y-20">
-        <InventoryPanel inventory={inventory} />
+        <InventoryPanel inventory={inventory} isDraggable={isDrawingPhase} />
 
         <GameSubmitButton
           onComplete={handleComplete}
