@@ -9,12 +9,25 @@ export const useFriendList = (searchKeyword: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [friends, setFriends] = useState<Friend[]>([]);
 
+  const [recommendedFriends, setRecommendedFriends] = useState<FriendProfile[]>(
+    [],
+  );
+  const [searchResults, setSearchResults] = useState<FriendProfile[]>([]);
+
   const socket = useMemo(() => io(import.meta.env.VITE_SOCKET_URL), []);
 
   useEffect(() => {
     const handleListResponse = (data: Friend[]) => {
       setFriends(data);
       setIsLoading(false);
+    };
+
+    const handleRecommendedResponse = (data: FriendProfile[]) => {
+      setRecommendedFriends(data);
+    };
+
+    const handleSearchResponse = (data: FriendProfile[]) => {
+      setSearchResults(data);
     };
 
     const handleStatusUpdate = ({
@@ -38,13 +51,35 @@ export const useFriendList = (searchKeyword: string) => {
 
     socket.on(SOCKET_EVENTS.FRIEND_GET_ALL_RESPONSE, handleListResponse);
     socket.on(SOCKET_EVENTS.FRIEND_STATUS_UPDATE, handleStatusUpdate);
+    socket.on(
+      SOCKET_EVENTS.FRIEND_GET_RECOMMENDED_RESPONSE,
+      handleRecommendedResponse,
+    );
+    socket.on(SOCKET_EVENTS.FRIEND_SEARCH_RESPONSE, handleSearchResponse);
 
     socket.emit(SOCKET_EVENTS.FRIEND_GET_ALL);
+    socket.emit(SOCKET_EVENTS.FRIEND_GET_RECOMMENDED);
 
     return () => {
       socket.off(SOCKET_EVENTS.FRIEND_GET_ALL_RESPONSE, handleListResponse);
       socket.off(SOCKET_EVENTS.FRIEND_STATUS_UPDATE, handleStatusUpdate);
+      socket.off(
+        SOCKET_EVENTS.FRIEND_GET_RECOMMENDED_RESPONSE,
+        handleRecommendedResponse,
+      );
+      socket.off(SOCKET_EVENTS.FRIEND_SEARCH_RESPONSE, handleSearchResponse);
     };
+  }, [socket]);
+
+  const requestFriend = useCallback(
+    (targetNickname: string) => {
+      socket.emit(SOCKET_EVENTS.FRIEND_REQUEST_SEND, { targetNickname });
+    },
+    [socket],
+  );
+
+  const refreshRecommended = useCallback(() => {
+    socket.emit(SOCKET_EVENTS.FRIEND_GET_RECOMMENDED);
   }, [socket]);
 
   const acceptFriend = useCallback(
@@ -64,6 +99,17 @@ export const useFriendList = (searchKeyword: string) => {
   const blockFriend = useCallback(
     (targetId: number | string) => {
       socket.emit(SOCKET_EVENTS.FRIEND_BLOCK, { targetId });
+    },
+    [socket],
+  );
+
+  const searchUsers = useCallback(
+    (keyword: string) => {
+      if (!keyword.trim()) {
+        setSearchResults([]);
+        return;
+      }
+      socket.emit(SOCKET_EVENTS.FRIEND_SEARCH, { keyword });
     },
     [socket],
   );
@@ -91,10 +137,8 @@ export const useFriendList = (searchKeyword: string) => {
             return 99;
         }
       };
-
       const priorityA = getPriority(a.relation, a.isOnline);
       const priorityB = getPriority(b.relation, b.isOnline);
-
       if (priorityA !== priorityB) return priorityA - priorityB;
       return a.nickname.localeCompare(b.nickname);
     });
@@ -102,6 +146,11 @@ export const useFriendList = (searchKeyword: string) => {
 
   return {
     processedFriends,
+    searchResults,
+    searchUsers,
+    recommendedFriends,
+    requestFriend,
+    refreshRecommended,
     acceptFriend,
     removeFriend,
     blockFriend,
