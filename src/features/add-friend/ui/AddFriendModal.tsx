@@ -55,11 +55,17 @@ export const AddFriendModal = ({ onClose }: AddFriendModalProps) => {
   const displayList = isSearchMode ? searchResults : recommendedFriends;
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/60 z-50">
-      <div className="relative bg-[#F2F2F2] w-[700px] p-6 rounded-2xl flex flex-col items-center">
+    <div
+      className="fixed inset-0 flex justify-center items-center bg-black/60 z-50 font-ssrm"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-[#F2F2F2] w-[700px] p-6 rounded-2xl flex flex-col items-center"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 bg-gray-300 rounded-md p-1 hover:bg-gray-400 transition-colors"
+          className="absolute top-4 right-4 bg-gray-300 rounded-md p-1 hover:bg-gray-400 transition-colors z-10"
         >
           <XMarkIcon className="w-8 h-8 text-white" />
         </button>
