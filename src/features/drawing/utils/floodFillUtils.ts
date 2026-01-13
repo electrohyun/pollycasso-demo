@@ -1,59 +1,42 @@
-const hexToRgb = (hex: string) => {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null;
-};
+import type { RGBA } from '../model/types';
+import {
+  getPixelColor,
+  hexToRgb,
+  isColorMatch,
+  isSameColor,
+} from './colorUtils';
+import { imageDataToImageElement } from './domUtils';
 
-const colorMatch = (
-  a: { r: number; g: number; b: number; a: number },
-  b: { r: number; g: number; b: number; a: number },
-  tolerance: number,
+const TOLERANCE = 50;
+
+const fillPixel = (
+  data: Uint8ClampedArray,
+  index: number,
+  color: Omit<RGBA, 'a'>,
 ) => {
-  return (
-    Math.abs(a.r - b.r) <= tolerance &&
-    Math.abs(a.g - b.g) <= tolerance &&
-    Math.abs(a.b - b.b) <= tolerance &&
-    Math.abs(a.a - b.a) <= tolerance
-  );
+  data[index] = color.r;
+  data[index + 1] = color.g;
+  data[index + 2] = color.b;
+  data[index + 3] = 255;
 };
 
-export const performFloodFill = (
+const applyFloodFill = (
   imageData: ImageData,
   startX: number,
   startY: number,
-  fillColorHex: string,
-): HTMLImageElement | null => {
+  fillColor: Omit<RGBA, 'a'>,
+): void => {
   const { width, height, data } = imageData;
+
   const stack = [[startX, startY]];
-  const rgbColor = hexToRgb(fillColorHex);
+  const startPos = (startY * width + startX) * 4;
+  const startColor = getPixelColor(data, startPos);
 
-  if (!rgbColor) return null;
-
-  const pixelPos = (startY * width + startX) * 4;
-  const startColor = {
-    r: data[pixelPos],
-    g: data[pixelPos + 1],
-    b: data[pixelPos + 2],
-    a: data[pixelPos + 3],
-  };
-
-  if (
-    startColor.r === rgbColor.r &&
-    startColor.g === rgbColor.g &&
-    startColor.b === rgbColor.b &&
-    startColor.a === 255
-  ) {
-    return null;
+  if (isSameColor(startColor, fillColor)) {
+    return;
   }
 
   const visited = new Uint8Array(width * height);
-
-  const tolerance = 50;
 
   while (stack.length) {
     const [x, y] = stack.pop()!;
@@ -63,18 +46,10 @@ export const performFloodFill = (
     visited[pos] = 1;
 
     const pixelIndex = pos * 4;
-    const currentColor = {
-      r: data[pixelIndex],
-      g: data[pixelIndex + 1],
-      b: data[pixelIndex + 2],
-      a: data[pixelIndex + 3],
-    };
+    const currentColor = getPixelColor(data, pixelIndex);
 
-    if (colorMatch(startColor, currentColor, tolerance)) {
-      data[pixelIndex] = rgbColor.r;
-      data[pixelIndex + 1] = rgbColor.g;
-      data[pixelIndex + 2] = rgbColor.b;
-      data[pixelIndex + 3] = 255;
+    if (isColorMatch(startColor, currentColor, TOLERANCE)) {
+      fillPixel(data, pixelIndex, fillColor);
 
       if (x > 0) stack.push([x - 1, y]);
       if (x < width - 1) stack.push([x + 1, y]);
@@ -82,16 +57,24 @@ export const performFloodFill = (
       if (y < height - 1) stack.push([x, y + 1]);
     }
   }
+};
 
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return null;
+export const performFloodFill = (
+  originalImageData: ImageData,
+  startX: number,
+  startY: number,
+  fillColorHex: string,
+): HTMLImageElement | null => {
+  const rgbColor = hexToRgb(fillColorHex);
+  if (!rgbColor) return null;
 
-  ctx.putImageData(imageData, 0, 0);
+  const workingImageData = new ImageData(
+    new Uint8ClampedArray(originalImageData.data),
+    originalImageData.width,
+    originalImageData.height,
+  );
 
-  const newImage = new Image();
-  newImage.src = canvas.toDataURL();
-  return newImage;
+  applyFloodFill(workingImageData, startX, startY, rgbColor);
+
+  return imageDataToImageElement(workingImageData);
 };

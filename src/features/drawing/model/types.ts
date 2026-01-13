@@ -16,3 +16,10 @@ export interface DrawLine {
 export interface DrawData {
   lines: DrawLine[];
 }
+
+export interface RGBA {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
