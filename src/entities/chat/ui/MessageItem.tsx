@@ -27,9 +27,20 @@ export const MessageItem = ({
   );
 
   if (isFriend) {
+    if (isMe) {
+      return (
+        <p className={containerClassName}>
+          <span className="text-[20px]">
+            [친구] {msg.targetNickname || '상대방'}에게 :{' '}
+          </span>
+          <span className="text-[20px]">{msg.message}</span>
+        </p>
+      );
+    }
+
     return (
       <p className={containerClassName}>
-        <span className="text-[20px]">[친구] {msg.targetNickname}에게 : </span>
+        <span className="text-[20px]">[친구] {msg.nickname} : </span>
         <span className="text-[20px]">{msg.message}</span>
       </p>
     );
