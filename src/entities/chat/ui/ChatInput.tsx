@@ -50,7 +50,7 @@ export const ChatInput = ({
           trigger="@"
           // 실제 데이터 저장 포맷 (화면엔 @이름, 내부값은 @[이름](id) 형태로 저장)
           markup="@[__display__](__id__)"
-          displayTransform={(display) => `@${display}`}
+          displayTransform={(_id, display) => `@${display}`}
           data={suggestionData}
           className="bg-[#2ADB75]/40 rounded-md ml-0.5"
           appendSpaceOnAdd={true}
