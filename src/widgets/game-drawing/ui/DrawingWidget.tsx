@@ -114,7 +114,6 @@ const DrawingWidget = () => {
               <GameCanvas
                 activeTool={activeTool}
                 strokeWidth={strokeWidth}
-                selectedColor={selectedColor}
                 lines={lines}
                 onMouseDown={handleDown}
                 onMouseMove={handleMove}
