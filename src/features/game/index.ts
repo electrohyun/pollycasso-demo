@@ -1,4 +1,5 @@
 export * from './constants/game';
+export { DrawingHistoryButtons } from './ui/DrawingHistoryButtons';
 export { GameHeader } from './ui/GameHeader';
 export { GameSubmitButton } from './ui/GameSubmitButton';
 export { GameTimer } from './ui/GameTimer';
