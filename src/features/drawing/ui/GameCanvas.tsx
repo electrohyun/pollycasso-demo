@@ -5,7 +5,6 @@ import { Layer, Line, Stage } from 'react-konva';
 import { Mannequin } from '@/assets';
 import type { DrawingTool } from '../model/types';
 import { useCanvasSize } from '../model/useCanvasSize';
-import { useDrawing } from '../model/useDrawing';
 import { useTextureLoader } from '../model/useTextureLoader';
 import { BucketResult } from './BucketResult';
 import { CanvasBackground } from './CanvasBackground';
@@ -15,23 +14,25 @@ interface GameCanvasProps {
   activeTool: DrawingTool;
   strokeWidth: number;
   selectedColor: string;
+  lines: any[];
+  onMouseDown: (e: any) => void;
+  onMouseMove: (e: any) => void;
+  onMouseUp: () => void;
 }
 
 export const GameCanvas = ({
+  // TODO: activeTool, strokeWidth, selectedColor 사용 로직 추후 구현
   activeTool,
   strokeWidth,
   selectedColor,
+  lines,
+  onMouseDown,
+  onMouseMove,
+  onMouseUp,
 }: GameCanvasProps) => {
   const containerRef = useRef<ComponentRef<'div'>>(null);
   const size = useCanvasSize(containerRef);
-
   const { textures } = useTextureLoader();
-
-  const { lines, handleDown, handleMove, handleUp } = useDrawing({
-    tool: activeTool,
-    color: selectedColor,
-    size: strokeWidth,
-  });
 
   const isCanvasReady = size.width > 0 && size.height > 0;
 
@@ -46,14 +47,13 @@ export const GameCanvas = ({
           <Stage
             width={size.width}
             height={size.height}
-            onMouseDown={handleDown}
-            onMouseMove={handleMove}
-            onMouseUp={handleUp}
-            onMouseLeave={handleUp}
-            onTouchStart={handleDown}
-            onTouchMove={handleMove}
-            onTouchEnd={handleUp}
-            onTouchCancel={handleUp}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseUp}
+            onTouchStart={onMouseDown}
+            onTouchMove={onMouseMove}
+            onTouchEnd={onMouseUp}
           >
             <Layer>
               <CanvasBackground
