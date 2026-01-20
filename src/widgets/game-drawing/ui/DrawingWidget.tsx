@@ -1,57 +1,34 @@
 import { useCallback, useMemo } from 'react';
 
 import { useAuthStore } from '@/entities/user';
-import { DrawingToolbox, GameCanvas, useDrawing } from '@/features/drawing';
 import {
-  DrawingHistoryButtons,
   GameHeader,
   GameSubmitButton,
   GameTimer,
   InventoryPanel,
   PlayerSidebar,
-  ShortcutGuide,
   ThemeSelector,
 } from '@/features/game';
+import { DrawingPhase } from '@/features/game-drawing';
+
 import { SOCKET_EVENTS, useSocket } from '@/shared/api/socket';
 import { PHASE_TIME } from '@/shared/model';
-import { useDrawingShortcuts } from '../model/useDrawingShortcuts';
-import { useDrawingTools } from '../model/useDrawingTools';
 import { useGameState } from '../model/useGameState';
 import { useGameSubmission } from '../model/useGameSubmission';
 import { useThemeInput } from '../model/useThemeInput';
 import { useThemeSelecting } from '../model/useThemeSelecting';
 
-const DrawingWidget = () => {
+const GameWidget = () => {
   const { status, players, endsAt, inventory, currentTheme } = useGameState();
-
   const { socket } = useSocket();
-
-  const { isMyTurn } = useThemeSelecting();
+  const { user } = useAuthStore();
 
   const { completedCount, totalCount, isMeReady, toggleReady } =
     useGameSubmission();
 
-  const {
-    activeTool,
-    setActiveTool,
-    strokeWidth,
-    setStrokeWidth,
-    selectedColor,
-    setSelectedColor,
-  } = useDrawingTools();
-
-  const { lines, undo, redo, handleDown, handleMove, handleUp } = useDrawing({
-    tool: activeTool,
-    color: selectedColor,
-    size: strokeWidth,
-  });
-
+  const { isMyTurn } = useThemeSelecting();
   const { localInput, handleInputChange, handleRandomTheme } =
     useThemeInput(isMyTurn);
-
-  useDrawingShortcuts({ setActiveTool, setStrokeWidth });
-
-  const { user } = useAuthStore();
 
   const handleComplete = useCallback(() => {
     if (status === 'THEME_SELECTING') {
@@ -96,49 +73,10 @@ const DrawingWidget = () => {
         );
 
       case 'DRAWING':
-        return (
-          <>
-            <div className="absolute -top-12 left-6 z-30">
-              <ShortcutGuide />
-            </div>
-            <GameCanvas
-              activeTool={activeTool}
-              strokeWidth={strokeWidth}
-              lines={lines}
-              onMouseDown={handleDown}
-              onMouseMove={handleMove}
-              onMouseUp={handleUp}
-              readOnly={false}
-            />
-
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
-              <DrawingToolbox
-                activeTool={activeTool}
-                onToolChange={setActiveTool}
-                strokeWidth={strokeWidth}
-                onWidthChange={setStrokeWidth}
-                selectedColor={selectedColor}
-                onColorChange={setSelectedColor}
-              />
-              <DrawingHistoryButtons undo={undo} redo={redo} />
-            </div>
-          </>
-        );
+        return <DrawingPhase />;
 
       case 'EVALUATING':
-        return (
-          <>
-            {/* TODO: 추후 서버에서 받아온 평가 대상 그림(targetLines)을 lines props에 연결해야 함 */}
-            <GameCanvas
-              lines={[]} // 현재는 빈 배열 (데이터 연동 시 수정 필요)
-              readOnly={true}
-            />
-            {/* TODO: 평가 UI 컴포넌트 추가 위치 */}
-            <div className="absolute bottom-12 z-20 bg-white/90 p-4 rounded-xl shadow-lg">
-              평가 UI 준비 중...
-            </div>
-          </>
-        );
+        return <div className="text-2xl font-bold">라운드 결과 평가...</div>;
 
       case 'ROUND_SUMMARY':
         return <div className="text-2xl font-bold">라운드 결과 집계 중...</div>;
@@ -183,4 +121,4 @@ const DrawingWidget = () => {
   );
 };
 
-export default DrawingWidget;
+export default GameWidget;
