@@ -62,10 +62,10 @@ const router = createBrowserRouter([
             path: '/dev/gameWidget',
             element: <GameWidget />,
           },
-          {
-            path: '/dev/loading',
-            element: <LoadingPage />,
-          },
+          // {
+          //   path: '/dev/loading',
+          //   element: <LoadingPage />,
+          // },
         ],
       },
     ],
