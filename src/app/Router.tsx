@@ -14,9 +14,6 @@ const RoomPage = lazy(() => import('@/pages/RoomPage'));
 const GameWidget = lazy(() => import('@/widgets/game-drawing/ui/GameWidget'));
 const LoadingPage = lazy(() => import('@/widgets/game-loading'));
 const FriendPage = lazy(() => import('@/pages/FriendPage'));
-const DrawingWidget = lazy(
-  () => import('@/widgets/game-drawing/ui/DrawingWidget'),
-);
 
 const router = createBrowserRouter([
   {
