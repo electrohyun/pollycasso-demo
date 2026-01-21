@@ -1,4 +1,5 @@
-import { type ChangeEvent, useState } from 'react';
+import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import {
   FaceSmileIcon,
   MagnifyingGlassIcon,
@@ -7,7 +8,7 @@ import { FaceFrownIcon, XMarkIcon } from '@heroicons/react/24/solid';
 
 import { Title } from '@/assets';
 import { RecommendedFriendCard } from '@/entities/friend/ui/RecommendedFriendCard';
-import { useFriendList } from '@/widgets/friend/model/useFriendList';
+import { useFriend } from '@/entities/friend';
 
 interface AddFriendModalProps {
   onClose: () => void;
@@ -15,7 +16,7 @@ interface AddFriendModalProps {
 
 export const AddFriendModal = ({ onClose }: AddFriendModalProps) => {
   const { recommendedFriends, requestFriend, searchResults, searchUsers } =
-    useFriendList('');
+    useFriend('');
 
   const [requestedIds, setRequestedIds] = useState<Set<number | string>>(
     new Set(),
