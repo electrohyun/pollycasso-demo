@@ -16,7 +16,7 @@ export const RoundSummaryNavigation = ({
     <div className="absolute left-10 top-72 -translate-y-1/2 flex flex-col gap-3 z-20">
       {ranking.map((result, index) => {
         const rank = index + 1;
-        const Icon = RANK_ICONS[rank as keyof typeof RANK_ICONS];
+        const rankIcon = RANK_ICONS[rank as keyof typeof RANK_ICONS];
         const isSelected = selectedRank === rank;
 
         return (
@@ -30,7 +30,7 @@ export const RoundSummaryNavigation = ({
           >
             <div className="w-10 h-10 flex-shrink-0">
               <img
-                src={Icon}
+                src={rankIcon}
                 alt={`${rank}등`}
                 className="w-full h-full object-contain"
               />
