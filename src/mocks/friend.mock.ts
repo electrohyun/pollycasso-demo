@@ -94,15 +94,80 @@ export const handleFriendGetRecommended = (socket: MockSocket) => {
 
 export const handleFriendRequestSend = (socket: MockSocket, payload: any) => {
   const { targetNickname } = payload;
-  console.log(`[Mock] 친구 요청 보냄: ${targetNickname}`);
+
+  console.log(`[Mock] 친구 요청 시도: ${targetNickname}`);
+
+  if (targetNickname === '나' || targetNickname === 'me') {
+    socket.trigger('system:notification', {
+      status: 400,
+      code: 'CANNOT_REQUEST_SELF',
+      errors: [],
+    });
+    return;
+  }
+
+  const existingFriend = MOCK_FRIENDS.find(
+    (f) => f.nickname === targetNickname && f.relation === 'FRIEND',
+  );
+  if (existingFriend) {
+    socket.trigger('system:notification', {
+      status: 400,
+      code: 'ALREADY_FRIEND',
+      errors: [],
+    });
+    return;
+  }
+
+  if (targetNickname === '차단맨') {
+    socket.trigger('system:notification', {
+      status: 403,
+      code: 'BLOCKED_BY_TARGET',
+      errors: [],
+    });
+    return;
+  }
+
+  if (targetNickname === '인기남') {
+    socket.trigger('system:notification', {
+      status: 429,
+      code: 'TOO_MANY_REQUESTS',
+      errors: [],
+    });
+    return;
+  }
+
+  const allKnownUsers = [
+    ...MOCK_FRIENDS,
+    ...MOCK_RECOMMENDED,
+    ...MOCK_ALL_USERS,
+  ];
+  const userExists = allKnownUsers.find((u) => u.nickname === targetNickname);
+
+  if (!userExists) {
+    socket.trigger('system:notification', {
+      status: 404,
+      code: 'USER_NOT_FOUND',
+      errors: [],
+    });
+    return;
+  }
+
+  socket.trigger('system:notification', {
+    status: 200,
+    message: `${targetNickname}님에게 친구 신청을 보냈습니다.`,
+  });
 };
 
 export const handleFriendAccept = (socket: MockSocket, payload: any) => {
   const { requesterId } = payload;
-
   socket.trigger(SOCKET_EVENTS.FRIEND_STATUS_UPDATE, {
     userId: requesterId,
     relation: 'FRIEND',
+  });
+  // 성공 토스트 트리거
+  socket.trigger('system:notification', {
+    status: 200,
+    message: '친구 요청을 수락했습니다.',
   });
 };
 
