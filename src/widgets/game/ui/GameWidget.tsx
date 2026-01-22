@@ -10,7 +10,7 @@ import {
   ThemeSelector,
 } from '@/features/game';
 import { DrawingPhase } from '@/features/game-drawing';
-
+import { EvaluatingPhase } from '@/features/game-evaluating';
 import { SOCKET_EVENTS, useSocket } from '@/shared/api/socket';
 import { PHASE_TIME } from '@/shared/model';
 import { useGameState } from '../model/useGameState';
@@ -76,7 +76,7 @@ const GameWidget = () => {
         return <DrawingPhase />;
 
       case 'EVALUATING':
-        return <div className="text-2xl font-bold">라운드 결과 평가...</div>;
+        return <EvaluatingPhase />;
 
       case 'ROUND_SUMMARY':
         return <div className="text-2xl font-bold">라운드 결과 집계 중...</div>;
@@ -91,7 +91,7 @@ const GameWidget = () => {
 
   return (
     <div className="w-full h-screen flex justify-between items-center font-ssrm px-20 py-4 overflow-hidden gap-16">
-      <PlayerSidebar players={players} currentUserId={user!.id} />
+      <PlayerSidebar players={players} currentUserId={user?.id || ''} />
 
       <main className="w-full h-full rounded-3xl bg-white shadow-xl flex flex-col relative overflow-hidden">
         <GameTimer
