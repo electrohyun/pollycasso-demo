@@ -5,7 +5,7 @@ import type {
   FriendProfile,
   FriendRelation,
 } from '@/entities/friend';
-import { io, SOCKET_EVENTS } from '@/shared/api/socket';
+import { useSocket, SOCKET_EVENTS } from '@/shared/api/socket';
 
 interface Friend extends FriendProfile {
   relation: FriendRelation;
@@ -18,50 +18,9 @@ const RELATION_PRIORITY: Record<FriendRelation, number> = {
   BLOCKED: 5,
 };
 
-const DUMMY_DATA: Friend[] = [
-  {
-    userId: 1,
-    nickname: '차단한사람#1111',
-    level: 10,
-    relation: 'BLOCKED',
-    isOnline: false,
-    outfit: undefined,
-  },
-  {
-    userId: 2,
-    nickname: '짱친#1234',
-    level: 60,
-    relation: 'FRIEND',
-    isOnline: true,
-    outfit: undefined,
-  },
-  {
-    userId: 3,
-    nickname: '친구신청받아#5555',
-    level: 1,
-    relation: 'REQUEST_RECEIVED',
-    isOnline: true,
-    outfit: undefined,
-  },
-  {
-    userId: 4,
-    nickname: '내가신청보냄#7777',
-    level: 25,
-    relation: 'REQUEST_SENT',
-    isOnline: false,
-    outfit: undefined,
-  },
-  {
-    userId: 5,
-    nickname: '자러감#9999',
-    level: 40,
-    relation: 'FRIEND',
-    isOnline: false,
-    outfit: undefined,
-  },
-];
+export const useFriend = (searchKeyword: string = '') => {
+  const { socket } = useSocket();
 
-export const useFriendList = (searchKeyword: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [friends, setFriends] = useState<Friend[]>([]);
   const [recommendedFriends, setRecommendedFriends] = useState<FriendProfile[]>(
@@ -69,9 +28,10 @@ export const useFriendList = (searchKeyword: string) => {
   );
   const [searchResults, setSearchResults] = useState<FriendProfile[]>([]);
 
-  const socket = useMemo(() => io(import.meta.env.VITE_SOCKET_URL), []);
-
+  // 소켓 리스너 설정
   useEffect(() => {
+    if (!socket) return;
+
     const handleListResponse = (data: Friend[]) => {
       setFriends(data);
       setIsLoading(false);
@@ -96,6 +56,15 @@ export const useFriendList = (searchKeyword: string) => {
         if (relation === 'NONE') {
           return prev.filter((f) => f.userId !== userId);
         }
+        // 기존 목록에 없던 유저(새 친구 등)가 들어올 수도 있으니 체크 필요
+        const exists = prev.find((f) => f.userId === userId);
+        if (!exists && relation === 'FRIEND') {
+          // 실제 앱에선 프로필 정보가 필요하므로 새로고침하거나 서버가 전체 객체를 줘야 함.
+          // 임시로 새로고침 요청
+          socket.emit(SOCKET_EVENTS.FRIEND_GET_ALL);
+          return prev;
+        }
+
         return prev.map((f) =>
           f.userId === userId
             ? { ...f, relation: relation as FriendRelation }
@@ -104,6 +73,7 @@ export const useFriendList = (searchKeyword: string) => {
       });
     };
 
+    // 이벤트 구독
     socket.on(SOCKET_EVENTS.FRIEND_GET_ALL_RESPONSE, handleListResponse);
     socket.on(SOCKET_EVENTS.FRIEND_STATUS_UPDATE, handleStatusUpdate);
     socket.on(
@@ -112,6 +82,7 @@ export const useFriendList = (searchKeyword: string) => {
     );
     socket.on(SOCKET_EVENTS.FRIEND_SEARCH_RESPONSE, handleSearchResponse);
 
+    // 초기 데이터 요청
     socket.emit(SOCKET_EVENTS.FRIEND_GET_ALL);
     socket.emit(SOCKET_EVENTS.FRIEND_GET_RECOMMENDED);
 
@@ -126,24 +97,23 @@ export const useFriendList = (searchKeyword: string) => {
     };
   }, [socket]);
 
+  // 액션 핸들러들
   const handleFriendAction = useCallback(
     (targetId: number | string, action: FriendAction) => {
+      if (!socket) return;
       switch (action) {
         case 'ACCEPT':
           socket.emit(SOCKET_EVENTS.FRIEND_ACCEPT, { requesterId: targetId });
           break;
-
         case 'BLOCK':
           socket.emit(SOCKET_EVENTS.FRIEND_BLOCK, { targetId });
           break;
-
         case 'CANCEL':
         case 'REJECT':
         case 'DELETE':
         case 'UNBLOCK':
           socket.emit(SOCKET_EVENTS.FRIEND_DELETE, { targetId });
           break;
-
         default:
           console.warn('Unknown Friend Action:', action);
       }
@@ -153,17 +123,20 @@ export const useFriendList = (searchKeyword: string) => {
 
   const requestFriend = useCallback(
     (targetNickname: string) => {
+      if (!socket) return;
       socket.emit(SOCKET_EVENTS.FRIEND_REQUEST_SEND, { targetNickname });
     },
     [socket],
   );
 
   const refreshRecommended = useCallback(() => {
+    if (!socket) return;
     socket.emit(SOCKET_EVENTS.FRIEND_GET_RECOMMENDED);
   }, [socket]);
 
   const searchUsers = useCallback(
     (keyword: string) => {
+      if (!socket) return;
       if (!keyword.trim()) {
         setSearchResults([]);
         return;
@@ -173,6 +146,7 @@ export const useFriendList = (searchKeyword: string) => {
     [socket],
   );
 
+  // 필터링 및 정렬 로직 (메모이제이션)
   const processedFriends = useMemo(() => {
     const filtered = friends.filter((friend) =>
       friend.nickname.toLowerCase().includes(searchKeyword.toLowerCase()),
@@ -183,9 +157,7 @@ export const useFriendList = (searchKeyword: string) => {
         if (friend.relation === 'FRIEND') return friend.isOnline ? 3 : 4;
         return RELATION_PRIORITY[friend.relation] ?? 99;
       };
-
       const priorityDiff = getPriority(a) - getPriority(b);
-
       return priorityDiff !== 0
         ? priorityDiff
         : a.nickname.localeCompare(b.nickname);

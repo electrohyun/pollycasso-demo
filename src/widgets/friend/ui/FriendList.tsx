@@ -1,7 +1,6 @@
 import { FaceFrownIcon } from '@heroicons/react/24/outline';
 
-import { FriendCard } from '@/entities/friend';
-import { useFriendList } from '../model/useFriendList';
+import { FriendCard, useFriend } from '@/entities/friend';
 import { FriendListSkeleton } from './FriendListSkeleton';
 
 interface FriendListProps {
@@ -10,7 +9,7 @@ interface FriendListProps {
 
 export const FriendList = ({ searchKeyword }: FriendListProps) => {
   const { processedFriends, handleFriendAction, isLoading } =
-    useFriendList(searchKeyword);
+    useFriend(searchKeyword);
 
   return (
     <div className="flex-1 px-5 pb-10 overflow-y-auto custom-scrollbar">
