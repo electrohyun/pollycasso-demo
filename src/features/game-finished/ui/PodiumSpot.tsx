@@ -8,7 +8,7 @@ import {
   BronzeBelt,
   LaurelWreath,
 } from '@/assets';
-import { RANK_STYLES } from '../constants/styles';
+import { RANK_STYLES, SPOTLIGHT_STYLES } from '../constants/styles';
 import { getLevelStyles } from '../utils/levelUtils';
 
 const BELT_IMAGES = {
@@ -36,11 +36,19 @@ export const PodiumSpot = ({
 }: PodiumSpotProps) => {
   const styles = RANK_STYLES[rank];
   const beltImg = BELT_IMAGES[rank];
+  const spotlight = SPOTLIGHT_STYLES[rank];
 
   const levelColors = getLevelStyles(level);
 
   return (
     <div className={styles.wrapper}>
+      <div
+        className={`absolute left-1/2 -translate-x-1/2 bg-gradient-to-b to-transparent z-0 pointer-events-none blur-sm ${spotlight.style}`}
+        style={{
+          clipPath: spotlight.clipPath,
+        }}
+      />
+
       <img src={Bird} className={styles.bird} alt="bird" />
 
       <img src={beltImg} className={styles.belt} alt="belt" />

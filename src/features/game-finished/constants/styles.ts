@@ -53,3 +53,21 @@ export const RANK_STYLES = {
     rewardSpan: 'text-sm',
   },
 } as const;
+
+export const SPOTLIGHT_STYLES = {
+  1: {
+    style:
+      'w-[300px] h-[660px] -top-[350px] bg-gradient-to-b from-white/80 via-white/50 to-transparent',
+    clipPath: 'polygon(50% 0%, 50% 0%, 100% 100%, 0% 100%)',
+  },
+  2: {
+    style:
+      'w-[300px] h-[700px] -top-[350px] bg-gradient-to-b from-white/50 via-white/5 to-transparent',
+    clipPath: 'polygon(50% 0%, 50% 0%, 100% 100%, 0% 100%)',
+  },
+  3: {
+    style:
+      'w-[300px] h-[700px] -top-[350px] bg-gradient-to-b from-white/30 via-white/5 to-transparent',
+    clipPath: 'polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)',
+  },
+} as const;
