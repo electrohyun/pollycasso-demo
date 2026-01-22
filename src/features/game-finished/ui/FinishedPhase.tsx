@@ -38,6 +38,7 @@ export const FinishedPhase = () => {
             coins={firstPlace.coinsGained}
             xp={firstPlace.expGained}
             score={firstPlace.totalScore}
+            level={firstPlace.level}
           />
         )}
 
@@ -48,6 +49,7 @@ export const FinishedPhase = () => {
             coins={secondPlace.coinsGained}
             xp={secondPlace.expGained}
             score={secondPlace.totalScore}
+            level={secondPlace.level}
           />
         )}
 
@@ -58,6 +60,7 @@ export const FinishedPhase = () => {
             coins={thirdPlace.coinsGained}
             xp={thirdPlace.expGained}
             score={thirdPlace.totalScore}
+            level={thirdPlace.level}
           />
         )}
 
