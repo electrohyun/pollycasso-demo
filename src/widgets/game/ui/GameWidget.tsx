@@ -12,6 +12,7 @@ import {
 import { DrawingPhase } from '@/features/game-drawing';
 import { EvaluatingPhase } from '@/features/game-evaluating';
 import { RoundSummaryPhase } from '@/features/game-round-summary';
+import { FinishedPhase } from '@/features/game-finished';
 import { SOCKET_EVENTS, useSocket } from '@/shared/api/socket';
 import { PHASE_TIME } from '@/shared/model';
 import { useGameState } from '../model/useGameState';
@@ -83,7 +84,7 @@ const GameWidget = () => {
         return <RoundSummaryPhase />;
 
       case 'FINISHED':
-        return <div className="text-2xl font-bold">게임 종료! 결과 발표</div>;
+        return <FinishedPhase />;
 
       default:
         return <div className="text-gray-400">로딩 중...</div>;
