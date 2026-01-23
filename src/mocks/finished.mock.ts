@@ -1,4 +1,10 @@
-import type { FinishContext, Outfit, Player } from '@/shared/model';
+import type {
+  FinishContext,
+  Outfit,
+  Player,
+  RoomSettings,
+  RoomState,
+} from '@/shared/model';
 
 const createOutfit = (overrides?: Partial<Outfit>): Outfit => ({
   bird: 'bird',
@@ -22,7 +28,7 @@ export const MOCK_PLAYERS: Player[] = [
     teamId: null,
     isConnected: true,
     isReady: true,
-    totalScore: 9.5,
+    totalScore: 290,
     inventory: [],
     outfit: createOutfit({
       bird: 'king_penguin',
@@ -40,13 +46,13 @@ export const MOCK_PLAYERS: Player[] = [
     teamId: null,
     isConnected: true,
     isReady: true,
-    totalScore: 8.5,
+    totalScore: 280,
     inventory: [],
     outfit: createOutfit({ bird: 'sparrow', accessory: 'silver_medal' }),
   },
   {
     userId: 'user_3',
-    nickname: 'EGG', // 3등
+    nickname: 'EGG22', // 3등
     level: 5,
     exp: 20,
     coins: 300,
@@ -54,7 +60,7 @@ export const MOCK_PLAYERS: Player[] = [
     teamId: null,
     isConnected: true,
     isReady: true,
-    totalScore: 8.5,
+    totalScore: 270,
     inventory: [],
     outfit: createOutfit({ bird: 'chick', accessory: 'bronze_medal' }),
   },
@@ -68,7 +74,7 @@ export const MOCK_PLAYERS: Player[] = [
     teamId: null,
     isConnected: true,
     isReady: true,
-    totalScore: 6.5,
+    totalScore: 260,
     inventory: [],
     outfit: createOutfit({ bird: 'duck_white' }),
   },
@@ -82,13 +88,13 @@ export const MOCK_PLAYERS: Player[] = [
     teamId: null,
     isConnected: true,
     isReady: true,
-    totalScore: 6.0,
+    totalScore: 250,
     inventory: [],
     outfit: createOutfit({ bird: 'owl_grey', hat: 'glasses' }),
   },
   {
     userId: 'user_6',
-    nickname: 'EGG',
+    nickname: 'EGG1',
     level: 2,
     exp: 10,
     coins: 50,
@@ -96,7 +102,7 @@ export const MOCK_PLAYERS: Player[] = [
     teamId: null,
     isConnected: true,
     isReady: true,
-    totalScore: 3.5,
+    totalScore: 240,
     inventory: [],
     outfit: createOutfit({ bird: 'parrot_basic' }),
   },
@@ -147,4 +153,47 @@ export const MOCK_FINISH_CONTEXT: FinishContext = {
       didLevelUp: false,
     },
   ],
+};
+
+const MOCK_ROOM_SETTINGS: RoomSettings = {
+  roomTitle: '폴리카소 참 잘하는 집',
+  maxPlayers: 6,
+  gameMode: 'SOLO',
+  isPrivate: false,
+};
+
+const MOCK_TEAM_PLAYERS = MOCK_PLAYERS.map((p, i) => ({
+  ...p,
+  teamId: i % 2 === 0 ? 'RED' : 'BLUE',
+}));
+
+export const MOCK_FINISHED_ROOM_STATE: RoomState = {
+  status: 'FINISHED',
+  hostId: MOCK_PLAYERS[0].userId,
+  endsAt: Date.now() + 1000 * 10,
+
+  settings: MOCK_ROOM_SETTINGS,
+  players: MOCK_PLAYERS,
+  currentRound: 3,
+  totalRounds: 3,
+
+  phaseContext: MOCK_FINISH_CONTEXT,
+
+  teamScore: null,
+};
+
+export const MOCK_TEAM_FINISHED_ROOM_STATE: RoomState = {
+  ...MOCK_FINISHED_ROOM_STATE,
+
+  settings: {
+    ...MOCK_ROOM_SETTINGS,
+    gameMode: 'TEAM',
+  },
+
+  players: MOCK_TEAM_PLAYERS,
+
+  teamScore: {
+    blue: 120,
+    red: 150,
+  },
 };
