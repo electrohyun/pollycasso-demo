@@ -9,7 +9,6 @@ import {
   LaurelWreath,
 } from '@/assets';
 import { RANK_STYLES, SPOTLIGHT_STYLES } from '../constants/styles';
-import { getLevelStyles } from '../utils/levelUtils';
 
 const BELT_IMAGES = {
   1: GoldBelt,
@@ -23,7 +22,6 @@ interface PodiumSpotProps {
   coins: number;
   xp: number;
   score: number;
-  level: number;
 }
 
 export const PodiumSpot = ({
@@ -32,13 +30,10 @@ export const PodiumSpot = ({
   coins,
   xp,
   score,
-  level,
 }: PodiumSpotProps) => {
   const styles = RANK_STYLES[rank];
   const beltImg = BELT_IMAGES[rank];
   const spotlight = SPOTLIGHT_STYLES[rank];
-
-  const levelColors = getLevelStyles(level);
 
   return (
     <div className={styles.wrapper}>
@@ -58,13 +53,11 @@ export const PodiumSpot = ({
       )}
 
       <div className={styles.starWrapper}>
-        <StarIcon className={`${styles.starIcon} ${levelColors.star}`} />
-        <span className={`${styles.scoreText} ${levelColors.star}`}>
-          {score}
-        </span>
+        <StarIcon className={styles.starIcon} />
+        <span className={styles.scoreText}>{score}</span>
       </div>
 
-      <span className={`${styles.badge} ${levelColors.badge}`}>{nickname}</span>
+      <span className={`${styles.badge}`}>{nickname}</span>
 
       <img src={Coin} className={styles.coinIcon} alt="coin" />
 

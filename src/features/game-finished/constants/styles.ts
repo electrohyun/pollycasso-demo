@@ -7,11 +7,11 @@ export const RANK_STYLES = {
     wreath:
       'absolute -top-5 left-[50%] -translate-x-1/2 w-32 h-32 object-contain',
 
-    starWrapper: 'absolute -bottom-8 right-[5%] flex items-center gap-0.5 z-10',
-    starIcon: 'w-5 h-5',
-    scoreText: 'font-ssrm font-bold text-xl pt-0.5',
+    starWrapper: 'absolute -bottom-9 right-[5%] flex items-center gap-0.5 z-10',
+    starIcon: 'w-5 h-5 text-[#525252]',
+    scoreText: 'font-ssrm font-bold text-xl pt-0.5 text-[#525252]',
     badge:
-      'absolute -bottom-20 left-1/2 -translate-x-1/2 font-ssrm font-bold text-white text-3xl bg-gradient-to-r px-4 py-1 rounded-[20px] shadow-inner whitespace-nowrap',
+      'absolute -bottom-20 left-1/2 -translate-x-1/2 font-ssrm font-bold text-white text-3xl bg-gradient-to-r from-[#D4B162] to-[#EEDFAE] px-4 py-1 rounded-[20px] shadow-inner whitespace-nowrap shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]',
     coinIcon:
       'absolute -bottom-28 left-1/4 -translate-x-1/2 w-6 h-6 object-contain',
     rewardText:
@@ -25,10 +25,10 @@ export const RANK_STYLES = {
     wreath: null,
     starWrapper:
       'absolute -bottom-8 right-[25%] flex items-center gap-0.5 z-10',
-    starIcon: 'w-4 h-4',
-    scoreText: 'font-ssrm font-bold text-sm',
+    starIcon: 'w-4 h-4 text-[#9A9A9A]',
+    scoreText: 'font-ssrm font-bold text-sm text-[#9A9A9A]',
     badge:
-      'absolute -bottom-12 left-1/3 -translate-x-1/2 font-ssrm font-bold text-white text-xl bg-gradient-to-r px-4 rounded-[20px] shadow-inner whitespace-nowrap',
+      'absolute -bottom-12 left-1/3 -translate-x-1/2 font-ssrm font-bold text-white text-xl bg-gradient-to-r from-[#98A0A6] to-[#E6E9EB] px-4 rounded-[20px] shadow-inner whitespace-nowrap shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]',
     coinIcon:
       'absolute -bottom-20 left-1/8 -translate-x-1/2 w-6 h-6 object-contain',
     rewardText:
@@ -42,10 +42,10 @@ export const RANK_STYLES = {
     wreath: null,
     starWrapper:
       'absolute -bottom-8 -right-[18%] flex items-center gap-0.5 z-10',
-    starIcon: 'w-4 h-4',
-    scoreText: 'font-ssrm font-bold text-sm',
+    starIcon: 'w-4 h-4 text-[#9A9A9A]',
+    scoreText: 'font-ssrm font-bold text-sm text-[#9A9A9A]',
     badge:
-      'absolute -bottom-12 left-2/3 -translate-x-1/2 font-ssrm font-bold text-white text-xl bg-gradient-to-r px-4 rounded-[20px] shadow-inner whitespace-nowrap',
+      'absolute -bottom-12 left-2/3 -translate-x-1/2 font-ssrm font-bold text-white text-xl bg-gradient-to-r from-[#BD8562] to-[#E7D2C5] px-4 rounded-[20px] shadow-inner whitespace-nowrap shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]',
     coinIcon:
       'absolute -bottom-[70px] left-1/2 -translate-x-1/2 w-4 h-4 object-contain',
     rewardText:
