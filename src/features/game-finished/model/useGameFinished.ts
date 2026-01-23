@@ -1,19 +1,12 @@
-import type { FinishContext, Player } from '@/shared/model';
 import { useMemo } from 'react';
 
-export interface GameResultMember extends Player {
-  rank: number;
-  expGained: number;
-  coinsGained: number;
-  didLevelUp: boolean;
-
-  isOnPodium: boolean;
-}
+import type { FinishedPlayer } from './types';
+import type { FinishContext, Player } from '@/shared/model';
 
 export const useGameFinished = (
   players: Player[],
   finishContext: FinishContext | null,
-): GameResultMember[] => {
+): FinishedPlayer[] => {
   const sortedResults = useMemo(() => {
     if (!finishContext || !finishContext.results) return [];
 
@@ -30,7 +23,7 @@ export const useGameFinished = (
     });
 
     return mergedList
-      .filter((item): item is GameResultMember => item !== null)
+      .filter((item): item is FinishedPlayer => item !== null)
       .sort((a, b) => a.rank - b.rank);
   }, [players, finishContext]);
 
