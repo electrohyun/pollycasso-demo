@@ -24,7 +24,7 @@ interface PodiumSpotProps {
   score: number;
 }
 
-export const PodiumSpot = ({
+export const SoloPodiumSpot = ({
   rank,
   nickname,
   coins,

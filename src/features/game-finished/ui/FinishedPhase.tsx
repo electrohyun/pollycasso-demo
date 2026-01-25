@@ -1,88 +1,36 @@
 import { createPortal } from 'react-dom';
 
-import { SoloPodium } from '@/assets';
-import { MOCK_PLAYERS, MOCK_FINISH_CONTEXT } from '@/mocks/finished.mock';
+import type { FinishContext } from '@/shared/model';
+import {
+  MOCK_FINISHED_ROOM_STATE,
+  MOCK_TEAM_FINISHED_ROOM_STATE,
+} from '@/mocks/finished.mock';
 import { useLockBodyScroll } from '@/shared/model/useLockBodyScroll';
-import { FireworksLayer } from './FireworksLayer';
-import { RankRow } from './RankRow';
-import { PodiumSpot } from './PodiumSpot';
-import { BACKGROUND_FIREWORKS, FOREGROUND_FIREWORKS } from '../model/fireworks';
+
 import { useGameFinished } from '../model/useGameFinished';
+import { SoloGameResult } from './SoloGameResult';
+import { TeamGameResult } from './TeamGameResult';
 
 export const FinishedPhase = () => {
-  const results = useGameFinished(MOCK_PLAYERS, MOCK_FINISH_CONTEXT);
+  const currentRoomState = MOCK_TEAM_FINISHED_ROOM_STATE;
 
-  const podiumMembers = results.filter((r) => r.rank <= 3);
-  const listMembers = results.filter((r) => r.rank > 3);
+  const { players, phaseContext, settings, teamScore } = currentRoomState;
 
-  const getPodiumMember = (rank: number) =>
-    podiumMembers.find((r) => r.rank === rank);
+  const finishContext = phaseContext as FinishContext;
 
-  const firstPlace = getPodiumMember(1);
-  const secondPlace = getPodiumMember(2);
-  const thirdPlace = getPodiumMember(3);
+  const results = useGameFinished(players, finishContext);
+
+  const isTeamMode = true;
 
   useLockBodyScroll();
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] w-screen h-screen bg-black/90 flex flex-col items-center justify-center gap-8 animate-in fade-in duration-500 pb-24 overflow-y-auto">
-      <div className="relative w-[1000px]">
-        <FireworksLayer items={BACKGROUND_FIREWORKS} />
-        <img
-          src={SoloPodium}
-          alt="Game Finished Podium"
-          className="w-full object-contain drop-shadow-2xl"
-        />
-
-        {firstPlace && (
-          <PodiumSpot
-            rank={1}
-            nickname={firstPlace.nickname}
-            coins={firstPlace.coinsGained}
-            xp={firstPlace.expGained}
-            score={firstPlace.totalScore}
-          />
-        )}
-
-        {secondPlace && (
-          <PodiumSpot
-            rank={2}
-            nickname={secondPlace.nickname}
-            coins={secondPlace.coinsGained}
-            xp={secondPlace.expGained}
-            score={secondPlace.totalScore}
-          />
-        )}
-
-        {thirdPlace && (
-          <PodiumSpot
-            rank={3}
-            nickname={thirdPlace.nickname}
-            coins={thirdPlace.coinsGained}
-            xp={thirdPlace.expGained}
-            score={thirdPlace.totalScore}
-          />
-        )}
-
-        {listMembers.map((member, index) => {
-          const topPosition = 120 + index * 80;
-
-          return (
-            <RankRow
-              key={member.userId}
-              rank={member.rank}
-              nickname={member.nickname}
-              coins={member.coinsGained}
-              xp={member.expGained}
-              score={member.totalScore}
-              className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: `${topPosition}%` }}
-            />
-          );
-        })}
-
-        <FireworksLayer items={FOREGROUND_FIREWORKS} />
-      </div>
+      {isTeamMode ? (
+        <TeamGameResult results={results} teamScore={teamScore} />
+      ) : (
+        <SoloGameResult results={results} />
+      )}
     </div>,
     document.body,
   );

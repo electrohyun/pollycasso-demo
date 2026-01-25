@@ -25,10 +25,7 @@ export interface RoomState {
     | FinishContext
     | null;
 
-  teamScore: {
-    blue: number;
-    red: number;
-  } | null;
+  teamScore: TeamScore | null;
 }
 
 export type RoomStatus =
@@ -48,3 +45,8 @@ export interface RoomSettings {
 }
 
 export type GameMode = 'SOLO' | 'TEAM';
+
+export interface TeamScore {
+  red: number;
+  blue: number;
+}
