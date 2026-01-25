@@ -23,9 +23,6 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
     return 'DRAW';
   }, [teamScore]);
 
-  // 2. [로직] 멤버 분리 (승리팀 vs 패배팀)
-  // podiumMembers: 승리 팀 멤버들 (점수 높은 순)
-  // listMembers: 패배 팀 멤버들
   const { podiumMembers, listMembers } = useMemo(() => {
     if (!winningTeamId || winningTeamId === 'DRAW') {
       return {
@@ -89,7 +86,7 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
         <div className="flex items-center gap-2 mb-2">
           <StarIcon className="w-6 h-6 text-[#E1D1AE] drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]" />
           <span className="font-ssrm font-black text-xl text-[#E1D1AE] drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] pt-2">
-            {winningScore / 100.0}
+            {(winningScore / 100).toFixed(1)}
           </span>
         </div>
       </div>
@@ -116,7 +113,7 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
           nickname={secondPlace.nickname}
           coins={secondPlace.coinsGained}
           xp={secondPlace.expGained}
-          teamId={firstPlace.teamId}
+          teamId={secondPlace.teamId}
         />
       )}
 
@@ -126,7 +123,7 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
           nickname={thirdPlace.nickname}
           coins={thirdPlace.coinsGained}
           xp={thirdPlace.expGained}
-          teamId={firstPlace.teamId}
+          teamId={thirdPlace.teamId}
         />
       )}
 
