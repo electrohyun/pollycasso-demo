@@ -1,5 +1,8 @@
 import { Bird, Coin } from '@/assets';
 import type { Product } from '@/entities/product';
+import { cn } from '@/shared/lib';
+
+const USER_BALANCE = 140;
 
 interface ShopProfilePanelProps {
   cart: Product[];
@@ -10,6 +13,10 @@ export const ShopProfilePanel = ({
   cart,
   onRemoveFromCart,
 }: ShopProfilePanelProps) => {
+  const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
+
+  const isOverBudget = totalPrice > USER_BALANCE;
+
   return (
     <div className="flex flex-col justify-between w-[360px] h-[720px]">
       <div className="flex flex-col justify-between items-center w-[360px] h-[590px] bg-[#1E3411]/40 rounded-[30px] p-4">
@@ -38,9 +45,17 @@ export const ShopProfilePanel = ({
         <div className="flex items-center w-1/2 h-[35px] bg-[#1E3411]/40 rounded-3xl">
           <img src={Coin} className="w-[40px] h-[40px]" alt="Coin" />
           <div className="flex flex-1 justify-center items-center">
-            <span className="text-white text-xl">120</span>
+            <span className="text-white text-xl">{totalPrice}</span>
+
             <span className="text-white text-xl mx-1">/</span>
-            <span className="text-[#FF7070] text-xl">240</span>
+            <span
+              className={cn(
+                'text-xl transition-colors',
+                isOverBudget ? 'text-[#FF7070]' : 'text-white',
+              )}
+            >
+              {USER_BALANCE}
+            </span>
           </div>
         </div>
 
