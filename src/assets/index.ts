@@ -1,5 +1,6 @@
 export { default as Background } from './background.svg';
 export { default as BackgroundMain } from './background_main.svg';
+export { default as BackgroundShop } from './background_shop.svg';
 export { default as Bucket } from './bucket.svg';
 export { default as Crown } from './crown.svg';
 export { default as Favicon } from './favicon.svg';
