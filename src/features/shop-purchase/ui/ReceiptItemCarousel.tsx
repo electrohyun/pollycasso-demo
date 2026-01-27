@@ -1,4 +1,3 @@
-// features/shop-purchase/ui/ReceiptItemCarousel.tsx
 import { useState } from 'react';
 import { ReceiptCard } from '@/entities/product';
 import type { Product } from '@/entities/product';
@@ -53,7 +52,7 @@ export const ReceiptItemCarousel = ({ items }: ReceiptItemCarouselProps) => {
         </button>
       </div>
 
-      <div className="flex gap-x-2 mt-1">
+      <div className="flex gap-x-2 mt-3">
         {Array.from({ length: maxPage }).map((_, index) => (
           <span
             key={index}
