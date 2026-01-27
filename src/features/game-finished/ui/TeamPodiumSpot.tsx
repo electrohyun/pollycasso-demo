@@ -21,6 +21,7 @@ export const TeamPodiumSpot = ({
 
   const badgeBgClass = teamId === 'BLUE' ? 'bg-[#64ACFF]' : 'bg-[#FB6464]';
 
+<<<<<<< Updated upstream
   return (
     <div className={styles.wrapper}>
       <div
@@ -31,6 +32,12 @@ export const TeamPodiumSpot = ({
       />
 
       <img src={Bird} className="relative w-full h-full" alt="bird" />
+=======
+  if (rank === 1) {
+    return (
+      <div className="absolute bottom-[80%] left-1/2 -translate-x-1/2 w-[275px] h-[275px] bg-transparent">
+        <img src={Bird} className="relative w-full h-full" alt="bird" />
+>>>>>>> Stashed changes
 
       <img
         src={LaurelWreath}
