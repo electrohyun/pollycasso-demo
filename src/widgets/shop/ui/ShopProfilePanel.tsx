@@ -35,7 +35,7 @@ export const ShopProfilePanel = ({
           <div className="relative flex-1 w-full flex items-center justify-center my-2 z-10">
             <img
               src={Bird}
-              className="absolute w-[200px] h-[200px] object-contain z-10"
+              className="absolute w-[250px] h-[250px] object-contain z-10"
               alt="Character"
             />
 
@@ -43,13 +43,13 @@ export const ShopProfilePanel = ({
               <img
                 key={item.id}
                 src={item.outfitImage || item.image}
-                className="absolute w-[200px] h-[200px] object-contain z-20 pointer-events-none"
+                className="absolute w-[250px] h-[250px] object-contain z-20 pointer-events-none"
                 alt={item.name}
               />
             ))}
           </div>
 
-          <div className="absolute bottom-[450px] w-[180px] h-[40px] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.35)_0%,transparent_70%)] z-0" />
+          <div className="absolute top-[295px] w-[180px] h-[40px] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.35)_0%,transparent_70%)] z-30" />
 
           <button
             onClick={onResetPreview}
