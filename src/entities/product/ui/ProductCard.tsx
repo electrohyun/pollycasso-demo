@@ -17,20 +17,22 @@ export const ProductCard = ({
 }: ProductItemProps) => {
   return (
     <div
-      className="flex flex-col items-center justify-between w-[260px] h-[350px] bg-white rounded-[20px] text-2xl font-bold text-gray-400 p-5"
+      className="flex flex-col items-center justify-between w-[240px] h-[350px] bg-white rounded-[20px] text-2xl font-bold text-gray-400 p-5"
       onClick={() => onWearItem(product)}
     >
-      <div className="w-full h-[45px] flex gap-x-2">
+      <div className="w-full h-[52px] flex gap-x-2">
         <div className="w-[45px] h-[45px] bg-yellow-300 rounded-full shrink-0"></div>
         <div className="flex flex-col justify-center flex-1 text-base overflow-hidden">
-          <span className="text-black text-sm">Lv.{product.level}</span>
-          <span className="text-[#535353] truncate">{product.name}</span>
+          <span className="text-black text-lg">Lv.{product.level}</span>
+          <span className="text-[#535353] truncate text-xl">
+            {product.name}
+          </span>
         </div>
       </div>
 
       <img
         src={product.image}
-        className="flex-1 object-contain my-2"
+        className="flex-1 object-contain px-4 my-2"
         alt={product.name}
       />
 

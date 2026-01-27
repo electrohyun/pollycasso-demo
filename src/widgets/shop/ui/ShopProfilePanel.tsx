@@ -23,7 +23,7 @@ export const ShopProfilePanel = ({
   return (
     <div className="flex flex-col justify-between w-[360px] h-[720px]">
       <div className="flex flex-col justify-between items-center w-[360px] h-[590px] bg-[#1E3411]/40 rounded-[30px] p-4">
-        <div className="flex flex-col items-center w-[305px] h-[375px] bg-white rounded-3xl p-6 relative">
+        <div className="flex flex-col items-center w-[305px] h-[375px] bg-white rounded-3xl p-6 pb-4 relative">
           <div className="flex w-full h-[45px] gap-x-2 z-20">
             <div className="w-[45px] h-[45px] bg-yellow-300 rounded-full"></div>
             <div className="flex flex-col">
@@ -75,11 +75,11 @@ export const ShopProfilePanel = ({
           </div>
         </div>
 
-        <div className="relative w-[305px] h-[100px] bg-[#1E3411]/40 rounded-3xl">
+        <div className="relative w-[305px] h-[100px] bg-[#1E3411]/40 rounded-3xl pr-2">
           <span className="absolute -top-2 bg-[#81C27E] text-white text-base font-bold px-2 pt-[2px] pb-[2px] rounded-full">
             CART
           </span>
-          <div className="w-full h-full overflow-y-auto px-2 pt-6 flex flex-col gap-y-2">
+          <div className="w-full h-full overflow-y-auto px-2 pr-4 pt-6 flex flex-col gap-y-2 custom-cart-scrollbar">
             {cart.map((item) => (
               <div
                 key={item.id}

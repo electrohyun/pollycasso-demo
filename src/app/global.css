@@ -44,3 +44,13 @@
   border: 3px solid transparent;
   background-clip: padding-box;
 }
+
+.custom-cart-scrollbar {
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-cart-scrollbar::-webkit-scrollbar {
+  display: none;
+}
