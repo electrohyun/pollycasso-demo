@@ -1,4 +1,3 @@
-// features/shop-purchase/ui/PurchaseStatusContent.tsx
 import { ReceiptItemCarousel } from './ReceiptItemCarousel';
 import type { Product } from '@/entities/product';
 import type { PurchaseStatus } from '../model/types';
