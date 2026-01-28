@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { MOCK_PRODUCTS } from '@/mocks/shop.mock';
+import { MOCK_TOTAL_PRODUCTS } from '@/mocks/shopData';
 import type { CategoryType, SortType } from '../model/types';
 import { SHOP_CATEGORIES } from '@/features/shop';
 
@@ -10,7 +10,7 @@ export const useProductSorting = (
   return useMemo(() => {
     const targetCategoryLabel = SHOP_CATEGORIES[activeCategory];
 
-    const filtered = MOCK_PRODUCTS.filter(
+    const filtered = MOCK_TOTAL_PRODUCTS.filter(
       (item) => item.subCategory === targetCategoryLabel,
     );
 
