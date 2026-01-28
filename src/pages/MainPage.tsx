@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
 import { MainChat } from '@/entities/chat';
-import { useAuthStore, usePlayerStore } from '@/entities/user';
+import { useAuthStore } from '@/entities/user';
 import { useLogout } from '@/features/auth';
 import {
   CreateRoomModal,
@@ -16,7 +16,6 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const user = useAuthStore((state) => state.user);
-  const { level, exp, maxExp } = usePlayerStore();
   const { logout } = useLogout();
 
   const { searchQuery, setSearchQuery, setCommitSearch } = useSearchStore();
@@ -37,9 +36,9 @@ const MainPage = () => {
     <div className="flex items-center justify-center min-w-[1500px] mx-auto min-h-screen gap-x-10 font-ssrm font-bold">
       <SideBar
         nickname={user.nickname}
-        level={level}
-        currentXp={exp}
-        maxXp={maxExp}
+        level={user.level!}
+        currentXp={user.currentExp!}
+        coin={user.coin!}
         onLogout={handleLogout}
       />
 

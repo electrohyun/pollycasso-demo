@@ -1,26 +1,32 @@
 import { useNavigate } from 'react-router';
 import { CircleStackIcon, Cog8ToothIcon } from '@heroicons/react/24/solid';
-import { usePlayerStore } from '@/entities/user';
 
 interface SideBarProps {
   nickname: string;
   level: number;
   currentXp: number;
-  maxXp: number;
+  coin: number;
   onLogout: () => void;
 }
+
+// TODO: 레벨별 컬러 및 경험치 등 유틸함수와 상수 정리 필요
+const getMaxXp = (level: number): number => {
+  if (level <= 10) return 50;
+  if (level <= 20) return 60;
+  if (level <= 30) return 70;
+  return 100;
+};
 
 export const SideBar = ({
   nickname,
   level,
   currentXp,
-  maxXp,
   onLogout,
+  coin,
 }: SideBarProps) => {
+  const maxXp = getMaxXp(level);
   const progress = (currentXp / maxXp) * 100;
   const navigate = useNavigate();
-
-  const coin = usePlayerStore((state) => state.coin);
 
   return (
     <div className="flex flex-col px-8 py-10 items-center w-[380px] h-[760px] rounded-3xl bg-[#1E3411]/40 text-white">
