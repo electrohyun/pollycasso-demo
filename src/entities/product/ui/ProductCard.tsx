@@ -1,6 +1,7 @@
 import { Coin } from '@/assets';
 import type { Product } from '../model/types';
 import { cn } from '@/shared/lib';
+import { getShopItemUrl } from '@/shared/lib/assets';
 
 interface ProductItemProps {
   product: Product;
@@ -17,7 +18,7 @@ export const ProductCard = ({
 }: ProductItemProps) => {
   return (
     <div
-      className="flex flex-col items-center justify-between w-[240px] h-[350px] bg-white rounded-[20px] text-2xl font-bold text-gray-400 p-5"
+      className="flex flex-col items-center justify-between w-[240px] h-[350px] bg-white rounded-[20px] text-2xl font-bold text-gray-400 p-5 cursor-pointer hover:scale-[1.02] transition-transform"
       onClick={() => onWearItem(product)}
     >
       <div className="w-full h-[52px] flex gap-x-2">
@@ -31,7 +32,7 @@ export const ProductCard = ({
       </div>
 
       <img
-        src={product.image}
+        src={getShopItemUrl(product.image)}
         className="flex-1 object-contain px-4 my-2"
         alt={product.name}
       />
