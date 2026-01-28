@@ -21,24 +21,17 @@ export const useLoginCallback = () => {
     const processLogin = async () => {
       try {
         const response = await refreshMutate();
-        const { accessToken, refreshToken } = response;
 
-        if (!accessToken) {
-          throw new Error('토큰이 발급되지 않았습니다.');
+        if (!('accessToken' in response)) {
+          throw new Error('인증 정보가 올바르지 않습니다.');
         }
 
-        const decoded = parseAccessToken(accessToken);
+        const { accessToken } = response;
+        const { sub: id, nickname, tag } = parseAccessToken(accessToken);
 
         setAuth({
-          user: {
-            id: decoded.sub,
-            nickname: decoded.nickname,
-            tag: decoded.tag,
-          },
-          tokens: {
-            accessToken: accessToken,
-            refreshToken: refreshToken || '',
-          },
+          user: { id, nickname, tag },
+          accessToken: accessToken,
         });
 
         navigate('/welcome', { replace: true });
