@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import { CircleStackIcon, Cog8ToothIcon } from '@heroicons/react/24/solid';
+import { usePlayerStore } from '@/entities/user';
 
 interface SideBarProps {
   nickname: string;
@@ -19,11 +20,13 @@ export const SideBar = ({
   const progress = (currentXp / maxXp) * 100;
   const navigate = useNavigate();
 
+  const coin = usePlayerStore((state) => state.coin);
+
   return (
     <div className="flex flex-col px-8 py-10 items-center w-[380px] h-[760px] rounded-3xl bg-[#1E3411]/40 text-white">
       <div className="flex self-start items-center gap-x-1 text-yellow-300">
         <CircleStackIcon className="w-7 h-7" />
-        <span className="text-2xl">50</span>
+        <span className="text-2xl">{coin.toLocaleString()}</span>
       </div>
 
       <div className="w-[225px] h-[225px] rounded-full shadow-lg border-2 border-white bg-white/30" />
@@ -35,7 +38,9 @@ export const SideBar = ({
               <span className="text-white text-2xl">{level}</span>
             </div>
             <span className="ml-2 text-3xl text-white">{nickname}</span>
-            <Cog8ToothIcon className="w-8 h-8 text-white ml-1 cursor-pointer" />
+            <button>
+              <Cog8ToothIcon className="w-8 h-8 text-white ml-1 cursor-pointer" />
+            </button>
           </div>
           <span className="text-xs">
             {currentXp}/{maxXp}

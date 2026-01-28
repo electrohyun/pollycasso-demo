@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
 
 import { MainChat } from '@/entities/chat';
-import { useAuthStore } from '@/entities/user';
+import { useAuthStore, usePlayerStore } from '@/entities/user';
+import { useLogout } from '@/features/auth';
 import {
   CreateRoomModal,
   MainHeader,
@@ -13,17 +14,20 @@ import {
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const { user, clearAuth } = useAuthStore();
-  const { searchQuery, setSearchQuery, setCommitSearch } = useSearchStore();
 
+  const user = useAuthStore((state) => state.user);
+  const { level, exp, maxExp } = usePlayerStore();
+  const { logout } = useLogout();
+
+  const { searchQuery, setSearchQuery, setCommitSearch } = useSearchStore();
   const { open: openCreateRoomModal } = useCreateRoomModalStore();
 
-  const currentLv = 1;
-  const nickname = user!.nickname;
-  const currentXp = 30;
-  const maxXp = 50;
+  if (!user) {
+    navigate('/login');
+    return null;
+  }
 
-  const handleLogout = () => clearAuth();
+  const handleLogout = () => logout();
   const handleSearch = () => setCommitSearch(searchQuery.trim());
   const handleEnterRoom = (id: number) => {
     navigate(`/rooms/${id}`);
@@ -31,12 +35,11 @@ const MainPage = () => {
 
   return (
     <div className="flex items-center justify-center min-w-[1500px] mx-auto min-h-screen gap-x-10 font-ssrm font-bold">
-      {/* 좌측 사이드바 */}
       <SideBar
-        nickname={nickname}
-        level={currentLv}
-        currentXp={currentXp}
-        maxXp={maxXp}
+        nickname={user.nickname}
+        level={level}
+        currentXp={exp}
+        maxXp={maxExp}
         onLogout={handleLogout}
       />
 
@@ -49,7 +52,6 @@ const MainPage = () => {
           onClickCreateRoom={openCreateRoomModal}
         />
 
-        {/* TODO: 메뉴 클릭시 페이지 이동 로직 구현 */}
         <RoomList
           onEnter={handleEnterRoom}
           onMenu={(id) => console.log(`메뉴 클릭: ${id}`)}
