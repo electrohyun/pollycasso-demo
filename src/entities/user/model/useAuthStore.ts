@@ -23,6 +23,7 @@ export const useAuthStore = create<AuthState>()(
         set({
           user: {
             ...user,
+            coin: 619,
             level: 1,
             currentExp: 0,
             outfit: defaultOutfit,

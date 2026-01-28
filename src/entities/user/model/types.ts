@@ -5,6 +5,7 @@ export interface User {
   nickname: string;
   tag: string;
   // TODO: 백엔드 미구현
+  coin?: number;
   level?: number;
   currentExp?: number;
   outfit?: Outfit;
