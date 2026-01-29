@@ -33,7 +33,7 @@ export const ProductCard = ({
 
       <img
         src={getShopItemUrl(product.image)}
-        className="flex-1 object-contain px-4 my-2"
+        className="w-[200px] h-[180px] flex-1 object-contain px-4 my-2"
         alt={product.name}
       />
 
