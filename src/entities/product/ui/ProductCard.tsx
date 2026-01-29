@@ -52,7 +52,7 @@ export const ProductCard = ({
 
         <img
           src={getShopItemUrl(product.image)}
-          className="w-full h-full object-contain px-4"
+          className="w-full h-[190px] object-contain px-4"
           alt={product.name}
         />
       </div>
