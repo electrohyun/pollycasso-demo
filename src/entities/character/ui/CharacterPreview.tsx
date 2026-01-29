@@ -23,13 +23,13 @@ interface CharacterPreviewProps {
 }
 
 const LAYER_ORDER = [
-  SHOP_CATEGORIES.BIRD, // 새
-  SHOP_CATEGORIES.ACCESSORY, // 악세사리
-  SHOP_CATEGORIES.HAT, // 모자
-  SHOP_CATEGORIES.SHOES, // 신발
-  SHOP_CATEGORIES.BOTTOM, // 하의
-  SHOP_CATEGORIES.TOP, // 상의
-  SHOP_CATEGORIES.EFFECT, // 효과
+  SHOP_CATEGORIES.BIRD,
+  SHOP_CATEGORIES.ACCESSORY,
+  SHOP_CATEGORIES.HAT,
+  SHOP_CATEGORIES.SHOES,
+  SHOP_CATEGORIES.BOTTOM,
+  SHOP_CATEGORIES.TOP,
+  SHOP_CATEGORIES.EFFECT,
 ];
 
 export const CharacterPreview = ({
@@ -50,8 +50,8 @@ export const CharacterPreview = ({
     return previewItems
       .filter((item) => item.subCategory !== SHOP_CATEGORIES.BIRD)
       .sort((a, b) => {
-        const indexA = LAYER_ORDER.indexOf(a.subCategory || '');
-        const indexB = LAYER_ORDER.indexOf(b.subCategory || '');
+        const indexA = LAYER_ORDER.indexOf(a.subCategory!);
+        const indexB = LAYER_ORDER.indexOf(b.subCategory!);
         return indexA - indexB;
       });
   }, [previewItems]);
