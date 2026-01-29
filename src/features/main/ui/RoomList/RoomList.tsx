@@ -57,13 +57,7 @@ export const RoomList = ({ onEnter, onMenu }: Props) => {
       className="
         relative
         mt-5 h-[400px] rounded-2xl overflow-y-auto pr-3
-        scrollbar 
-        scrollbar-thumb-white 
-        hover:scrollbar-thumb-white/90
-        scrollbar-thumb-rounded-full
-        scrollbar-w-5
-        scrollbar-border-2
-        scrollbar-stable
+        custom-scrollbar
       "
     >
       {isLoading ? (
