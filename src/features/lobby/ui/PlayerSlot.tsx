@@ -1,9 +1,10 @@
 import { XMarkIcon } from '@heroicons/react/24/solid';
 
 import { Crown } from '@/assets';
-import type { Player } from '@/entities/game';
 import { cn } from '@/shared/lib';
 import ScalableText from './ScalableText';
+import { getOutfitImageUrl, OUTFIT_LAYERS } from '@/shared/lib/cdn';
+import type { Player } from '@/shared/model';
 
 interface PlayerSlotProps {
   player?: Player;
@@ -33,6 +34,7 @@ export const PlayerSlot = ({
   }
 
   const isReadyVisual = player.isReady || isHost;
+  const playerOutfit = player.outfit;
 
   return (
     <div
@@ -94,11 +96,27 @@ export const PlayerSlot = ({
 
       <div
         className={cn(
-          'flex items-center justify-center w-full overflow-hidden bg-[#E3DDDD] rounded-lg border-[5px] transition-all duration-300 box-border',
+          'relative flex items-center justify-center w-full h-[220px] aspect-square overflow-hidden bg-[#E3DDDD] rounded-lg border-[5px] transition-all duration-300 box-border',
           isReadyVisual ? 'border-[#2ADB75]' : 'border-transparent',
         )}
       >
-        <img src="" alt="캐릭터" className="w-[200px] h-[200px] object-cover" />
+        {OUTFIT_LAYERS.map((layer) => {
+          const partId = playerOutfit[layer];
+
+          if (!partId) return null;
+
+          return (
+            <img
+              key={layer}
+              src={getOutfitImageUrl(partId)}
+              alt={layer}
+              className="absolute inset-0 w-full h-[200px] object-contain"
+              style={{
+                zIndex: OUTFIT_LAYERS.indexOf(layer),
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
