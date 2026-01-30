@@ -1,4 +1,3 @@
-import { Bird } from '@/assets';
 import { cn } from '@/shared/lib';
 
 // TODO: FSD 원칙에 위배되기 때문에 파일 내 작성. 차후 수정 필요합니다.
@@ -84,7 +83,7 @@ export const CharacterPreview = ({
 
       <div className="relative flex-1 w-full flex items-center justify-center z-10 my-2">
         <img
-          src={Bird}
+          src={''}
           className="absolute w-[90%] h-auto object-contain z-10"
           alt="Character"
         />
