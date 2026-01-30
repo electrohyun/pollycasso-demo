@@ -7,9 +7,13 @@ import { MenuButton } from './MenuButton';
 
 interface RoomDashboardProps {
   onOpenSettings?: () => void;
+  onUpdateStatus: (status: 'IDLE' | 'SHOPPING' | 'CUSTOMIZING') => void;
 }
 
-export const RoomDashboard = ({ onOpenSettings }: RoomDashboardProps) => {
+export const RoomDashboard = ({
+  onOpenSettings,
+  onUpdateStatus,
+}: RoomDashboardProps) => {
   const navigate = useNavigate();
 
   return (
@@ -19,13 +23,19 @@ export const RoomDashboard = ({ onOpenSettings }: RoomDashboardProps) => {
           label="상점"
           color="RED"
           icon={<ShoppingCartIcon className="w-8 h-8" />}
-          onClick={() => navigate('shop')}
+          onClick={() => {
+            onUpdateStatus('SHOPPING');
+            navigate('shop');
+          }}
         />
         <MenuButton
           label="옷장"
           color="YELLOW"
           icon={<ArchiveBoxIcon className="w-8 h-8" />}
-          onClick={() => navigate('wardrobe')}
+          onClick={() => {
+            onUpdateStatus('CUSTOMIZING');
+            navigate('wardrobe');
+          }}
         />
         <MenuButton
           label="방설정"

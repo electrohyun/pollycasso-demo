@@ -115,6 +115,11 @@ export const useRoom = () => {
   };
 
   const updateStatus = (status: 'IDLE' | 'SHOPPING' | 'CUSTOMIZING') => {
+    // 상점이나 옷장 이동 시 준비 해제
+    if (status !== 'IDLE' && me?.isReady) {
+      gameSocket.emit('room:readyToggle');
+    }
+
     gameSocket.emit('room:updateStatus', { status });
   };
 

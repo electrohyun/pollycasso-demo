@@ -66,7 +66,7 @@ const RoomPage = () => {
         </div>
 
         <div className="flex flex-col justify-between w-[560px] p-5 rounded-3xl">
-          <RoomDashboard />
+          <RoomDashboard onUpdateStatus={actions.updateStatus} />
 
           <RoomActionButtons
             amIHost={derived.amIHost}

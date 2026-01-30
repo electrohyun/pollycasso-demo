@@ -99,6 +99,7 @@ export const useRoomUI = () => {
       handleKick,
       handleNudge,
       handleUpdateStatus,
+      updateStatus,
     },
   };
 };
