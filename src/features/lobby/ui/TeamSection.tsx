@@ -1,4 +1,4 @@
-import type { Player } from '@/entities/game';
+import type { Player } from '@/shared/model';
 import { cn } from '@/shared/lib';
 import { PlayerSlot } from './PlayerSlot';
 
@@ -24,7 +24,8 @@ export const TeamSection = ({
       <div className="grid grid-cols-3 gap-4 w-full h-full">
         {Array.from({ length: 3 }).map((_, index) => {
           const player = players[index];
-          const isHost = player ? hostId === player.userId : false;
+          const isHost =
+            player && hostId ? String(hostId) === String(player.userId) : false;
           const canKick = amIHost && player && player.userId !== myUserId;
 
           return (
