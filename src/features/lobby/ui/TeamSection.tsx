@@ -9,6 +9,7 @@ interface TeamSectionProps {
   amIHost: boolean;
   myUserId: string;
   onKick: (userId: string, nickname: string) => void;
+  onNudge: (userId: string) => void;
 }
 
 export const TeamSection = ({
@@ -18,6 +19,7 @@ export const TeamSection = ({
   amIHost,
   myUserId,
   onKick,
+  onNudge,
 }: TeamSectionProps) => {
   return (
     <div className={cn('flex-1 bg-gradient-to-b p-4', gradient)}>
@@ -26,7 +28,9 @@ export const TeamSection = ({
           const player = players[index];
           const isHost =
             player && hostId ? String(hostId) === String(player.userId) : false;
-          const canKick = amIHost && player && player.userId !== myUserId;
+          const isMe = player && String(player.userId) === String(myUserId);
+          const canKick = amIHost && player && !isMe;
+          const canNudge = player && !isMe;
 
           return (
             <PlayerSlot
@@ -35,6 +39,7 @@ export const TeamSection = ({
               isHost={isHost}
               canKick={!!canKick}
               onKick={() => player && onKick(player.userId, player.nickname)}
+              onNudge={canNudge ? () => onNudge(player.userId) : undefined}
             />
           );
         })}
