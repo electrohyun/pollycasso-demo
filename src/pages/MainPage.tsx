@@ -45,6 +45,14 @@ const MainPage = () => {
     navigate(`/rooms/${id}`);
   };
 
+  useEffect(() => {
+    if (!user) {
+      navigate('/login', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (!user) return null;
+
   return (
     <div className="flex items-center justify-center min-w-[1500px] mx-auto min-h-screen gap-x-10 font-ssrm font-bold">
       <SideBar
