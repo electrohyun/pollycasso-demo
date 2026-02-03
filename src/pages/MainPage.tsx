@@ -7,12 +7,12 @@ import {
   CreateRoomModal,
   MainHeader,
   RoomList,
-  SideBar,
   useCreateRoomModalStore,
   useSearchStore,
   KickModal,
 } from '@/features/main';
 import { useEffect, useState } from 'react';
+import { Sidebar } from '@/widgets/sidebar';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ const MainPage = () => {
 
   return (
     <div className="flex items-center justify-center min-w-[1500px] mx-auto min-h-screen gap-x-10 font-ssrm font-bold">
-      <SideBar
+      <Sidebar
         nickname={user.nickname}
         level={user.level!}
         currentXp={user.currentExp!}
@@ -64,7 +64,6 @@ const MainPage = () => {
         onLogout={handleLogout}
       />
 
-      {/* 우측 */}
       <div className="w-[1100px] h-[760px] px-10 py-10 rounded-3xl bg-[#1E3411]/40">
         <MainHeader
           searchQuery={searchQuery}

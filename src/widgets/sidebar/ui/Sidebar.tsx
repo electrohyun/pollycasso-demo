@@ -3,6 +3,36 @@ import { CircleStackIcon } from '@heroicons/react/24/solid';
 import type { Outfit } from '@/shared/model';
 import { getOutfitImageUrl, OUTFIT_LAYERS } from '@/shared/lib/cdn';
 
+interface MenuItem {
+  label: string;
+  path: string;
+  color: string;
+  isHalf?: boolean;
+}
+
+const MENU_CONFIG: Record<'main' | 'mypage', MenuItem[]> = {
+  main: [
+    { label: '마이페이지', path: '/mypage', color: 'bg-[#6EE035]' },
+    { label: '상점', path: '/shop', color: 'bg-[#5697FF]' },
+    { label: '랭킹', path: '/ranking', color: 'bg-[#FF5353]', isHalf: true },
+    { label: '친구', path: '/friend', color: 'bg-[#FFBD2F]', isHalf: true },
+  ],
+  mypage: [
+    {
+      label: '개인정보 수정',
+      path: '/mypage?section=profile',
+      color: 'bg-[#6EE035]',
+    },
+    {
+      label: '환경설정',
+      path: '/mypage?section=settings',
+      color: 'bg-[#5697FF]',
+    },
+    { label: '상점', path: '/shop', color: 'bg-[#FF5353]', isHalf: true },
+    { label: '옷장', path: '/wardrobe', color: 'bg-[#FFBD2F]', isHalf: true },
+  ],
+};
+
 interface SideBarProps {
   nickname: string;
   level: number;
@@ -10,6 +40,7 @@ interface SideBarProps {
   coin: number;
   outfit: Outfit;
   onLogout: () => void;
+  currentPage?: 'main' | 'mypage';
 }
 
 const getMaxXp = (level: number): number => {
@@ -19,17 +50,19 @@ const getMaxXp = (level: number): number => {
   return 100;
 };
 
-export const SideBar = ({
+export const Sidebar = ({
   nickname,
   level,
   currentXp,
   coin,
   outfit,
   onLogout,
+  currentPage = 'main',
 }: SideBarProps) => {
   const maxXp = getMaxXp(level);
   const progress = (currentXp / maxXp) * 100;
   const navigate = useNavigate();
+  const menuItems = MENU_CONFIG[currentPage];
 
   return (
     <div className="flex flex-col px-8 py-10 items-center w-[380px] h-[760px] rounded-3xl bg-[#1E3411]/40 text-white">
@@ -41,9 +74,7 @@ export const SideBar = ({
       <div className="relative w-[225px] h-[250px] rounded-full shadow-lg border-2 border-white bg-black/20 overflow-hidden">
         {OUTFIT_LAYERS.map((layer) => {
           const partId = outfit[layer];
-
           if (!partId) return null;
-
           return (
             <img
               key={layer}
@@ -80,33 +111,45 @@ export const SideBar = ({
       </div>
 
       <div className="flex flex-col w-full mt-4 gap-3 text-3xl">
-        <button className="w-full h-[72px] rounded-full bg-[#6EE035] hover:brightness-110 transition-all">
-          마이페이지
-        </button>
-        <button
-          className="w-full h-[72px] rounded-full bg-[#5697FF] hover:brightness-110 transition-all"
-          onClick={() => navigate('/shop')}
-        >
-          상점
-        </button>
+        {menuItems.map((item, index) => {
+          if (item.isHalf) {
+            if (index > 0 && menuItems[index - 1].isHalf) return null;
+            const nextItem = menuItems[index + 1];
+            return (
+              <div key={item.label} className="flex justify-between gap-3">
+                <button
+                  onClick={() => navigate(item.path)}
+                  className={`flex-1 h-[72px] rounded-full ${item.color} hover:brightness-110 transition-all`}
+                >
+                  {item.label}
+                </button>
+                {nextItem && (
+                  <button
+                    onClick={() => navigate(nextItem.path)}
+                    className={`flex-1 h-[72px] rounded-full ${nextItem.color} hover:brightness-110 transition-all`}
+                  >
+                    {nextItem.label}
+                  </button>
+                )}
+              </div>
+            );
+          }
+          return (
+            <button
+              key={item.label}
+              onClick={() => navigate(item.path)}
+              className={`w-full h-[72px] rounded-full ${item.color} hover:brightness-110 transition-all`}
+            >
+              {item.label}
+            </button>
+          );
+        })}
 
-        <div className="flex justify-between gap-3">
-          <button className="flex-1 h-[72px] rounded-full bg-[#FF5353] hover:brightness-110 transition-all">
-            랭킹
-          </button>
-          <button
-            className="flex-1 h-[72px] rounded-full bg-[#FFBD2F] hover:brightness-110 transition-all"
-            onClick={() => navigate('/friend')}
-          >
-            친구
-          </button>
-        </div>
-
         <button
-          onClick={onLogout}
+          onClick={currentPage === 'main' ? onLogout : () => navigate('/')}
           className="w-full h-[72px] rounded-full bg-black hover:bg-gray-900 transition-all"
         >
-          로그아웃
+          {currentPage === 'main' ? '로그아웃' : '돌아가기'}
         </button>
       </div>
     </div>
