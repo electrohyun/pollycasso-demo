@@ -4,8 +4,8 @@ import {
   TeamSection,
   TeamTab,
   useRoomUI,
+  RoomEntryGuard,
 } from '@/features/lobby';
-import { RoomEntryGuard } from '@/features/lobby/ui/RoomEntryGuard';
 
 const RoomPage = () => {
   const { roomState, me, derived, actions, topGradient, bottomGradient } =

@@ -22,7 +22,7 @@ interface ModalProps {
 export const Modal = ({
   onClose,
   onConfirm,
-  confirmText = '확인',
+  confirmText = '확인!',
   cancelText = '취소',
   children,
   isForm = false,
