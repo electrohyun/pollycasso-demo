@@ -162,7 +162,10 @@ export const useRoom = () => {
     gameSocket.emit('room:nudgeUser', { targetUserId: Number(targetUserId) });
   const leaveRoom = () => gameSocket.emit('room:leave');
   const updateStatus = (status: 'IDLE' | 'SHOPPING' | 'CUSTOMIZING') => {
-    if (status !== 'IDLE' && me?.isReady) gameSocket.emit('room:readyToggle');
+    if (status !== 'IDLE' && me?.isReady && !amIHost) {
+      gameSocket.emit('room:readyToggle');
+    }
+
     gameSocket.emit('room:updateStatus', { status });
   };
 
