@@ -32,3 +32,4 @@ export { default as BronzeBelt } from './belt_bronze.svg';
 export { default as Coin } from './coin.svg';
 export { default as LaurelWreath } from './laurel_wreath.svg';
 export { default as Receipt } from './receipt.svg';
+export { default as RankingBoard } from './ranking_board.svg';
