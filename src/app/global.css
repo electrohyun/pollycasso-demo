@@ -71,3 +71,17 @@
   border: 3px solid transparent;
   background-clip: padding-box;
 }
+
+@layer components {
+  .custom-range {
+    @apply w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer outline-none;
+  }
+
+  .custom-range::-webkit-slider-thumb {
+    @apply appearance-none w-10 h-6 bg-white rounded-full shadow-lg transition-transform duration-200 ease-out hover:scale-125;
+  }
+
+  .custom-range::-moz-range-thumb {
+    @apply appearance-none w-10 h-6 bg-white rounded-full shadow-lg transition-transform duration-200 ease-out hover:scale-125;
+  }
+}

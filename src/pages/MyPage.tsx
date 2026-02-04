@@ -1,13 +1,18 @@
 import { useAuthStore } from '@/entities/user';
 import { useLogout } from '@/features/auth';
 import { Sidebar } from '@/widgets/sidebar';
+import { ProfileSection, SettingsSection } from '@/features/mypage';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const user = useAuthStore((state) => state.user);
   const { logout } = useLogout();
+
+  const section = searchParams.get('section');
+  const isSettingsMode = section === 'settings';
 
   useEffect(() => {
     if (!user) {
@@ -29,7 +34,13 @@ const MyPage = () => {
         currentPage="mypage"
       />
 
-      <div className="w-[1100px] h-[760px] px-10 py-10 rounded-3xl bg-[#1E3411]/40"></div>
+      <div className="w-[1100px] h-[760px] p-10 rounded-3xl bg-[#1E3411]/40 text-white font-light">
+        <h1 className="text-4xl font-bold mb-10">
+          {isSettingsMode ? '환경설정' : '개인정보 수정'}
+        </h1>
+
+        {isSettingsMode ? <SettingsSection /> : <ProfileSection user={user} />}
+      </div>
     </div>
   );
 };
