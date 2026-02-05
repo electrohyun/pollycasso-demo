@@ -2,9 +2,18 @@ import { overlay } from 'overlay-kit';
 
 import { AddFriendModal } from './AddFriendModal';
 
-export const AddFriendButton = () => {
+export const AddFriendButton = ({
+  recommendedFriends,
+}: {
+  recommendedFriends: any[];
+}) => {
   const handleOpen = () => {
-    overlay.open(({ unmount }) => <AddFriendModal onClose={unmount} />);
+    overlay.open(({ unmount }) => (
+      <AddFriendModal
+        onClose={unmount}
+        initialRecommendedFriends={recommendedFriends} // 💡 데이터 주입
+      />
+    ));
   };
 
   return (
