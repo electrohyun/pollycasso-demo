@@ -4,15 +4,12 @@ import {
   NoSymbolIcon,
   TrashIcon,
 } from '@heroicons/react/24/solid';
-
 import { getLevelBadgeColor } from '../lib/badgeColor';
 import type {
   FriendAction,
   FriendProfile,
   FriendRelation,
 } from '../model/types';
-
-// 💡 1. CDN 유틸리티 및 레이어 상수 임포트
 import { getOutfitImageUrl, OUTFIT_LAYERS } from '@/shared/lib/cdn';
 
 interface FriendCardProps extends FriendProfile {
@@ -23,7 +20,7 @@ interface FriendCardProps extends FriendProfile {
 export const FriendCard = ({
   userId,
   nickname,
-  outfit, // { bird: "...", hat: "...", ... } 객체
+  outfit,
   level,
   relation,
   isOnline,
@@ -49,14 +46,13 @@ export const FriendCard = ({
         <div className="relative shrink-0 w-16 h-16 lg:w-18 lg:h-18 rounded-full bg-black/5 border border-gray-200 overflow-hidden flex items-center justify-center">
           {outfit ? (
             OUTFIT_LAYERS.map((layer) => {
-              const partId = (outfit as any)[layer];
+              const partId = outfit[layer];
               if (!partId) return null;
               return (
                 <img
                   key={layer}
                   src={getOutfitImageUrl(partId)}
                   alt={layer}
-                  // 카드 사이즈(w-16~18)에 맞춰 scale과 top 조절
                   className="absolute object-cover scale-[1.2] top-3"
                   style={{ zIndex: OUTFIT_LAYERS.indexOf(layer) }}
                 />
@@ -90,7 +86,6 @@ export const FriendCard = ({
         </div>
       </div>
 
-      {/* 액션 버튼 영역 (기존 로직 유지) */}
       <div className="shrink-0 flex flex-col items-end justify-start h-full mt-1">
         {relation === 'FRIEND' && (
           <div className="relative">
