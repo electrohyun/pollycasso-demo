@@ -18,6 +18,7 @@ const FriendPage = lazy(() => import('@/pages/FriendPage'));
 const ShopPage = lazy(() => import('@/pages/ShopPage'));
 const WardrobePage = lazy(() => import('@/pages/WardrobePage'));
 const RankingPage = lazy(() => import('@/pages/RankingPage'));
+const MyPage = lazy(() => import('@/pages/MyPage'));
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: '/Wardrobe', element: <WardrobePage /> },
       { path: '/dev/gameWidget', element: <GameWidget /> },
       { path: '/ranking', element: <RankingPage /> },
+      { path: '/mypage', element: <MyPage /> },
 
       {
         element: <PrivateRoute />,

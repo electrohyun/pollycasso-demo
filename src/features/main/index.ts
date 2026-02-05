@@ -7,5 +7,4 @@ export { useSearchStore } from './model/useSearchStore';
 export { CreateRoomModal } from './ui/CreateRoomModal/CreateRoomModal';
 export { MainHeader } from './ui/MainHeader/MainHeader';
 export { RoomList } from './ui/RoomList/RoomList';
-export { SideBar } from './ui/SideBar';
 export { KickModal } from './ui/KickModal';
