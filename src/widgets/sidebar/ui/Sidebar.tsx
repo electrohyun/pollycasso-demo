@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
-import { CircleStackIcon } from '@heroicons/react/24/solid';
 import type { Outfit } from '@/shared/model';
 import { getOutfitImageUrl, OUTFIT_LAYERS } from '@/shared/lib/cdn';
+import { Coin } from '@/assets';
 
 interface MenuItem {
   label: string;
@@ -67,8 +67,8 @@ export const Sidebar = ({
   return (
     <div className="flex flex-col px-8 py-10 items-center w-[380px] h-[760px] rounded-3xl bg-[#1E3411]/40 text-white">
       <div className="flex self-start items-center gap-x-1 text-yellow-300">
-        <CircleStackIcon className="w-7 h-7" />
-        <span className="text-2xl">{coin.toLocaleString()}</span>
+        <img src={Coin} alt="coin" className="w-7 h-7" />
+        <span className="ml-1 text-2xl">{coin.toLocaleString()}</span>
       </div>
 
       <div className="relative w-[225px] h-[250px] rounded-full shadow-lg border-2 border-white bg-black/20 overflow-hidden">
