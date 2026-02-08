@@ -4,6 +4,7 @@
 
 ### 🎨 실시간 드로잉 배틀! 폴리카소(Pollycasso) 🦜
 
+#### **✨Designed by [@seohyunlim](https://github.com/seohyunlim), [@kimjisue05](https://github.com/kimjisue05)✨**
 </div>
 
 # 🚀 소개
