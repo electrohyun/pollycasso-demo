@@ -10,9 +10,8 @@ export const useGameChat = () => {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
-  const [isComposing, setIsComposing] = useState(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messageListRef = useRef<HTMLDivElement>(null);
   const MY_USER_ID = useAuthStore((state) => state.user?.id);
 
   useEffect(() => {
@@ -36,8 +35,8 @@ export const useGameChat = () => {
   }, [gameSocket]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollTo({
-      top: messagesEndRef.current.scrollHeight,
+    messageListRef.current?.scrollTo({
+      top: messageListRef.current.scrollHeight,
       behavior: 'smooth',
     });
   }, [messages]);
@@ -53,7 +52,9 @@ export const useGameChat = () => {
     setInput('');
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSendMessage();
@@ -61,7 +62,7 @@ export const useGameChat = () => {
   };
 
   return {
-    messagesEndRef,
+    messageListRef,
     state: {
       messages,
       input,
@@ -69,7 +70,6 @@ export const useGameChat = () => {
     },
     actions: {
       setInput,
-      setIsComposing,
       handleSendMessage,
       handleKeyDown,
     },

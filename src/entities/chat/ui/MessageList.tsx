@@ -8,7 +8,7 @@ interface MessageListProps {
   messages: ChatMessage[];
   messageListRef: RefObject<HTMLDivElement | null>;
   className?: string;
-  currentUserId?: string;
+  currentUserId?: number | string;
   showChannelTag?: boolean;
 }
 
