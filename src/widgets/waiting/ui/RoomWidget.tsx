@@ -8,7 +8,7 @@ import {
 } from '@/features/lobby';
 import { CreateRoomModal } from '@/features/main';
 
-const RoomPage = () => {
+const RoomWidget = () => {
   const { roomState, me, derived, actions, topGradient, bottomGradient } =
     useRoomUI();
 
@@ -96,4 +96,4 @@ const RoomPage = () => {
   );
 };
 
-export default RoomPage;
+export default RoomWidget;

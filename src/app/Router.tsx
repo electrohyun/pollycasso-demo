@@ -11,7 +11,7 @@ const LoginCallbackPage = lazy(() => import('@/pages/LoginCallbackPage'));
 const SignupPage = lazy(() => import('@/pages/SignupPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const MainPage = lazy(() => import('@/pages/MainPage'));
-const RoomPage = lazy(() => import('@/pages/RoomPage'));
+const GamePage = lazy(() => import('@/pages/GamePage'));
 const GameWidget = lazy(() => import('@/widgets/game/ui/GameWidget'));
 const FriendPage = lazy(() => import('@/pages/FriendPage'));
 const ShopPage = lazy(() => import('@/pages/ShopPage'));
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
                   </GameSocketProvider>
                 ),
                 children: [
-                  { index: true, element: <RoomPage /> },
+                  { index: true, element: <GamePage /> },
                   { path: 'shop', element: <ShopPage /> },
                   { path: 'wardrobe', element: <WardrobePage /> },
                 ],

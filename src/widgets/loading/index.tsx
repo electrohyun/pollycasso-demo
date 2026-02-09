@@ -13,3 +13,4 @@ const GameLoading = ({ duration = 5, onFinished }: GameLoadingProps) => {
 };
 
 export default GameLoading;
+export { GameLoading as LoadingWidget };
