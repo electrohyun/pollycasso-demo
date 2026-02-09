@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useGameSocket } from '@/shared/api/socket/GameSocketProvider';
+import { useWaitingSocket } from '@/shared/api/socket/WaitingSocketProvider';
 import type { RoomState, RoomStatus } from '@/shared/model';
 import { GameWidget } from '@/widgets/game';
 import { LoadingWidget } from '@/widgets/loading';
@@ -17,12 +17,12 @@ const GAME_PHASE_STATUSES: RoomStatus[] = [
 
 const GamePage = () => {
   const navigate = useNavigate();
-  const { gameSocket } = useGameSocket();
+  const { waitingSocket } = useWaitingSocket();
   const [roomStatus, setRoomStatus] = useState<RoomStatus>('WAITING');
   const [loadingEndsAt, setLoadingEndsAt] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!gameSocket) return;
+    if (!waitingSocket) return;
 
     type UpdateGameStatePayload = {
       phase: RoomStatus;
@@ -51,16 +51,16 @@ const GamePage = () => {
       setRoomStatus(payload.phase);
     };
 
-    gameSocket.on('room:joinSuccess', syncStatus);
-    gameSocket.on('room:stateSync', syncStatus);
-    gameSocket.on('room:updateGameState', syncPhase);
+    waitingSocket.on('room:joinSuccess', syncStatus);
+    waitingSocket.on('room:stateSync', syncStatus);
+    waitingSocket.on('room:updateGameState', syncPhase);
 
     return () => {
-      gameSocket.off('room:joinSuccess', syncStatus);
-      gameSocket.off('room:stateSync', syncStatus);
-      gameSocket.off('room:updateGameState', syncPhase);
+      waitingSocket.off('room:joinSuccess', syncStatus);
+      waitingSocket.off('room:stateSync', syncStatus);
+      waitingSocket.off('room:updateGameState', syncPhase);
     };
-  }, [gameSocket]);
+  }, [waitingSocket]);
 
   let widget = <LoadingWidget duration={2} endsAt={loadingEndsAt} />;
 
@@ -70,7 +70,7 @@ const GamePage = () => {
   else if (GAME_PHASE_STATUSES.includes(roomStatus)) widget = <GameWidget />;
 
   const handleEmergencyLeave = () => {
-    gameSocket?.emit('room:leave');
+    waitingSocket?.emit('room:leave');
     navigate('/');
   };
 

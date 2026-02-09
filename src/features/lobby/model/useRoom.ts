@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
-import { getGameSocket } from '@/shared/api/socket';
+import { getWaitingSocket } from '@/shared/api/socket';
 import type { RoomState, Player, SystemNotification } from '@/shared/model';
 import { useAuthStore } from '@/entities/user';
 import {
@@ -16,7 +16,7 @@ export const useRoom = () => {
   const location = useLocation();
   const { roomId } = useParams<{ roomId: string }>();
   const { user } = useAuthStore();
-  const gameSocket = getGameSocket();
+  const waitingSocket = getWaitingSocket();
 
   const [roomState, setRoomState] = useState<RoomState | null>(null);
 
@@ -32,12 +32,12 @@ export const useRoom = () => {
 
       setPasswordError(null);
 
-      gameSocket.emit('room:join', {
+      waitingSocket.emit('room:join', {
         roomId: Number(roomId),
         ...(password && { password }),
       });
     },
-    [gameSocket, roomId],
+    [waitingSocket, roomId],
   );
 
   useEffect(() => {
@@ -146,31 +146,31 @@ export const useRoom = () => {
       });
     };
 
-    gameSocket.on('room:joinSuccess', handleJoinSuccess);
-    gameSocket.on('room:syncPlayerList', handleSyncPlayerList);
-    gameSocket.on('room:updateRoom', handleUpdateRoom);
-    gameSocket.on('room:updatePlayer', handleUpdatePlayer);
-    gameSocket.on('room:stateSync', handleStateSync);
-    gameSocket.on('room:updateGameState', handleUpdateGameState);
-    gameSocket.on('connect', handleConnect);
+    waitingSocket.on('room:joinSuccess', handleJoinSuccess);
+    waitingSocket.on('room:syncPlayerList', handleSyncPlayerList);
+    waitingSocket.on('room:updateRoom', handleUpdateRoom);
+    waitingSocket.on('room:updatePlayer', handleUpdatePlayer);
+    waitingSocket.on('room:stateSync', handleStateSync);
+    waitingSocket.on('room:updateGameState', handleUpdateGameState);
+    waitingSocket.on('connect', handleConnect);
 
-    gameSocket.on('system:notification', handleSystemNotification);
+    waitingSocket.on('system:notification', handleSystemNotification);
 
-    if (gameSocket.connected) {
+    if (waitingSocket.connected) {
       joinRoom(initialPassword);
     }
 
     return () => {
-      gameSocket.off('room:joinSuccess', handleJoinSuccess);
-      gameSocket.off('room:syncPlayerList', handleSyncPlayerList);
-      gameSocket.off('room:updateRoom', handleUpdateRoom);
-      gameSocket.off('room:updatePlayer', handleUpdatePlayer);
-      gameSocket.off('system:notification', handleSystemNotification);
-      gameSocket.off('room:stateSync', handleStateSync);
-      gameSocket.off('room:updateGameState', handleUpdateGameState);
-      gameSocket.off('connect', handleConnect);
+      waitingSocket.off('room:joinSuccess', handleJoinSuccess);
+      waitingSocket.off('room:syncPlayerList', handleSyncPlayerList);
+      waitingSocket.off('room:updateRoom', handleUpdateRoom);
+      waitingSocket.off('room:updatePlayer', handleUpdatePlayer);
+      waitingSocket.off('system:notification', handleSystemNotification);
+      waitingSocket.off('room:stateSync', handleStateSync);
+      waitingSocket.off('room:updateGameState', handleUpdateGameState);
+      waitingSocket.off('connect', handleConnect);
     };
-  }, [gameSocket, roomId, joinRoom, initialPassword, navigate]);
+  }, [waitingSocket, roomId, joinRoom, initialPassword, navigate]);
 
   const me = selectMe(roomState, myUserId ?? '');
   const isSolo = roomState?.settings?.gameMode === 'SOLO';
@@ -179,23 +179,25 @@ export const useRoom = () => {
     selectTopBottomTeams(roomState, myUserId ?? '');
   const canStartGame = selectCanStartGame(roomState);
 
-  const startGame = () => gameSocket.emit('game:startRequest');
-  const toggleReady = () => gameSocket.emit('room:readyToggle');
+  const startGame = () => waitingSocket.emit('game:startRequest');
+  const toggleReady = () => waitingSocket.emit('room:readyToggle');
   const changeTeam = (targetTeam: 'BLUE' | 'RED' | 'NONE') => {
     if (!me || me.team === targetTeam) return;
-    gameSocket.emit('room:changeTeam', { targetTeam });
+    waitingSocket.emit('room:changeTeam', { targetTeam });
   };
   const kickUser = (targetUserId: string | number) =>
-    gameSocket.emit('room:kickUser', { targetUserId: Number(targetUserId) });
+    waitingSocket.emit('room:kickUser', { targetUserId: Number(targetUserId) });
   const nudgeUser = (targetUserId: string | number) =>
-    gameSocket.emit('room:nudgeUser', { targetUserId: Number(targetUserId) });
-  const leaveRoom = () => gameSocket.emit('room:leave');
+    waitingSocket.emit('room:nudgeUser', {
+      targetUserId: Number(targetUserId),
+    });
+  const leaveRoom = () => waitingSocket.emit('room:leave');
   const updateStatus = (status: 'IDLE' | 'SHOPPING' | 'CUSTOMIZING') => {
     if (status !== 'IDLE' && me?.isReady && !amIHost) {
-      gameSocket.emit('room:readyToggle');
+      waitingSocket.emit('room:readyToggle');
     }
 
-    gameSocket.emit('room:updateStatus', { status });
+    waitingSocket.emit('room:updateStatus', { status });
   };
 
   return {
