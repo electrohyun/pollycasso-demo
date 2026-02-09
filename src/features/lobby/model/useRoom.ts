@@ -121,17 +121,25 @@ export const useRoom = () => {
       });
     };
 
+    const handleStateSync = (newState: RoomState) => {
+      setRoomState(newState);
+    };
+
+    const handleConnect = () => {
+      joinRoom(initialPassword);
+    };
+
     gameSocket.on('room:joinSuccess', handleJoinSuccess);
     gameSocket.on('room:syncPlayerList', handleSyncPlayerList);
     gameSocket.on('room:updateRoom', handleUpdateRoom);
     gameSocket.on('room:updatePlayer', handleUpdatePlayer);
+    gameSocket.on('room:stateSync', handleStateSync);
+    gameSocket.on('connect', handleConnect);
 
     gameSocket.on('system:notification', handleSystemNotification);
 
     if (gameSocket.connected) {
       joinRoom(initialPassword);
-    } else {
-      gameSocket.once('connect', () => joinRoom(initialPassword));
     }
 
     return () => {
@@ -140,8 +148,10 @@ export const useRoom = () => {
       gameSocket.off('room:updateRoom', handleUpdateRoom);
       gameSocket.off('room:updatePlayer', handleUpdatePlayer);
       gameSocket.off('system:notification', handleSystemNotification);
+      gameSocket.off('room:stateSync', handleStateSync);
+      gameSocket.off('connect', handleConnect);
     };
-  }, [gameSocket, roomId, joinRoom, location.state?.password]);
+  }, [gameSocket, roomId, joinRoom, initialPassword, navigate]);
 
   const me = selectMe(roomState, myUserId ?? '');
   const isSolo = roomState?.settings?.gameMode === 'SOLO';
