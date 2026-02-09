@@ -38,7 +38,7 @@ export const useMainChat = () => {
   const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
 
   const [isChannelDropdownOpen, setIsChannelDropdownOpen] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messageListRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!chatSocket) return;
@@ -165,6 +165,13 @@ export const useMainChat = () => {
     setFilteredFriends([]);
   };
 
+  useEffect(() => {
+    messageListRef.current?.scrollTo({
+      top: messageListRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [messages]);
+
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.nativeEvent.isComposing) return;
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -180,7 +187,7 @@ export const useMainChat = () => {
     input,
     selected,
     filteredFriends,
-    messagesEndRef,
+    messageListRef,
     currentUserId,
     handleMentionOpen,
     handleKeyDown,
