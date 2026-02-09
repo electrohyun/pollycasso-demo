@@ -4,13 +4,13 @@ import {
   NoSymbolIcon,
   TrashIcon,
 } from '@heroicons/react/24/solid';
-
 import { getLevelBadgeColor } from '../lib/badgeColor';
 import type {
   FriendAction,
   FriendProfile,
   FriendRelation,
 } from '../model/types';
+import { getOutfitImageUrl, OUTFIT_LAYERS } from '@/shared/lib/cdn';
 
 interface FriendCardProps extends FriendProfile {
   relation: FriendRelation;
@@ -38,18 +38,28 @@ export const FriendCard = ({
 
   return (
     <div
-      className={`relative flex justify-between p-4 lg:p-5 h-24 lg:h-28 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow ${relation === 'BLOCKED' ? 'opacity-60 grayscale' : ''}`}
+      className={`relative flex justify-between p-4 lg:p-5 h-24 lg:h-28 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow ${
+        relation === 'BLOCKED' ? 'opacity-60 grayscale' : ''
+      }`}
     >
       <div className="flex items-center gap-x-3 lg:gap-x-4 overflow-hidden">
-        <div className="shrink-0 w-16 h-16 lg:w-18 lg:h-18 rounded-full bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center">
+        <div className="relative shrink-0 w-16 h-16 lg:w-18 lg:h-18 rounded-full bg-black/5 border border-gray-200 overflow-hidden flex items-center justify-center">
           {outfit ? (
-            <img
-              src={outfit}
-              alt="outfit"
-              className="w-full h-full object-cover"
-            />
+            OUTFIT_LAYERS.map((layer) => {
+              const partId = outfit[layer];
+              if (!partId) return null;
+              return (
+                <img
+                  key={layer}
+                  src={getOutfitImageUrl(partId)}
+                  alt={layer}
+                  className="absolute object-cover scale-[1.2] top-3"
+                  style={{ zIndex: OUTFIT_LAYERS.indexOf(layer) }}
+                />
+              );
+            })
           ) : (
-            <span className="text-gray-300 text-xs">No Outfit</span>
+            <span className="text-gray-300 text-xs font-medium">No Outfit</span>
           )}
         </div>
 
@@ -59,12 +69,16 @@ export const FriendCard = ({
           </span>
           <div className="flex items-center gap-x-2 mt-1">
             <span
-              className={`w-12 lg:w-14 h-6 lg:h-7 flex items-center justify-center text-sm text-white lg:text-base rounded-[6px] tabular-nums ${getLevelBadgeColor(level)}`}
+              className={`w-12 lg:w-14 h-6 lg:h-7 flex items-center justify-center text-sm text-white lg:text-base rounded-[6px] tabular-nums ${getLevelBadgeColor(
+                level,
+              )}`}
             >
               {safeTag}
             </span>
             <span
-              className={`text-lg lg:text-xl truncate font-semibold ${isOnline ? 'text-green-500' : 'text-gray-400'}`}
+              className={`text-lg lg:text-xl truncate font-semibold ${
+                isOnline ? 'text-green-500' : 'text-gray-400'
+              }`}
             >
               {isOnline ? '게임 중' : '오프라인'}
             </span>
@@ -122,7 +136,7 @@ export const FriendCard = ({
             onClick={() =>
               handleActionClick('CANCEL', '친구 신청을 취소하시겠습니까?')
             }
-            className="px-3 py-1 bg-gray-700 hover:bg-gray-800 text-white text-sm lg:text-base font-bold rounded-lg transition-colors"
+            className="px-4 py-1.5 bg-gray-700 hover:bg-gray-800 text-white text-sm lg:text-base font-bold rounded-lg transition-colors shadow-sm"
           >
             취소
           </button>
@@ -132,7 +146,7 @@ export const FriendCard = ({
           <div className="flex items-center gap-x-2">
             <button
               onClick={() => handleActionClick('ACCEPT')}
-              className="px-3 py-1 bg-[#2ADB75] hover:bg-[#25c468] text-white text-sm lg:text-base font-bold rounded-lg shadow-sm transition-all"
+              className="px-4 py-1.5 bg-[#2ADB75] hover:bg-[#25c468] text-white text-sm lg:text-base font-bold rounded-lg shadow-md transition-all active:scale-95"
             >
               수락
             </button>
@@ -140,7 +154,7 @@ export const FriendCard = ({
               onClick={() =>
                 handleActionClick('REJECT', '친구 신청을 거절하시겠습니까?')
               }
-              className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm lg:text-base font-bold rounded-lg transition-colors"
+              className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm lg:text-base font-bold rounded-lg transition-colors"
             >
               거절
             </button>
@@ -152,7 +166,7 @@ export const FriendCard = ({
             onClick={() =>
               handleActionClick('UNBLOCK', '차단을 해제하시겠습니까?')
             }
-            className="text-xs lg:text-sm text-red-500 font-bold border border-red-200 px-2 py-1 rounded hover:bg-red-50 transition-colors"
+            className="text-xs lg:text-sm text-red-500 font-bold border border-red-200 px-2.5 py-1 rounded-md hover:bg-red-50 transition-colors bg-white/50"
           >
             차단됨
           </button>

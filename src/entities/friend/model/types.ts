@@ -1,3 +1,5 @@
+import type { Outfit } from '@/shared/model';
+
 export type FriendRelation =
   | 'FRIEND'
   | 'REQUEST_SENT'
@@ -7,7 +9,7 @@ export type FriendRelation =
 export interface FriendProfile {
   userId: number | string;
   nickname: string;
-  outfit?: string;
+  outfit: Outfit;
   level: number;
   isOnline: boolean;
 }

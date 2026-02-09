@@ -1,7 +1,7 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
-
 import { getLevelBadgeColor } from '../lib/badgeColor';
 import type { FriendProfile } from '../model/types';
+import { getOutfitImageUrl, OUTFIT_LAYERS } from '@/shared/lib/cdn';
 
 interface RecommendedFriendCardProps extends FriendProfile {
   className?: string;
@@ -24,13 +24,22 @@ export const RecommendedFriendCard = ({
   return (
     <div className={`flex items-center justify-between p-4 ${className}`}>
       <div className="flex items-center gap-x-4 overflow-hidden">
-        <div className="shrink-0 w-14 h-14 rounded-full bg-white overflow-hidden flex items-center justify-center border border-gray-200">
+        <div className="relative shrink-0 w-14 h-14 rounded-full bg-black/20 overflow-hidden flex items-center justify-center border border-gray-200">
           {outfit ? (
-            <img
-              src={outfit}
-              alt={`${displayName}의 아바타`}
-              className="w-full h-full object-cover"
-            />
+            OUTFIT_LAYERS.map((layer) => {
+              const partId = outfit[layer];
+              if (!partId) return null;
+
+              return (
+                <img
+                  key={layer}
+                  src={getOutfitImageUrl(partId)}
+                  alt={layer}
+                  className="absolute object-cover scale-[1.1] top-3"
+                  style={{ zIndex: OUTFIT_LAYERS.indexOf(layer) }}
+                />
+              );
+            })
           ) : (
             <div className="w-full h-full bg-gray-100" />
           )}

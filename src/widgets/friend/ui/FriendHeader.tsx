@@ -6,9 +6,14 @@ import { AddFriendButton } from '@/features/add-friend';
 interface FriendHeaderProps {
   value: string;
   onChange: (value: string) => void;
+  recommendedFriends: any[];
 }
 
-export const FriendHeader = ({ value, onChange }: FriendHeaderProps) => {
+export const FriendHeader = ({
+  value,
+  onChange,
+  recommendedFriends,
+}: FriendHeaderProps) => {
   return (
     <div className="flex items-center justify-between pl-4 pr-5 pt-10 w-full">
       <span className="mb-10 text-white text-5xl font-bold tracking-tight">
@@ -20,7 +25,7 @@ export const FriendHeader = ({ value, onChange }: FriendHeaderProps) => {
           <BellIcon className="w-8 h-8 text-white" />
         </button>
 
-        <AddFriendButton />
+        <AddFriendButton recommendedFriends={recommendedFriends} />
 
         <div className="flex items-center w-[450px] mr-6 h-12 bg-white rounded-2xl overflow-hidden shadow-xl focus-within:ring-2 focus-within:ring-[#2ADB75] transition-all">
           <input

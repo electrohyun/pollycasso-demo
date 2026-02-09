@@ -5,7 +5,6 @@ import { RootLayout } from '@/shared/ui/RootLayout';
 import { Spinner } from '@/shared/ui/Spinner';
 import PrivateRoute from './PrivateRoute';
 import { GameSocketProvider } from '@/shared/api/socket/GameSocketProvider';
-import { ChatSocketProvider } from '@/shared/api/socket/ChatSocketProvider';
 
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const LoginCallbackPage = lazy(() => import('@/pages/LoginCallbackPage'));
@@ -34,24 +33,20 @@ const router = createBrowserRouter([
       { path: '/auth/callback', element: <LoginCallbackPage /> },
       { path: '/signup', element: <SignupPage /> },
       { path: '/welcome', element: <WelcomePage /> },
-      { path: '/friend', element: <FriendPage /> },
-      { path: '/shop', element: <ShopPage /> },
-      { path: '/Wardrobe', element: <WardrobePage /> },
-      { path: '/dev/gameWidget', element: <GameWidget /> },
-      { path: '/ranking', element: <RankingPage /> },
-      { path: '/mypage', element: <MyPage /> },
 
       {
         element: <PrivateRoute />,
         children: [
           {
-            element: (
-              <ChatSocketProvider>
-                <Outlet />
-              </ChatSocketProvider>
-            ),
+            element: <Outlet />,
             children: [
               { path: '/', element: <MainPage /> },
+              { path: '/friend', element: <FriendPage /> },
+              { path: '/shop', element: <ShopPage /> },
+              { path: '/wardrobe', element: <WardrobePage /> },
+              { path: '/ranking', element: <RankingPage /> },
+              { path: '/mypage', element: <MyPage /> },
+              { path: '/dev/gameWidget', element: <GameWidget /> },
               {
                 path: '/rooms/:roomId',
                 element: (
@@ -71,7 +66,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: '/admin',
     element: (
@@ -84,7 +78,6 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
-
   {
     path: '*',
     element: (
