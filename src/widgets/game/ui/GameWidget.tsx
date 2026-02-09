@@ -13,16 +13,17 @@ import { DrawingPhase } from '@/features/game-drawing';
 import { EvaluatingPhase } from '@/features/game-evaluating';
 import { RoundSummaryPhase } from '@/features/game-round-summary';
 import { FinishedPhase } from '@/features/game-finished';
-import { SOCKET_EVENTS, useSocket } from '@/shared/api/socket';
 import { PHASE_TIME } from '@/shared/model';
 import { useGameState } from '../model/useGameState';
 import { useGameSubmission } from '../model/useGameSubmission';
 import { useThemeInput } from '../model/useThemeInput';
 import { useThemeSelecting } from '../model/useThemeSelecting';
+import { useGameSocket } from '@/shared/api/socket/GameSocketProvider';
+import { SOCKET_EVENTS } from '@/shared/api/socket';
 
 const GameWidget = () => {
   const { status, players, endsAt, inventory, currentTheme } = useGameState();
-  const { socket } = useSocket();
+  const { gameSocket } = useGameSocket();
   const { user } = useAuthStore();
 
   const { completedCount, totalCount, isMeReady, toggleReady } =
@@ -39,11 +40,11 @@ const GameWidget = () => {
         alert('주제를 입력해주세요!');
         return;
       }
-      socket?.emit(SOCKET_EVENTS.GAME_THEME_SUBMIT, { theme: localInput });
+      gameSocket?.emit(SOCKET_EVENTS.GAME_THEME_SUBMIT, { theme: localInput });
       return;
     }
     toggleReady();
-  }, [status, isMyTurn, localInput, socket, toggleReady]);
+  }, [status, isMyTurn, localInput, gameSocket, toggleReady]);
 
   const totalTime = useMemo(() => {
     switch (status) {
