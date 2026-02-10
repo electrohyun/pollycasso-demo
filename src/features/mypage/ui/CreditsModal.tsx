@@ -27,7 +27,7 @@ export const CreditsModal = ({ onClose }: CreditsModalProps) => {
           </p>
           <p className="text-lg font-medium">🎧 Title: Silver Wind</p>
           <p className="text-lg font-medium">
-            https://soundapply.com/music/27464
+            http://soundapply.com/music/30135
           </p>
 
           <p className="text-lg font-medium">🎧 Title: Vivid Luv</p>

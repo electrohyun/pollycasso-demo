@@ -22,9 +22,9 @@ export const CreatorsModal = ({ onClose }: CreatorsModalProps) => {
           <p className="text-2xl font-bold text-green-700">
             Modern Agile 10term
           </p>
-          <p className="text-xl font-medium">Seohyun Lim, Jisoo Kim</p>
+          <p className="text-xl font-medium">Seohyun Lim, Jisue Kim</p>
           <p className="text-xl font-medium">
-            Gihyeon Jeong, Jieun Yoon, Donghoon Kim
+            Gihyeon Jeong, Jieun Youn, Donghun Lee
           </p>
         </div>
 
