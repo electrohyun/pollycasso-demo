@@ -6,12 +6,36 @@ import { profileUpdateSchema, type ProfileFormValues } from '../model/schema';
 import { Spinner } from '@/shared/ui/Spinner';
 import type { ApiFailureResponse } from '@/shared/api';
 import { isAxiosError } from 'axios';
+import { useSound } from '@/entities/sound';
+import { SoundManager } from '@/shared/api/sound/manager';
+import { SOUND_ASSETS } from '@/shared/api/sound/assets';
+import { overlay } from 'overlay-kit';
+import { CreditsModal } from './CreditsModal';
+import { CreatorsModal } from '@/features/mypage/ui/CreatorsModal';
 
 interface ProfileSectionProps {
   user: User;
 }
 
 export const ProfileSection = ({ user }: ProfileSectionProps) => {
+  const { sfxVolume, isMuted } = useSound();
+
+  const playClick = () => {
+    if (!isMuted) {
+      SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
+    }
+  };
+
+  const handleOpenCreators = () => {
+    playClick();
+    overlay.open(({ unmount }) => <CreatorsModal onClose={unmount} />);
+  };
+
+  const handleOpenCredits = () => {
+    playClick();
+    overlay.open(({ unmount }) => <CreditsModal onClose={unmount} />);
+  };
+
   const {
     register,
     handleSubmit,
@@ -30,6 +54,8 @@ export const ProfileSection = ({ user }: ProfileSectionProps) => {
   });
 
   const onSubmit = async (data: ProfileFormValues) => {
+    playClick();
+
     if (data.currentPassword && !data.newPassword) {
       setError('newPassword', {
         type: 'manual',
@@ -61,7 +87,6 @@ export const ProfileSection = ({ user }: ProfileSectionProps) => {
 
     try {
       // TODO: API 호출로 프로필 수정
-
       alert('수정이 완료되었습니다.');
     } catch (error) {
       if (!isAxiosError<ApiFailureResponse>(error)) {
@@ -166,6 +191,27 @@ export const ProfileSection = ({ user }: ProfileSectionProps) => {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="mr-10 mt-16 flex flex-col justify-center items-end gap-y-5">
+        <button
+          type="button"
+          onClick={handleOpenCreators}
+          className="group relative flex flex-col items-center justify-center w-[160px] h-[70px] rounded-3xl hover:border-green-500 transition-all bg-[#003D00] shadow-lg active:scale-95"
+        >
+          <span className="text-3xl font-light text-white group-hover:text-white/90 transition-colors">
+            만든 사람들!
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={handleOpenCredits}
+          className="group relative flex flex-col items-center justify-center w-[160px] h-[70px] rounded-3xl hover:border-green-500 transition-all bg-[#003D00] shadow-lg active:scale-95"
+        >
+          <span className="text-3xl font-light text-white group-hover:text-white/90 transition-colors">
+            Credits
+          </span>
+        </button>
       </div>
 
       <div className="absolute -bottom-20 right-10">
