@@ -1,20 +1,12 @@
 import { useSoundStore } from '@/entities/sound';
+import { useEnvironmentStore } from '@/entities/environment';
 import { SoundManager } from '@/shared/api/sound/manager';
 import { RangeSlider } from './RangeSlider';
-import { useState } from 'react';
 import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
 export const SettingsSection = () => {
   const { bgmVolume, sfxVolume, setBgmVolume, setSfxVolume } = useSoundStore();
-
-  const [leafCount, setLeafCount] = useState(
-    () => Number(localStorage.getItem('leafCount')) || 8,
-  );
-
-  const handleSaveSettings = () => {
-    localStorage.setItem('leafCount', String(leafCount));
-    alert('환경설정이 저장되었습니다!');
-  };
+  const { leafCount, setLeafCount } = useEnvironmentStore();
 
   return (
     <div className="relative w-full h-[520px] pt-4 flex flex-col gap-14">
@@ -54,16 +46,6 @@ export const SettingsSection = () => {
         description="* 개수를 줄이면 성능이 향상됩니다."
         onChange={(e) => setLeafCount(Number(e.target.value))}
       />
-
-      <div className="absolute -bottom-20 right-10">
-        <button
-          type="button"
-          onClick={handleSaveSettings}
-          className="w-[160px] h-[70px] bg-transparent border-2 border-white text-white text-3xl rounded-full hover:border-green-400 hover:text-green-400 transition-all shadow-lg font-bold"
-        >
-          적용
-        </button>
-      </div>
     </div>
   );
 };
