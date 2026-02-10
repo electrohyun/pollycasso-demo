@@ -4,14 +4,14 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router';
 import { RootLayout } from '@/shared/ui/RootLayout';
 import { Spinner } from '@/shared/ui/Spinner';
 import PrivateRoute from './PrivateRoute';
-import { GameSocketProvider } from '@/shared/api/socket/GameSocketProvider';
+import { WaitingSocketProvider } from '@/shared/api/socket/WaitingSocketProvider';
 
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const LoginCallbackPage = lazy(() => import('@/pages/LoginCallbackPage'));
 const SignupPage = lazy(() => import('@/pages/SignupPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const MainPage = lazy(() => import('@/pages/MainPage'));
-const RoomPage = lazy(() => import('@/pages/RoomPage'));
+const GamePage = lazy(() => import('@/pages/GamePage'));
 const GameWidget = lazy(() => import('@/widgets/game/ui/GameWidget'));
 const FriendPage = lazy(() => import('@/pages/FriendPage'));
 const ShopPage = lazy(() => import('@/pages/ShopPage'));
@@ -50,12 +50,12 @@ const router = createBrowserRouter([
               {
                 path: '/rooms/:roomId',
                 element: (
-                  <GameSocketProvider>
+                  <WaitingSocketProvider>
                     <Outlet />
-                  </GameSocketProvider>
+                  </WaitingSocketProvider>
                 ),
                 children: [
-                  { index: true, element: <RoomPage /> },
+                  { index: true, element: <GamePage /> },
                   { path: 'shop', element: <ShopPage /> },
                   { path: 'wardrobe', element: <WardrobePage /> },
                 ],

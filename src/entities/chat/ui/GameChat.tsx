@@ -4,7 +4,7 @@ import { ChatSendButton } from './ChatSendButton';
 import { MessageList } from './MessageList';
 
 export const GameChat = () => {
-  const { state, actions, messagesEndRef } = useGameChat();
+  const { state, actions, messageListRef } = useGameChat();
 
   return (
     <div className="flex flex-col w-full h-full bg-white/40 rounded-2xl overflow-hidden border border-white/5">

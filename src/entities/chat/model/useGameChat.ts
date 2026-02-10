@@ -2,21 +2,20 @@ import type { KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAuthStore } from '@/entities/user';
-import { useGameSocket } from '@/shared/api/socket/GameSocketProvider';
+import { useWaitingSocket } from '@/shared/api/socket/WaitingSocketProvider';
 import type { ChatMessage } from '@/shared/model';
 
 export const useGameChat = () => {
-  const { gameSocket } = useGameSocket();
+  const { waitingSocket } = useWaitingSocket();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
-  const [isComposing, setIsComposing] = useState(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messageListRef = useRef<HTMLDivElement>(null);
   const MY_USER_ID = useAuthStore((state) => state.user?.id);
 
   useEffect(() => {
-    if (!gameSocket) return;
+    if (!waitingSocket) return;
 
     const handleNewMessage = (newMsg: ChatMessage) => {
       setMessages((prev) => [...prev, newMsg]);
@@ -26,26 +25,26 @@ export const useGameChat = () => {
       setMessages((prev) => [...prev, { ...sysMsg, channel: 'system' }]);
     };
 
-    gameSocket.on('room:message', handleNewMessage);
-    gameSocket.on('chat:systemMessage', handleSystemMessage);
+    waitingSocket.on('room:message', handleNewMessage);
+    waitingSocket.on('chat:systemMessage', handleSystemMessage);
 
     return () => {
-      gameSocket.off('room:message', handleNewMessage);
-      gameSocket.off('chat:systemMessage', handleSystemMessage);
+      waitingSocket.off('room:message', handleNewMessage);
+      waitingSocket.off('chat:systemMessage', handleSystemMessage);
     };
-  }, [gameSocket]);
+  }, [waitingSocket]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollTo({
-      top: messagesEndRef.current.scrollHeight,
+    messageListRef.current?.scrollTo({
+      top: messageListRef.current.scrollHeight,
       behavior: 'smooth',
     });
   }, [messages]);
 
   const handleSendMessage = () => {
-    if (!input.trim() || !gameSocket) return;
+    if (!input.trim() || !waitingSocket) return;
 
-    gameSocket.emit('room:send', {
+    waitingSocket.emit('room:send', {
       channel: 'global',
       message: input.trim(),
     });
@@ -53,7 +52,9 @@ export const useGameChat = () => {
     setInput('');
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSendMessage();
@@ -61,7 +62,7 @@ export const useGameChat = () => {
   };
 
   return {
-    messagesEndRef,
+    messageListRef,
     state: {
       messages,
       input,
@@ -69,7 +70,6 @@ export const useGameChat = () => {
     },
     actions: {
       setInput,
-      setIsComposing,
       handleSendMessage,
       handleKeyDown,
     },
