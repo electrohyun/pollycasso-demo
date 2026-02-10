@@ -18,7 +18,7 @@ import { MaxPlayerSelector } from './MaxPlayerSelector';
 import { PasswordInput } from './PasswordInput';
 import { RoomTitleInput } from './RoomTitleInput';
 import { VisibilitySelector } from './VisibilitySelector';
-import { getGameSocket } from '@/shared/api/socket';
+import { getWaitingSocket } from '@/shared/api/socket';
 
 import { useSound } from '@/entities/sound';
 import { SoundManager } from '@/shared/api/sound/manager';
@@ -126,9 +126,9 @@ export const CreateRoomModal = () => {
     playClick();
 
     if (isEdit) {
-      const gameSocket = getGameSocket();
+      const waitingSocket = getWaitingSocket();
 
-      gameSocket.emit('room:updateSettings', {
+      waitingSocket.emit('room:updateSettings', {
         name: data.name,
         mode: data.mode,
         maxPlayers: data.maxPlayers,
