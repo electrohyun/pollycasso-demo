@@ -9,11 +9,15 @@ import {
   selectTopBottomTeams,
 } from './roomSelectors';
 import { ENTRY_ERROR_MESSAGES } from '../constants/messages';
+import { useSound } from '@/entities/sound';
+import { SOUND_ASSETS } from '@/shared/api/sound/assets';
+import { SoundManager } from '@/shared/api/sound/manager';
 
 export const useRoom = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { roomId } = useParams<{ roomId: string }>();
+  const { sfxVolume, isMuted } = useSound();
   const { user } = useAuthStore();
   const gameSocket = getGameSocket();
 
@@ -68,6 +72,8 @@ export const useRoom = () => {
             break;
 
           case 'ROOM_KICKED':
+            if (!isMuted)
+              SoundManager.playSfx(SOUND_ASSETS.SFX.LOBBY_KICK, sfxVolume);
             navigate('/', {
               state: { isKicked: true },
               replace: true,
@@ -95,12 +101,16 @@ export const useRoom = () => {
 
     const handleSyncPlayerList = ({ players }: { players: Player[] }) => {
       setRoomState((prev) => (prev ? { ...prev, players } : null));
+      if (!isMuted)
+        SoundManager.playSfx(SOUND_ASSETS.SFX.LOBBY_JOINED, sfxVolume);
     };
 
     const handleUpdateRoom = ({ roomSettings }: { roomSettings: any }) => {
       setRoomState((prev) =>
         prev ? { ...prev, settings: roomSettings } : null,
       );
+      if (!isMuted)
+        SoundManager.playSfx(SOUND_ASSETS.SFX.LOBBY_JOINED2, sfxVolume);
     };
 
     const handleUpdatePlayer = ({
@@ -112,6 +122,8 @@ export const useRoom = () => {
     }) => {
       setRoomState((prev) => {
         if (!prev) return null;
+        if (!isMuted)
+          SoundManager.playSfx(SOUND_ASSETS.SFX.LOBBY_JOINED, sfxVolume);
         return {
           ...prev,
           players: prev.players.map((p) =>
