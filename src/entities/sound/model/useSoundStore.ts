@@ -14,8 +14,8 @@ interface SoundState {
 export const useSoundStore = create<SoundState>()(
   persist(
     (set) => ({
-      bgmVolume: 0.5,
-      sfxVolume: 0.8,
+      bgmVolume: 0.1,
+      sfxVolume: 0.3,
       isMuted: true,
       setBgmVolume: (v) => set({ bgmVolume: v }),
       setSfxVolume: (v) => set({ sfxVolume: v }),
