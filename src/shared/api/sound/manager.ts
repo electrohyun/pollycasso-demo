@@ -1,4 +1,3 @@
-// @/shared/api/sound/manager.ts
 import { Howl, Howler } from 'howler';
 
 export class SoundManager {
@@ -11,7 +10,6 @@ export class SoundManager {
     }
   }
 
-  // --- BGM 로직 ---
   static playBgm(url: string, volume: number) {
     if (this.currentBgmUrl === url && this.bgm) {
       this.bgm.volume(volume);
@@ -46,16 +44,15 @@ export class SoundManager {
     if (this.bgm) this.bgm.volume(volume);
   }
 
-  // --- SFX 로직 (부활!) ---
   static playSfx(url: string, volume: number) {
     if (!url) return;
 
     const sfx = new Howl({
       src: [url],
       volume: volume,
-      html5: false, // 효과음은 반응성이 중요하므로 Web Audio API 사용
+      html5: false,
       onend: () => {
-        sfx.unload(); // 재생 완료 후 즉시 메모리 해제
+        sfx.unload();
       },
       onloaderror: () => {
         console.error('SFX 로드 실패:', url);

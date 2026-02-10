@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo } from 'react';
 import type { FC, ReactNode } from 'react';
 import { SoundManager } from '@/shared/api/sound/manager';
 import { SOUND_ASSETS } from '@/shared/api/sound/assets';
-import { useSoundStore } from './soundStore';
+import { useSoundStore } from './useSoundStore';
 
 interface SoundContextType {
   bgmVolume: number;

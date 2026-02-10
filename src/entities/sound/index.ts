@@ -1,2 +1,2 @@
-export { useSoundStore } from './model/soundStore';
+export { useSoundStore } from './model/useSoundStore';
 export { SoundProvider } from './model/SoundProvider';

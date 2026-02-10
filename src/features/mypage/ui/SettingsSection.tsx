@@ -1,20 +1,17 @@
-import { useState } from 'react';
+import { useSoundStore } from '@/entities/sound';
+import { SoundManager } from '@/shared/api/sound/manager';
 import { RangeSlider } from './RangeSlider';
+import { useState } from 'react';
+import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
 export const SettingsSection = () => {
-  const [bgmVolume, setBgmVolume] = useState(
-    () => Number(localStorage.getItem('bgmVolume')) || 50,
-  );
-  const [sfxVolume, setSfxVolume] = useState(
-    () => Number(localStorage.getItem('sfxVolume')) || 80,
-  );
+  const { bgmVolume, sfxVolume, setBgmVolume, setSfxVolume } = useSoundStore();
+
   const [leafCount, setLeafCount] = useState(
     () => Number(localStorage.getItem('leafCount')) || 8,
   );
 
   const handleSaveSettings = () => {
-    localStorage.setItem('bgmVolume', String(bgmVolume));
-    localStorage.setItem('sfxVolume', String(sfxVolume));
     localStorage.setItem('leafCount', String(leafCount));
     alert('환경설정이 저장되었습니다!');
   };
@@ -23,20 +20,28 @@ export const SettingsSection = () => {
     <div className="relative w-full h-[520px] pt-4 flex flex-col gap-14">
       <RangeSlider
         label="배경음악 크기 (Background Music)"
-        value={bgmVolume}
+        value={Math.round(bgmVolume * 100)}
         min={0}
         max={100}
         unit="%"
-        onChange={(e) => setBgmVolume(Number(e.target.value))}
+        onChange={(e) => {
+          const val = Number(e.target.value) / 100;
+          setBgmVolume(val);
+          SoundManager.setBgmVolume(val);
+        }}
       />
 
       <RangeSlider
         label="효과음 크기 (Sounds Effect)"
-        value={sfxVolume}
+        value={Math.round(sfxVolume * 100)}
         min={0}
         max={100}
         unit="%"
-        onChange={(e) => setSfxVolume(Number(e.target.value))}
+        onChange={(e) => {
+          const val = Number(e.target.value) / 100;
+          setSfxVolume(val);
+          SoundManager.playSfx(SOUND_ASSETS.SFX.ROUND_SUMMARY, val);
+        }}
       />
 
       <RangeSlider

@@ -5,6 +5,7 @@ import { RootLayout } from '@/shared/ui/RootLayout';
 import { Spinner } from '@/shared/ui/Spinner';
 import PrivateRoute from './PrivateRoute';
 import { GameSocketProvider } from '@/shared/api/socket/GameSocketProvider';
+import { SoundProvider } from '@/entities/sound';
 
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const LoginCallbackPage = lazy(() => import('@/pages/LoginCallbackPage'));
@@ -25,7 +26,9 @@ const router = createBrowserRouter([
   {
     element: (
       <Suspense fallback={<Spinner fixed size="xl" message="로딩중..." />}>
-        <RootLayout />
+        <SoundProvider>
+          <RootLayout />
+        </SoundProvider>
       </Suspense>
     ),
     children: [

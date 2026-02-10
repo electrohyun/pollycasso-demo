@@ -5,6 +5,7 @@ import type { LeafData } from '@/shared/lib';
 import { cn, createLeafData } from '@/shared/lib';
 import { Leaf } from '@/shared/ui/Leaf';
 import { ROUTE_CONFIG } from '@/shared/ui/RootLayout/RootLayout.config';
+import { SoundButton } from '@/features/sound';
 
 export const RootLayout = () => {
   const { pathname } = useLocation();
@@ -29,6 +30,8 @@ export const RootLayout = () => {
         )}
         style={{ backgroundImage: `url(${currentConfig.image})` }}
       />
+
+      <SoundButton />
 
       {leafData.map((leaf, index) => (
         <Leaf key={index} {...leaf} />
