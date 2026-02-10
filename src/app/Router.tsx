@@ -4,8 +4,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router';
 import { RootLayout } from '@/shared/ui/RootLayout';
 import { Spinner } from '@/shared/ui/Spinner';
 import PrivateRoute from './PrivateRoute';
-import { GameSocketProvider } from '@/shared/api/socket/GameSocketProvider';
-import { SoundProvider } from '@/entities/sound';
+// import { GameSocketProvider } from '@/shared/api/socket/GameSocketProvider';
+// import { SoundProvider } from '@/entities/sound';
 import { WaitingSocketProvider } from '@/shared/api/socket/WaitingSocketProvider';
 
 const LoginPage = lazy(() => import('@/pages/LoginPage'));

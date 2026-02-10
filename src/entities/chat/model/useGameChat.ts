@@ -9,7 +9,7 @@ import { SoundManager } from '@/shared/api/sound/manager';
 import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
 export const useGameChat = () => {
-  const { gameSocket } = useGameSocket();
+  // const { gameSocket } = useGameSocket();
   const { sfxVolume, isMuted } = useSound();
   const { waitingSocket } = useWaitingSocket();
 
