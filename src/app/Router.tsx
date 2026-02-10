@@ -26,9 +26,7 @@ const router = createBrowserRouter([
   {
     element: (
       <Suspense fallback={<Spinner fixed size="xl" message="로딩중..." />}>
-        <SoundProvider>
-          <RootLayout />
-        </SoundProvider>
+        <RootLayout />
       </Suspense>
     ),
     children: [
