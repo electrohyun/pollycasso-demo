@@ -3,6 +3,7 @@ import type { Product } from '../model/types';
 import { cn } from '@/shared/lib';
 import { getShopItemUrl } from '@/shared/lib/assets';
 import { getLevelColor } from '@/shared/lib/color';
+import { SHOP_CATEGORIES } from '@/features/shop/constants/shop.constants';
 
 interface ProductItemProps {
   product: Product;
@@ -21,11 +22,13 @@ export const ProductCard = ({
   onAddToCart,
   onWearItem,
 }: ProductItemProps) => {
-  const isButtonDisabled = isInCart || isBuyDisabled;
+  const isConsumable = product.subCategory === SHOP_CATEGORIES.ITEM;
+
+  const isButtonDisabled = !isConsumable && (isInCart || isBuyDisabled);
 
   const getButtonText = () => {
-    if (isBuyDisabled) return '구매됨';
-    if (isInCart) return '담김';
+    if (isBuyDisabled && !isConsumable) return '구매됨';
+    if (isInCart && !isConsumable) return '담김';
     return '담기';
   };
 
