@@ -12,6 +12,7 @@ export const OUTFIT_LAYERS: (keyof Outfit)[] = [
   'effect',
 ];
 
+// TODO: assets.ts와 통합
 export const getOutfitImageUrl = (id: string) => {
-  return `${CDN_BASE_URL}/outfit_${id}.svg?tr=orig`;
+  return `${CDN_BASE_URL}/outfit_${id}.svg?tr=orig&v=2`;
 };
