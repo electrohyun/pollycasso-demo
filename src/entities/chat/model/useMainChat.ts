@@ -18,10 +18,14 @@ import { useChatSocket } from '@/shared/api/socket/ChatSocketProvider';
 import { useFriendSocket } from '@/shared/api/socket/FriendSocketProvider';
 import type { ChatMessage, Friend } from '@/shared/model';
 import { getSystemMessageText } from '../lib/message.lib';
+import { useSound } from '@/entities/sound';
+import { SoundManager } from '@/shared/api/sound/manager';
+import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
 export const useMainChat = () => {
   const { chatSocket } = useChatSocket();
   const { friendSocket } = useFriendSocket();
+  const { sfxVolume, isMuted } = useSound();
   const user = useAuthStore((state) => state.user);
   const currentUserId = user?.id;
 
@@ -44,6 +48,7 @@ export const useMainChat = () => {
     if (!chatSocket) return;
 
     const handleLobbyMessage = (message: ChatMessage) => {
+      if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CHAT, sfxVolume);
       setMessages((prev) => [...prev, message]);
     };
 
@@ -60,6 +65,7 @@ export const useMainChat = () => {
         channel: 'system',
         createdAt: new Date().toISOString(),
       };
+      if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CHAT, sfxVolume);
       setMessages((prev) => [...prev, systemMessage]);
     };
 
@@ -70,7 +76,7 @@ export const useMainChat = () => {
       chatSocket.off('lobby:message', handleLobbyMessage);
       chatSocket.off('system:notification', handleSystemNotification);
     };
-  }, [chatSocket]);
+  }, [chatSocket, isMuted, sfxVolume]);
 
   useEffect(() => {
     if (!friendSocket) return;
@@ -161,6 +167,7 @@ export const useMainChat = () => {
       });
     }
 
+    if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CHAT, sfxVolume);
     setInput('');
     setFilteredFriends([]);
   };
