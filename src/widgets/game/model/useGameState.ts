@@ -15,14 +15,19 @@ export const useGameState = () => {
   useEffect(() => {
     if (!gameSocket) return;
 
-    const handleStateSync = (newState: RoomState) => {
-      setRoomState(newState);
+    const handleUpdate = (payload: any) => {
+      console.log('📢 Game Event Received:', payload);
+      // 백엔드에서 준 payload가 전체 RoomState인지, 일부 업데이트인지에 따라 처리
+      setRoomState((prev) => ({
+        ...prev,
+        ...payload,
+        status: payload.phase || payload.status || prev.status, // 백엔드 필드명(phase) 대응
+      }));
     };
 
-    gameSocket.on(SOCKET_EVENTS.ROOM_STATE_SYNC, handleStateSync);
-
     return () => {
-      gameSocket.off(SOCKET_EVENTS.ROOM_STATE_SYNC, handleStateSync);
+      gameSocket.off('room:stateSync', handleUpdate);
+      gameSocket.off('room:updateGameState', handleUpdate);
     };
   }, [gameSocket]);
 
