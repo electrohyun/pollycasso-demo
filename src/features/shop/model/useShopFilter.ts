@@ -10,8 +10,7 @@ export const useShopFilter = () => {
 
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [activeSort, setActiveSort] = useState<SortType>('POPULAR');
-  const [activeCategory, setActiveCategory] =
-    useState<CategoryType>('ACCESSORY');
+  const [activeCategory, setActiveCategory] = useState<CategoryType>('TOP');
 
   const toggleSortOpen = () => {
     if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
