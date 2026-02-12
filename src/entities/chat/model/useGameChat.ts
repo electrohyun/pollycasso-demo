@@ -4,8 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useAuthStore } from '@/entities/user';
 import { useWaitingSocket } from '@/shared/api/socket/WaitingSocketProvider';
 import type { ChatMessage } from '@/shared/model';
+import { useSound } from '@/entities/sound';
+import { SoundManager } from '@/shared/api/sound/manager';
+import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
 export const useGameChat = () => {
+  // const { gameSocket } = useGameSocket();
+  const { sfxVolume, isMuted } = useSound();
   const { waitingSocket } = useWaitingSocket();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -18,10 +23,12 @@ export const useGameChat = () => {
     if (!waitingSocket) return;
 
     const handleNewMessage = (newMsg: ChatMessage) => {
+      if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CHAT, sfxVolume);
       setMessages((prev) => [...prev, newMsg]);
     };
 
     const handleSystemMessage = (sysMsg: ChatMessage) => {
+      if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CHAT, sfxVolume);
       setMessages((prev) => [...prev, { ...sysMsg, channel: 'system' }]);
     };
 

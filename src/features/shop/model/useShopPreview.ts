@@ -4,10 +4,14 @@ import {
   CATEGORY_TO_OUTFIT_KEY,
   SHOP_CATEGORIES,
 } from '@/features/shop/constants/shop.constants';
+import { useSound } from '@/entities/sound';
+import { SoundManager } from '@/shared/api/sound/manager';
+import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
 const ONE_PIECE_IMAGES = ['top_32', 'top_33', 'top_34', 'top_35'];
 
 export const useShopPreview = () => {
+  const { sfxVolume, isMuted } = useSound();
   const [previewItems, setPreviewItems] = useState<Product[]>([]);
 
   const wearItem = (product: Product) => {
@@ -19,6 +23,7 @@ export const useShopPreview = () => {
     setPreviewItems((prev) => {
       const isAlreadyWearing = prev.some((item) => item.id === product.id);
       if (isAlreadyWearing) {
+        if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
         return prev.filter((item) => item.id !== product.id);
       }
 
@@ -28,6 +33,7 @@ export const useShopPreview = () => {
             item.subCategory === SHOP_CATEGORIES.BIRD ||
             item.subCategory === SHOP_CATEGORIES.EFFECT,
         );
+        if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
         return [...preservedItems, product];
       }
 
@@ -46,12 +52,14 @@ export const useShopPreview = () => {
         return itemKey !== targetKey;
       });
 
+      if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
       return [...filtered, product];
     });
   };
 
   const resetPreview = () => {
     setPreviewItems([]);
+    if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
   };
 
   return { previewItems, wearItem, resetPreview };

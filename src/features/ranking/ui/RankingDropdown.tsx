@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import type { RankingCriteria } from '../model/types';
 import { CRITERIA_LABELS } from '../constants/constants';
+import { useSound } from '@/entities/sound';
+import { SoundManager } from '@/shared/api/sound/manager';
+import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
 interface RankingDropdownProps {
   onSelect: (criteria: RankingCriteria) => void;
@@ -8,11 +11,23 @@ interface RankingDropdownProps {
 
 export const RankingDropdown = ({ onSelect }: RankingDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<RankingCriteria>('coins');
+  const [selected, setSelected] = useState<RankingCriteria>('score');
 
-  const handleToggle = () => setIsOpen(!isOpen);
+  const { isMuted, sfxVolume } = useSound();
+
+  const playClick = () => {
+    if (!isMuted) {
+      SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
+    }
+  };
+
+  const handleToggle = () => {
+    playClick();
+    setIsOpen(!isOpen);
+  };
 
   const handleSelect = (criteria: RankingCriteria) => {
+    playClick();
     setSelected(criteria);
     onSelect(criteria);
     setIsOpen(false);
@@ -22,7 +37,7 @@ export const RankingDropdown = ({ onSelect }: RankingDropdownProps) => {
     selected === 'coins' ? 'score' : 'coins';
 
   return (
-    <div className="absolute top-[231px] right-80 z-20 flex flex-col items-center w-[200px]">
+    <div className="absolute top-[261px] right-[160px] z-20 flex flex-col items-center w-[200px]">
       <div
         className={`
           absolute top-0 w-full bg-[#F2F2F2] rounded-[30px] shadow-md transition-all duration-300 overflow-hidden

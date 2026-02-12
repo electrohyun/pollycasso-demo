@@ -7,6 +7,7 @@ import Router from './Router';
 import { SocketProvider } from './socketProvider';
 import { FriendSocketProvider } from '@/shared/api/socket/FriendSocketProvider';
 import { ChatSocketProvider } from '@/shared/api/socket/ChatSocketProvider';
+import { SoundProvider } from '@/entities/sound';
 
 const App = () => {
   return (
@@ -16,9 +17,11 @@ const App = () => {
 
         <FriendSocketProvider>
           <ChatSocketProvider>
-            <OverlayProvider>
-              <Router />
-            </OverlayProvider>
+            <SoundProvider>
+              <OverlayProvider>
+                <Router />
+              </OverlayProvider>
+            </SoundProvider>
           </ChatSocketProvider>
         </FriendSocketProvider>
 
