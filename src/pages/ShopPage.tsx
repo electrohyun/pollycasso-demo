@@ -1,65 +1,36 @@
-import { useEffect } from 'react';
-import { useWaitingSocket } from '@/shared/api/socket/WaitingSocketProvider';
-
-import { useCart } from '@/features/cart';
-import {
-  useShopFilter,
-  useShopPreview,
-  useProductSorting,
-} from '@/features/shop';
 import { ShopSidebar, ShopProductList, ShopProfilePanel } from '@/widgets/shop';
-import { useNudgeListener } from '@/features/lobby/model/useNudgeListener';
-import { MOCK_TOTAL_PRODUCTS } from '@/mocks/shopData';
+import { useNudgeListener } from '@/features/lobby';
+import { useShop } from '@/features/shop';
 import { BackButton } from '@/shared/ui/BackButton';
 
 const ShopPage = () => {
-  const { waitingSocket } = useWaitingSocket();
   useNudgeListener();
 
-  useEffect(() => {
-    if (!waitingSocket) return;
-
-    waitingSocket.emit('room:updateStatus', { status: 'SHOPPING' });
-
-    return () => {
-      waitingSocket.emit('room:updateStatus', { status: 'IDLE' });
-    };
-  }, [waitingSocket]);
-
-  const { cart, addToCart, removeFromCart } = useCart();
-
   const {
-    isSortOpen,
-    activeSort,
-    activeSortLabel,
-    activeCategory,
-    toggleSortOpen,
-    handleSortChange,
-    handleCategoryChange,
-  } = useShopFilter();
-
-  const { previewItems, wearItem, resetPreview } = useShopPreview();
-
-  const processedProducts = useProductSorting(
-    activeCategory,
-    activeSort,
-    MOCK_TOTAL_PRODUCTS,
-  );
-
-  const myInventoryIds = [101, 102, 201, 701];
+    user,
+    myInventoryIds,
+    cart,
+    addToCart,
+    removeFromCart,
+    shopFilter,
+    shopPreview,
+    processedProducts,
+    handlePurchase,
+    isPurchasing,
+  } = useShop();
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen gap-[24px] font-ssrm font-bold">
       <BackButton />
 
       <ShopSidebar
-        isSortOpen={isSortOpen}
-        activeSort={activeSort}
-        activeSortLabel={activeSortLabel}
-        activeCategory={activeCategory}
-        onToggleSort={toggleSortOpen}
-        onSortChange={handleSortChange}
-        onCategoryChange={handleCategoryChange}
+        isSortOpen={shopFilter.isSortOpen}
+        activeSort={shopFilter.activeSort}
+        activeSortLabel={shopFilter.activeSortLabel}
+        activeCategory={shopFilter.activeCategory}
+        onToggleSort={shopFilter.toggleSortOpen}
+        onSortChange={shopFilter.handleSortChange}
+        onCategoryChange={shopFilter.handleCategoryChange}
       />
 
       <ShopProductList
@@ -67,14 +38,18 @@ const ShopPage = () => {
         cart={cart}
         inventoryIds={myInventoryIds}
         onAddToCart={addToCart}
-        onWearItem={wearItem}
+        onWearItem={shopPreview.wearItem}
       />
 
       <ShopProfilePanel
         cart={cart}
-        previewItems={previewItems}
+        previewItems={shopPreview.previewItems}
+        userBalance={user?.coin ?? 0}
+        userLevel={user?.level ?? 1}
         onRemoveFromCart={removeFromCart}
-        onResetPreview={resetPreview}
+        onResetPreview={shopPreview.resetPreview}
+        onPurchase={handlePurchase}
+        isPurchasing={isPurchasing}
       />
     </div>
   );

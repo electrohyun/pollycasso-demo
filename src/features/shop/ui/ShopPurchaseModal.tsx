@@ -7,6 +7,7 @@ import { PurchaseStatusContent } from './PurchaseStatusContent';
 
 interface ShopPurchaseModalProps {
   onClose: () => void;
+  onConfirm: () => void;
   items: Product[];
   totalPrice: number;
   userBalance: number;
@@ -14,12 +15,25 @@ interface ShopPurchaseModalProps {
 }
 
 export const ShopPurchaseModal = (props: ShopPurchaseModalProps) => {
-  const { onClose, items, totalPrice, userBalance } = props;
+  const { onClose, onConfirm, items, totalPrice, userBalance, userLevel } =
+    props;
 
   const { status, handlePurchase, missingCost, missingLevel } =
     useShopPurchase(props);
 
   const { text: titleText, color: titleColor } = getTitleContent(status);
+
+  const handleFinalConfirm = () => {
+    handlePurchase();
+
+    const maxItemLevel =
+      items.length > 0 ? Math.max(...items.map((i) => i.level)) : 0;
+    const canPurchase = userLevel >= maxItemLevel && userBalance >= totalPrice;
+
+    if (canPurchase) {
+      onConfirm();
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center font-ssrm font-bold">
@@ -64,13 +78,13 @@ export const ShopPurchaseModal = (props: ShopPurchaseModalProps) => {
               <>
                 <button
                   onClick={onClose}
-                  className="w-[200px] py-3 rounded-2xl bg-[#656565] text-white text-2xl hover:bg-[#555]"
+                  className="w-[200px] py-3 rounded-2xl bg-[#656565] text-white text-2xl hover:bg-[#555] transition-colors"
                 >
                   돌아가기
                 </button>
                 <button
-                  onClick={handlePurchase}
-                  className="w-[200px] py-3 rounded-2xl bg-[#52D843] text-white text-2xl hover:bg-[#46c239]"
+                  onClick={handleFinalConfirm}
+                  className="w-[200px] py-3 rounded-2xl bg-[#52D843] text-white text-2xl hover:bg-[#46c239] transition-colors"
                 >
                   구매하기
                 </button>
@@ -78,7 +92,7 @@ export const ShopPurchaseModal = (props: ShopPurchaseModalProps) => {
             ) : (
               <button
                 onClick={onClose}
-                className="w-[200px] py-3 rounded-2xl bg-[#656565] text-white text-2xl hover:bg-[#555]"
+                className="w-[200px] py-3 rounded-2xl bg-[#656565] text-white text-2xl hover:bg-[#555] transition-colors"
               >
                 닫기
               </button>

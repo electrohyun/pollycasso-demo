@@ -12,6 +12,7 @@ interface ShopPurchaseButtonProps {
   userLevel: number;
   totalPrice: number;
   disabled?: boolean;
+  onPurchase: () => void;
 }
 
 export const ShopPurchaseButton = ({
@@ -20,6 +21,7 @@ export const ShopPurchaseButton = ({
   userLevel,
   totalPrice,
   disabled,
+  onPurchase,
 }: ShopPurchaseButtonProps) => {
   const { sfxVolume, isMuted } = useSound();
 
@@ -31,6 +33,10 @@ export const ShopPurchaseButton = ({
     overlay.open(({ unmount }) => (
       <ShopPurchaseModal
         onClose={unmount}
+        onConfirm={() => {
+          onPurchase();
+          unmount();
+        }}
         items={cart}
         totalPrice={totalPrice}
         userBalance={userBalance}

@@ -1,13 +1,11 @@
 import type { Product } from '@/entities/product';
 import { ProductCard } from '@/entities/product';
-import { SHOP_CATEGORIES } from '@/features/shop/constants/shop.constants';
-
-const CONSUMABLE_CATEGORIES = [SHOP_CATEGORIES.EFFECT];
+import { SHOP_CATEGORIES } from '@/features/shop';
 
 interface ShopProductListProps {
   products: Product[];
   cart: Product[];
-  inventoryIds: number[];
+  inventoryIds: number[] | null;
   onAddToCart: (product: Product) => void;
   onWearItem: (product: Product) => void;
 }
@@ -29,10 +27,8 @@ export const ShopProductList = ({
             </div>
           ) : (
             products.map((item) => {
-              const isOwned = inventoryIds.includes(item.id);
-              const isConsumable = CONSUMABLE_CATEGORIES.includes(
-                item.subCategory || '',
-              );
+              const isOwned = (inventoryIds ?? []).includes(item.id);
+              const isConsumable = item.subCategory === SHOP_CATEGORIES.ITEM;
 
               const isBuyDisabled = isOwned && !isConsumable;
 
