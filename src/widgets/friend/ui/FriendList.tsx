@@ -33,7 +33,7 @@ export const FriendList = ({ searchKeyword }: FriendListProps) => {
               검색된 친구가 없어요.
             </p>
             <p className="text-lg mt-1 font-light">
-              닉네임이나 태그를 다시 확인해주세요!
+              닉네임이나 태그를 다시 확인해주세요.
             </p>
           </div>
         </div>

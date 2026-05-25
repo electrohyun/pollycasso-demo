@@ -10,6 +10,8 @@ interface ShopProfilePanelProps {
   previewItems: Product[];
   userBalance: number;
   userLevel: number;
+  nickname: string;
+  defaultBirdId: string;
   onRemoveFromCart: (id: number) => void;
   onResetPreview: () => void;
   onPurchase: () => void;
@@ -21,6 +23,8 @@ export const ShopProfilePanel = ({
   previewItems,
   userBalance,
   userLevel,
+  nickname,
+  defaultBirdId,
   onRemoveFromCart,
   onResetPreview,
   onPurchase,
@@ -38,6 +42,8 @@ export const ShopProfilePanel = ({
       <div className="flex flex-col justify-between items-center w-[360px] h-[590px] bg-[#1E3411]/40 rounded-[30px] p-4">
         <CharacterPreview
           level={userLevel}
+          nickname={nickname}
+          defaultBirdId={defaultBirdId}
           previewItems={previewItems}
           onReset={onResetPreview}
           classNames={{

@@ -7,12 +7,26 @@ import {
 import { useSound } from '@/entities/sound';
 import { SoundManager } from '@/shared/api/sound/manager';
 import { SOUND_ASSETS } from '@/shared/api/sound/assets';
+import {
+  getEquippedPortfolioProducts,
+  setPortfolioOutfitProducts,
+  setPortfolioOutfitStorage,
+} from './portfolioShopStorage';
 
 const ONE_PIECE_IMAGES = ['top_32', 'top_33', 'top_34', 'top_35'];
 
-export const useShopPreview = () => {
+interface UseShopPreviewOptions {
+  persistOutfit?: boolean;
+}
+
+export const useShopPreview = (options?: UseShopPreviewOptions) => {
+  const persistOutfit = options?.persistOutfit ?? false;
   const { sfxVolume, isMuted } = useSound();
-  const [previewItems, setPreviewItems] = useState<Product[]>([]);
+  const [previewItems, setPreviewItems] = useState<Product[]>(
+    import.meta.env.VITE_USE_MOCK === 'true'
+      ? getEquippedPortfolioProducts()
+      : [],
+  );
 
   const wearItem = (product: Product) => {
     const targetKey = CATEGORY_TO_OUTFIT_KEY[product.subCategory || ''];
@@ -24,7 +38,11 @@ export const useShopPreview = () => {
       const isAlreadyWearing = prev.some((item) => item.id === product.id);
       if (isAlreadyWearing) {
         if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
-        return prev.filter((item) => item.id !== product.id);
+        const next = prev.filter((item) => item.id !== product.id);
+        if (persistOutfit && import.meta.env.VITE_USE_MOCK === 'true') {
+          setPortfolioOutfitProducts(next);
+        }
+        return next;
       }
 
       if (isSuit) {
@@ -34,7 +52,11 @@ export const useShopPreview = () => {
             item.subCategory === SHOP_CATEGORIES.EFFECT,
         );
         if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
-        return [...preservedItems, product];
+        const next = [...preservedItems, product];
+        if (persistOutfit && import.meta.env.VITE_USE_MOCK === 'true') {
+          setPortfolioOutfitProducts(next);
+        }
+        return next;
       }
 
       const currentSuit = prev.find((item) =>
@@ -53,12 +75,19 @@ export const useShopPreview = () => {
       });
 
       if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
-      return [...filtered, product];
+      const next = [...filtered, product];
+      if (persistOutfit && import.meta.env.VITE_USE_MOCK === 'true') {
+        setPortfolioOutfitProducts(next);
+      }
+      return next;
     });
   };
 
   const resetPreview = () => {
     setPreviewItems([]);
+    if (persistOutfit && import.meta.env.VITE_USE_MOCK === 'true') {
+      setPortfolioOutfitStorage({});
+    }
     if (!isMuted) SoundManager.playSfx(SOUND_ASSETS.SFX.CLICK, sfxVolume);
   };
 

@@ -16,12 +16,16 @@ import { Sidebar } from '@/widgets/sidebar';
 import { useSound } from '@/entities/sound';
 import { SoundManager } from '@/shared/api/sound/manager';
 import { SOUND_ASSETS } from '@/shared/api/sound/assets';
+import { usePortfolioOutfitForPlayer } from '@/features/shop/model/portfolioShopStorage';
 
 const MainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const user = useAuthStore((state) => state.user);
+  const portfolioOutfit = usePortfolioOutfitForPlayer(
+    user?.outfit?.bird ?? 'bird_07',
+  );
   const { logout } = useLogout();
 
   const { searchQuery, setSearchQuery, setCommitSearch } = useSearchStore();
@@ -86,7 +90,11 @@ const MainPage = () => {
         level={user.level!}
         currentXp={user.currentExp!}
         coin={user.coin!}
-        outfit={user.outfit!}
+        outfit={
+          import.meta.env.VITE_USE_MOCK === 'true'
+            ? portfolioOutfit
+            : user.outfit!
+        }
         onLogout={handleLogout}
       />
 

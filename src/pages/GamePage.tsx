@@ -7,6 +7,8 @@ import type { PhaseContext, RoomState, RoomStatus } from '@/shared/model';
 import { GameWidget } from '@/widgets/game';
 import { LoadingWidget } from '@/widgets/loading';
 import { RoomWidget } from '@/widgets/waiting';
+import DemoRoomPage from './DemoRoomPage';
+import { DEMO_ROOM_IDS } from '@/entities/room/api/mockRooms';
 
 const GAME_PHASE_STATUSES: RoomStatus[] = [
   'THEME_SELECTING',
@@ -17,6 +19,19 @@ const GAME_PHASE_STATUSES: RoomStatus[] = [
 ];
 
 const GamePage = () => {
+  const { roomId } = useParams<{ roomId: string }>();
+
+  if (
+    import.meta.env.VITE_USE_MOCK === 'true' &&
+    DEMO_ROOM_IDS.includes(Number(roomId) as (typeof DEMO_ROOM_IDS)[number])
+  ) {
+    return <DemoRoomPage />;
+  }
+
+  return <SocketGamePage />;
+};
+
+const SocketGamePage = () => {
   const navigate = useNavigate();
   const { roomId } = useParams<{ roomId: string }>();
   const { waitingSocket } = useWaitingSocket();

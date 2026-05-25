@@ -58,6 +58,7 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
           coins={firstPlace.coinsGained}
           xp={firstPlace.expGained}
           teamId={firstPlace.teamId}
+          outfit={firstPlace.outfit}
         />
       )}
 
@@ -68,6 +69,7 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
           coins={secondPlace.coinsGained}
           xp={secondPlace.expGained}
           teamId={secondPlace.teamId}
+          outfit={secondPlace.outfit}
         />
       )}
 
@@ -78,6 +80,7 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
           coins={thirdPlace.coinsGained}
           xp={thirdPlace.expGained}
           teamId={thirdPlace.teamId}
+          outfit={thirdPlace.outfit}
         />
       )}
 
@@ -96,6 +99,7 @@ export const TeamGameResult = ({ results, teamScore }: TeamGameResultProps) => {
             className="absolute left-1/2 -translate-x-1/2"
             style={{ top: `${topPosition}%` }}
             teamId={member.teamId}
+            outfit={member.outfit}
           />
         );
       })}

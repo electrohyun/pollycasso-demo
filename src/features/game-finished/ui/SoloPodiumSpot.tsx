@@ -1,7 +1,9 @@
 import { StarIcon } from '@heroicons/react/24/solid';
 
 import { Coin, GoldBelt, SilverBelt, BronzeBelt, LaurelWreath } from '@/assets';
+import type { Outfit } from '@/shared/model';
 import { RANK_STYLES, SPOTLIGHT_STYLES } from '../constants/styles';
+import { FinishedAvatar } from './FinishedAvatar';
 
 const BELT_IMAGES = {
   1: GoldBelt,
@@ -15,6 +17,7 @@ interface PodiumSpotProps {
   coins: number;
   xp: number;
   score: number;
+  outfit: Outfit;
 }
 
 export const SoloPodiumSpot = ({
@@ -23,6 +26,7 @@ export const SoloPodiumSpot = ({
   coins,
   xp,
   score,
+  outfit,
 }: PodiumSpotProps) => {
   const styles = RANK_STYLES[rank];
   const beltImg = BELT_IMAGES[rank];
@@ -37,7 +41,7 @@ export const SoloPodiumSpot = ({
         }}
       />
 
-      <img src={''} className={styles.bird} alt="bird" />
+      <FinishedAvatar outfit={outfit} className={styles.bird} />
 
       <img src={beltImg} className={styles.belt} alt="belt" />
 

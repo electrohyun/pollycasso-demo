@@ -8,6 +8,7 @@ interface MenuButtonProps {
   label: string;
   color: 'RED' | 'YELLOW' | 'BLACK';
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 export const MenuButton = ({
@@ -15,14 +16,18 @@ export const MenuButton = ({
   label,
   color,
   onClick,
+  disabled = false,
 }: MenuButtonProps) => {
   return (
     <div className="p-2 bg-white/50 rounded-xl h-full">
       <button
         onClick={onClick}
+        disabled={disabled}
         className={cn(
           'flex justify-between w-full h-full items-center py-2 px-4 rounded-xl transition-colors',
-          COLOR_MAP[color],
+          disabled
+            ? 'bg-gray-500 text-white/60 cursor-not-allowed opacity-70'
+            : COLOR_MAP[color],
         )}
       >
         <div className="w-8 h-8 text-white">{icon}</div>

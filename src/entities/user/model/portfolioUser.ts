@@ -1,0 +1,68 @@
+import type { User } from './types';
+import { resetPortfolioDemoStorage } from '@/features/shop/model/portfolioShopStorage';
+
+export const PORTFOLIO_USER: User = {
+  id: 1,
+  nickname: '기현',
+  tag: '0001',
+  coin: 99,
+  level: 7,
+  currentExp: 0,
+  outfit: {
+    bird: 'bird_07',
+    accessory: null,
+    hat: null,
+    top: null,
+    bottom: null,
+    shoes: null,
+    effect: null,
+  },
+};
+
+export const getPortfolioUser = (user?: User | null): User => ({
+  ...PORTFOLIO_USER,
+  ...user,
+  nickname: PORTFOLIO_USER.nickname,
+  tag: PORTFOLIO_USER.tag,
+  coin: PORTFOLIO_USER.coin,
+  outfit: {
+    ...PORTFOLIO_USER.outfit,
+    ...user?.outfit,
+    bird: PORTFOLIO_USER.outfit!.bird,
+  },
+});
+
+export const ensurePortfolioAuthStorage = () => {
+  if (import.meta.env.VITE_USE_MOCK !== 'true') return;
+
+  const raw = localStorage.getItem('auth-storage');
+  const parsed = raw ? JSON.parse(raw) : {};
+  const state = parsed.state ?? {};
+
+  localStorage.setItem(
+    'auth-storage',
+    JSON.stringify({
+      ...parsed,
+      state: {
+        ...state,
+        user: getPortfolioUser(state.user),
+        accessToken: null,
+      },
+      version: parsed.version ?? 0,
+    }),
+  );
+};
+
+export const loginAsPortfolioGuest = () => {
+  localStorage.setItem(
+    'auth-storage',
+    JSON.stringify({
+      state: {
+        user: PORTFOLIO_USER,
+        accessToken: null,
+      },
+      version: 0,
+    }),
+  );
+  resetPortfolioDemoStorage();
+};

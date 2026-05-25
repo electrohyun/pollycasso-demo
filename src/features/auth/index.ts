@@ -6,6 +6,7 @@ export { useLoginCallback } from './model/useLoginCallback';
 export { useLogout } from './model/useLogout';
 export { authQueries } from './queries/authQueries';
 export { LoginForm } from './ui/LoginForm';
+export { GuestLoginButton } from './ui/GuestLoginButton';
 export { SignupForm } from './ui/SignupForm';
 export { SignupLink } from './ui/SignupLink';
 export { SocialLoginButtons } from './ui/SocialLoginButtons';

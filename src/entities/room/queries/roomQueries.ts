@@ -18,6 +18,10 @@ export const roomQueries = {
         // 방 리스트 호출
         const response = await getRooms({ ...filters, cursor: pageParam });
 
+        if (import.meta.env.VITE_USE_MOCK === 'true') {
+          return response;
+        }
+
         // 가져온 방들의 id 사용해 각각의 상세 정보 병렬로 호출
         const roomsWithPlayerCount = await Promise.all(
           response.rooms.map(async (room) => {

@@ -14,11 +14,13 @@ interface GameSubmissionState {
   toggleReady: () => void;
 }
 
-export const useGameSubmission = (): GameSubmissionState => {
+export const useGameSubmission = (
+  overrideState?: Parameters<typeof useGameState>[0],
+): GameSubmissionState => {
   const { gameSocket } = useGameSocket();
   const user = useAuthStore((state) => state.user);
 
-  const { players } = useGameState();
+  const { players } = useGameState(overrideState);
 
   const totalCount = players.length;
 

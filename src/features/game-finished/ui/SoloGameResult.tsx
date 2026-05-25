@@ -38,6 +38,7 @@ export const SoloGameResult = ({ results }: SoloGameResultProps) => {
           coins={firstPlace.coinsGained}
           xp={firstPlace.expGained}
           score={firstPlace.totalScore}
+          outfit={firstPlace.outfit}
         />
       )}
 
@@ -48,6 +49,7 @@ export const SoloGameResult = ({ results }: SoloGameResultProps) => {
           coins={secondPlace.coinsGained}
           xp={secondPlace.expGained}
           score={secondPlace.totalScore}
+          outfit={secondPlace.outfit}
         />
       )}
 
@@ -58,6 +60,7 @@ export const SoloGameResult = ({ results }: SoloGameResultProps) => {
           coins={thirdPlace.coinsGained}
           xp={thirdPlace.expGained}
           score={thirdPlace.totalScore}
+          outfit={thirdPlace.outfit}
         />
       )}
 
@@ -74,6 +77,7 @@ export const SoloGameResult = ({ results }: SoloGameResultProps) => {
             score={member.totalScore}
             className="absolute left-1/2 -translate-x-1/2"
             style={{ top: `${topPosition}%` }}
+            outfit={member.outfit}
           />
         );
       })}

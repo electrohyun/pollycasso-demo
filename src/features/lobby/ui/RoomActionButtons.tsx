@@ -47,6 +47,7 @@ export const RoomActionButtons = ({
         disabled: !canStartGame,
       };
     }
+
     return {
       text: isReady ? '준비 취소' : '게임 준비',
       style: isReady

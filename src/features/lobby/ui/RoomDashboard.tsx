@@ -42,6 +42,7 @@ export const RoomDashboard = ({
           color="BLACK"
           icon={<Cog8ToothIcon className="w-8 h-8" />}
           onClick={onOpenSettings}
+          disabled={!onOpenSettings}
         />
       </div>
 

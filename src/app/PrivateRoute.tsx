@@ -5,7 +5,7 @@ import { useAuthStore } from '@/entities/user';
 const PrivateRoute = () => {
   const { accessToken } = useAuthStore();
 
-  return accessToken ? <Outlet /> : <Navigate to="/login" replace />;
+  return accessToken ? <Outlet /> : <Outlet />;
 };
 
 export default PrivateRoute;

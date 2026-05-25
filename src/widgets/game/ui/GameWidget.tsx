@@ -14,7 +14,7 @@ import { EvaluatingPhase } from '@/features/game-evaluating';
 import { RoundSummaryPhase } from '@/features/game-round-summary';
 import { FinishedPhase } from '@/features/game-finished';
 import { PHASE_TIME } from '@/shared/model';
-import type { PhaseContext, RoomStatus } from '@/shared/model';
+import type { PhaseContext, RoomState, RoomStatus } from '@/shared/model';
 import { useGameState } from '../model/useGameState';
 import { useGameSubmission } from '../model/useGameSubmission';
 import { useThemeInput } from '../model/useThemeInput';
@@ -27,6 +27,7 @@ interface GameWidgetProps {
   endsAt: number | null;
   phaseContext: PhaseContext | null;
   playerMap: Record<string, number>;
+  overrideState?: RoomState;
 }
 
 const GameWidget = ({
@@ -34,13 +35,14 @@ const GameWidget = ({
   endsAt,
   phaseContext,
   playerMap,
+  overrideState,
 }: GameWidgetProps) => {
-  const { players, inventory, currentTheme } = useGameState();
+  const { players, inventory, currentTheme } = useGameState(overrideState);
   const { gameSocket } = useGameSocket();
   const { user } = useAuthStore();
 
   const { completedCount, totalCount, isMeReady, toggleReady } =
-    useGameSubmission();
+    useGameSubmission(overrideState);
 
   const syncedPlayers = useMemo(() => {
     if (!players) return [];

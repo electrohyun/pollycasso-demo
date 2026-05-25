@@ -21,7 +21,6 @@ interface FriendCardProps extends FriendProfile {
 }
 
 export const FriendCard = ({
-  userId,
   nickname,
   outfit,
   level,
@@ -31,7 +30,6 @@ export const FriendCard = ({
   onAction,
 }: FriendCardProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const { isMuted, sfxVolume } = useSound();
 
   const playClick = () => {
@@ -56,23 +54,19 @@ export const FriendCard = ({
     >
       <div className="flex items-center gap-x-3 lg:gap-x-4 overflow-hidden">
         <div className="relative shrink-0 w-16 h-16 lg:w-18 lg:h-18 rounded-full bg-black/5 border border-gray-200 overflow-hidden flex items-center justify-center">
-          {outfit ? (
-            OUTFIT_LAYERS.map((layer) => {
-              const partId = outfit[layer];
-              if (!partId) return null;
-              return (
-                <img
-                  key={layer}
-                  src={getOutfitImageUrl(partId)}
-                  alt={layer}
-                  className="absolute object-cover scale-[1.2] top-3"
-                  style={{ zIndex: OUTFIT_LAYERS.indexOf(layer) }}
-                />
-              );
-            })
-          ) : (
-            <span className="text-gray-300 text-xs font-medium">No Outfit</span>
-          )}
+          {OUTFIT_LAYERS.map((layer) => {
+            const partId = outfit[layer];
+            if (!partId) return null;
+            return (
+              <img
+                key={layer}
+                src={getOutfitImageUrl(partId)}
+                alt={layer}
+                className="absolute object-cover scale-[1.2] top-3"
+                style={{ zIndex: OUTFIT_LAYERS.indexOf(layer) }}
+              />
+            );
+          })}
         </div>
 
         <div className="flex flex-col justify-center h-full py-1 overflow-hidden">

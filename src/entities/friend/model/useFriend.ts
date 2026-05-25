@@ -1,9 +1,19 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFriendSocket } from '@/shared/api/socket/FriendSocketProvider';
 import { useFriendStore } from './friendStore';
+import {
+  PORTFOLIO_FRIENDS,
+  PORTFOLIO_RECOMMENDED_FRIENDS,
+  PORTFOLIO_SEARCH_USERS,
+} from './portfolioFriendData';
+import { showToast } from '@/shared/ui/Toast';
 
 export const useFriend = (searchKeyword: string = '') => {
+  const isMock = import.meta.env.VITE_USE_MOCK === 'true';
   const { friendSocket: socket } = useFriendSocket();
+  const [mockSearchResults, setMockSearchResults] = useState<
+    typeof PORTFOLIO_RECOMMENDED_FRIENDS
+  >([]);
   const {
     friends,
     recommendedFriends,
@@ -14,6 +24,7 @@ export const useFriend = (searchKeyword: string = '') => {
   } = useFriendStore();
 
   useEffect(() => {
+    if (isMock) return;
     if (!socket) return;
 
     const setup = () => {
@@ -28,14 +39,18 @@ export const useFriend = (searchKeyword: string = '') => {
     } else {
       socket.once('connect', setup);
     }
-  }, [socket, initListeners]);
+  }, [socket, initListeners, isMock]);
 
   const requestFriend = useCallback(
     (targetUserId: number) => {
+      if (isMock) {
+        showToast.success('친구 신청을 보냈습니다.');
+        return;
+      }
       if (!socket) return;
       socket.emit('friends:requestSend', { targetUserId });
     },
-    [socket],
+    [socket, isMock],
   );
 
   const handleFriendAction = useCallback(
@@ -43,6 +58,10 @@ export const useFriend = (searchKeyword: string = '') => {
       targetUserId: number,
       action: 'ACCEPT' | 'BLOCK' | 'DELETE' | 'CANCEL' | 'REJECT' | 'UNBLOCK',
     ) => {
+      if (isMock) {
+        showToast.info('포트폴리오 데모에서는 친구 상태를 실제로 변경하지 않습니다.');
+        return;
+      }
       if (!socket) return;
 
       const actionMap = {
@@ -62,32 +81,56 @@ export const useFriend = (searchKeyword: string = '') => {
         socket.emit(config.event, config.data);
       }
     },
-    [socket],
+    [socket, isMock],
   );
 
   const searchUsers = useCallback(
     (keyword: string) => {
-      if (!keyword.trim()) return setSearchResults([]);
+      if (!keyword.trim()) {
+        if (isMock) {
+          setMockSearchResults([]);
+          return;
+        }
+        return setSearchResults([]);
+      }
+
+      if (isMock) {
+        const normalizedKeyword = keyword.trim().toLowerCase();
+        setMockSearchResults(
+          PORTFOLIO_SEARCH_USERS.filter((user) => {
+            const label = `${user.nickname}#${user.tag}`.toLowerCase();
+            return label.includes(normalizedKeyword);
+          }),
+        );
+        return;
+      }
+
       socket?.emit('friends:search', { keyword });
     },
-    [socket, setSearchResults],
+    [socket, setSearchResults, isMock],
   );
 
   const processedFriends = useMemo(() => {
-    return friends
+    const sourceFriends = isMock ? PORTFOLIO_FRIENDS : friends;
+
+    return sourceFriends
       .filter((f) =>
-        f.nickname.toLowerCase().includes(searchKeyword.toLowerCase()),
+        `${f.nickname}#${f.tag}`
+          .toLowerCase()
+          .includes(searchKeyword.toLowerCase()),
       )
       .sort((a, b) => a.nickname.localeCompare(b.nickname));
-  }, [searchKeyword, friends]);
+  }, [searchKeyword, friends, isMock]);
 
   return {
     processedFriends,
-    searchResults,
-    recommendedFriends,
+    searchResults: isMock ? mockSearchResults : searchResults,
+    recommendedFriends: isMock
+      ? PORTFOLIO_RECOMMENDED_FRIENDS
+      : recommendedFriends,
     handleFriendAction,
     requestFriend,
     searchUsers,
-    isLoading,
+    isLoading: isMock ? false : isLoading,
   };
 };

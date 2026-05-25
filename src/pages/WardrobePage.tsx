@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { CharacterPreview } from '@/entities/character';
 import { useShopPreview } from '@/features/shop';
-import { MOCK_PRODUCTS } from '@/mocks/shop.mock';
 import { WardrobeProductList } from '@/widgets/wardrobe';
 import {
   useWardrobeFilter,
@@ -11,11 +10,24 @@ import { cn } from '@/shared/lib';
 import { useWaitingSocket } from '@/shared/api/socket/WaitingSocketProvider';
 import { useNudgeListener } from '@/features/lobby/model/useNudgeListener';
 import { BackButton } from '@/shared/ui/BackButton';
+import { showToast } from '@/shared/ui/Toast';
+import { useAuthStore } from '@/entities/user';
+import { getPortfolioUser } from '@/entities/user/model/portfolioUser';
+import { MOCK_SHOP_PRODUCTS } from '@/features/shop/api/mockShopData';
+import {
+  getPurchasedPortfolioProducts,
+  usePortfolioOutfitForPlayer,
+} from '@/features/shop/model/portfolioShopStorage';
 
 const USER_LEVEL = 3;
 
 const WardrobePage = () => {
   const { waitingSocket } = useWaitingSocket();
+  const user = useAuthStore((state) => state.user);
+  const displayUser = getPortfolioUser(user);
+  const portfolioOutfit = usePortfolioOutfitForPlayer(
+    displayUser.outfit?.bird ?? 'bird_07',
+  );
   useNudgeListener();
 
   useEffect(() => {
@@ -28,7 +40,9 @@ const WardrobePage = () => {
     };
   }, [waitingSocket]);
 
-  const { previewItems, resetPreview, wearItem } = useShopPreview();
+  const { previewItems, resetPreview, wearItem } = useShopPreview({
+    persistOutfit: true,
+  });
 
   const {
     activeTab,
@@ -42,10 +56,19 @@ const WardrobePage = () => {
   } = useWardrobeFilter();
 
   const filteredProducts = useMemo(() => {
-    return MOCK_PRODUCTS.filter(
+    const sourceProducts =
+      import.meta.env.VITE_USE_MOCK === 'true'
+        ? getPurchasedPortfolioProducts()
+        : MOCK_SHOP_PRODUCTS;
+
+    return sourceProducts.filter(
       (item) => item.subCategory === currentFilterLabel,
     );
   }, [currentFilterLabel]);
+
+  const handleConfirm = () => {
+    showToast.success('착용 정보가 저장되었습니다.');
+  };
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen gap-[24px] font-ssrm font-bold">
@@ -53,7 +76,13 @@ const WardrobePage = () => {
 
       <div className="flex flex-col gap-y-5 w-[500px] h-[720px] rounded-[30px] bg-[#1E3411]/40 shadow-inner p-6">
         <CharacterPreview
-          level={USER_LEVEL}
+          level={displayUser.level ?? USER_LEVEL}
+          nickname={`${displayUser.nickname}#${displayUser.tag}`}
+          defaultBirdId={
+            import.meta.env.VITE_USE_MOCK === 'true'
+              ? portfolioOutfit.bird
+              : (displayUser.outfit?.bird ?? 'bird_07')
+          }
           previewItems={previewItems}
           showResetButton={false}
           classNames={{
@@ -73,7 +102,10 @@ const WardrobePage = () => {
           >
             초기화
           </button>
-          <button className="flex-1 py-3 rounded-full bg-[#EF5F52] text-white hover:bg-[#d64538] transition-colors">
+          <button
+            onClick={handleConfirm}
+            className="flex-1 py-3 rounded-full bg-[#EF5F52] text-white hover:bg-[#d64538] transition-colors"
+          >
             확인
           </button>
         </div>

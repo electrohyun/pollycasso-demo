@@ -15,6 +15,7 @@ const SignupPage = lazy(() => import('@/pages/SignupPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const MainPage = lazy(() => import('@/pages/MainPage'));
 const GamePage = lazy(() => import('@/pages/GamePage'));
+const DemoGamePage = lazy(() => import('@/pages/DemoGamePage'));
 const GameWidget = lazy(() => import('@/widgets/game/ui/GameWidget'));
 const FriendPage = lazy(() => import('@/pages/FriendPage'));
 const ShopPage = lazy(() => import('@/pages/ShopPage'));
@@ -44,11 +45,13 @@ const router = createBrowserRouter([
             element: <Outlet />,
             children: [
               { path: '/', element: <MainPage /> },
+              { path: '/test', element: <MainPage /> },
               { path: '/friend', element: <FriendPage /> },
               { path: '/shop', element: <ShopPage /> },
               { path: '/wardrobe', element: <WardrobePage /> },
               { path: '/ranking', element: <RankingPage /> },
               { path: '/mypage', element: <MyPage /> },
+              { path: '/demo/game/:roomId', element: <DemoGamePage /> },
               { path: '/dev/gameWidget', element: <GameWidget /> },
               {
                 path: '/rooms/:roomId',

@@ -7,7 +7,7 @@ import type {
 } from '@/shared/model';
 
 const createOutfit = (overrides?: Partial<Outfit>): Outfit => ({
-  bird: 'bird',
+  bird: 'bird_07',
   accessory: null,
   hat: null,
   top: null,
@@ -20,10 +20,10 @@ const createOutfit = (overrides?: Partial<Outfit>): Outfit => ({
 export const MOCK_PLAYERS: Player[] = [
   {
     userId: 'user_1',
-    nickname: '폴리카소07',
-    level: 12,
+    nickname: '기현',
+    level: 7,
     exp: 80,
-    coins: 1500,
+    coins: 99,
     status: 'IDLE',
     teamId: null,
     isConnected: true,
@@ -31,15 +31,17 @@ export const MOCK_PLAYERS: Player[] = [
     totalScore: 290,
     inventory: [],
     outfit: createOutfit({
-      bird: 'king_penguin',
-      hat: 'laurel_wreath',
-      effect: 'spotlight',
+      bird: 'bird_07',
+      hat: 'hat_12',
+      top: 'top_16',
+      shoes: 'shoes_11',
+      effect: 'effect_02',
     }),
   },
   {
     userId: 'user_2',
-    nickname: 'DFPOW',
-    level: 8,
+    nickname: '그림고수',
+    level: 12,
     exp: 45,
     coins: 800,
     status: 'IDLE',
@@ -48,12 +50,18 @@ export const MOCK_PLAYERS: Player[] = [
     isReady: true,
     totalScore: 280,
     inventory: [],
-    outfit: createOutfit({ bird: 'sparrow', accessory: 'silver_medal' }),
+    outfit: createOutfit({
+      bird: 'bird_03',
+      accessory: 'acc_17',
+      hat: 'hat_10',
+      top: 'top_19',
+      shoes: 'shoes_09',
+    }),
   },
   {
     userId: 'user_3',
-    nickname: 'EGG22', // 3등
-    level: 5,
+    nickname: '색칠장인',
+    level: 9,
     exp: 20,
     coins: 300,
     status: 'IDLE',
@@ -62,11 +70,16 @@ export const MOCK_PLAYERS: Player[] = [
     isReady: true,
     totalScore: 270,
     inventory: [],
-    outfit: createOutfit({ bird: 'chick', accessory: 'bronze_medal' }),
+    outfit: createOutfit({
+      bird: 'bird_04',
+      accessory: 'acc_03',
+      hat: 'hat_06',
+      top: 'top_13',
+    }),
   },
   {
     userId: 'user_4',
-    nickname: 'DFJAS', // 4등
+    nickname: '무대위의나',
     level: 10,
     exp: 100,
     coins: 1200,
@@ -76,11 +89,16 @@ export const MOCK_PLAYERS: Player[] = [
     isReady: true,
     totalScore: 260,
     inventory: [],
-    outfit: createOutfit({ bird: 'duck_white' }),
+    outfit: createOutfit({
+      bird: 'bird_02',
+      hat: 'hat_15',
+      top: 'top_22',
+      shoes: 'shoes_12',
+    }),
   },
   {
     userId: 'user_5',
-    nickname: '모던애자일', // 5등
+    nickname: '겨울코디왕',
     level: 20,
     exp: 200,
     coins: 5000,
@@ -90,12 +108,17 @@ export const MOCK_PLAYERS: Player[] = [
     isReady: true,
     totalScore: 250,
     inventory: [],
-    outfit: createOutfit({ bird: 'owl_grey', hat: 'glasses' }),
+    outfit: createOutfit({
+      bird: 'bird_06',
+      accessory: 'acc_21',
+      top: 'top_08',
+      shoes: 'shoes_06',
+    }),
   },
   {
     userId: 'user_6',
-    nickname: 'EGG1',
-    level: 2,
+    nickname: '포폴구경꾼',
+    level: 3,
     exp: 10,
     coins: 50,
     status: 'IDLE',
@@ -104,7 +127,11 @@ export const MOCK_PLAYERS: Player[] = [
     isReady: true,
     totalScore: 240,
     inventory: [],
-    outfit: createOutfit({ bird: 'parrot_basic' }),
+    outfit: createOutfit({
+      bird: 'bird_01',
+      top: 'top_01',
+      effect: 'effect_01',
+    }),
   },
 ];
 
@@ -156,42 +183,36 @@ export const MOCK_FINISH_CONTEXT: FinishContext = {
 };
 
 const MOCK_ROOM_SETTINGS: RoomSettings = {
-  roomTitle: '폴리카소 참 잘하는 집',
+  roomTitle: '포트폴리오 데모방',
   maxPlayers: 6,
   gameMode: 'SOLO',
   isPrivate: false,
 };
 
-const MOCK_TEAM_PLAYERS = MOCK_PLAYERS.map((p, i) => ({
-  ...p,
-  teamId: i % 2 === 0 ? 'RED' : 'BLUE',
+const MOCK_TEAM_PLAYERS = MOCK_PLAYERS.map((player, index) => ({
+  ...player,
+  teamId: index % 2 === 0 ? 'RED' : 'BLUE',
 }));
 
 export const MOCK_FINISHED_ROOM_STATE: RoomState = {
   status: 'FINISHED',
   hostId: MOCK_PLAYERS[0].userId,
   endsAt: Date.now() + 1000 * 10,
-
   settings: MOCK_ROOM_SETTINGS,
   players: MOCK_PLAYERS,
   currentRound: 3,
   totalRounds: 3,
-
   phaseContext: MOCK_FINISH_CONTEXT,
-
   teamScore: null,
 };
 
 export const MOCK_TEAM_FINISHED_ROOM_STATE: RoomState = {
   ...MOCK_FINISHED_ROOM_STATE,
-
   settings: {
     ...MOCK_ROOM_SETTINGS,
     gameMode: 'TEAM',
   },
-
   players: MOCK_TEAM_PLAYERS,
-
   teamScore: {
     blue: 120,
     red: 150,

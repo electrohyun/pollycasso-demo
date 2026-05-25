@@ -46,7 +46,7 @@ export const FriendHeader = ({
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="태그나 이름을 입력해주세요."
+            placeholder="닉네임이나 태그를 입력해주세요."
             autoComplete="off"
             className="flex-1 px-4 text-gray-500 text-xl outline-none placeholder:text-gray-300 font-medium"
           />

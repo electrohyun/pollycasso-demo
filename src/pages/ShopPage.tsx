@@ -2,6 +2,8 @@ import { ShopSidebar, ShopProductList, ShopProfilePanel } from '@/widgets/shop';
 import { useNudgeListener } from '@/features/lobby';
 import { useShop } from '@/features/shop';
 import { BackButton } from '@/shared/ui/BackButton';
+import { getPortfolioUser } from '@/entities/user/model/portfolioUser';
+import { usePortfolioOutfitForPlayer } from '@/features/shop/model/portfolioShopStorage';
 
 const ShopPage = () => {
   useNudgeListener();
@@ -18,6 +20,10 @@ const ShopPage = () => {
     handlePurchase,
     isPurchasing,
   } = useShop();
+  const displayUser = getPortfolioUser(user);
+  const portfolioOutfit = usePortfolioOutfitForPlayer(
+    displayUser.outfit?.bird ?? 'bird_07',
+  );
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen gap-[24px] font-ssrm font-bold">
@@ -44,8 +50,14 @@ const ShopPage = () => {
       <ShopProfilePanel
         cart={cart}
         previewItems={shopPreview.previewItems}
-        userBalance={user?.coin ?? 0}
-        userLevel={user?.level ?? 1}
+        userBalance={displayUser.coin ?? 0}
+        userLevel={displayUser.level ?? 1}
+        nickname={`${displayUser.nickname}#${displayUser.tag}`}
+        defaultBirdId={
+          import.meta.env.VITE_USE_MOCK === 'true'
+            ? portfolioOutfit.bird
+            : (displayUser.outfit?.bird ?? 'bird_07')
+        }
         onRemoveFromCart={removeFromCart}
         onResetPreview={shopPreview.resetPreview}
         onPurchase={handlePurchase}

@@ -2,6 +2,8 @@ import type { CSSProperties } from 'react';
 import { StarIcon } from '@heroicons/react/24/solid';
 
 import { Coin } from '@/assets';
+import type { Outfit } from '@/shared/model';
+import { FinishedAvatar } from './FinishedAvatar';
 
 interface RankRowProps {
   rank: number;
@@ -13,6 +15,7 @@ interface RankRowProps {
   style?: CSSProperties;
   rankText?: string;
   teamId?: string | null;
+  outfit: Outfit;
 }
 
 export const RankRow = ({
@@ -25,6 +28,7 @@ export const RankRow = ({
   style,
   rankText,
   teamId,
+  outfit,
 }: RankRowProps) => {
   let expBgColor = 'bg-[#6B8E8E]';
   let pointColor = 'text-[#525252]';
@@ -48,10 +52,10 @@ export const RankRow = ({
         </span>
 
         <div className="w-16 h-16 bg-white rounded-full overflow-hidden flex items-center justify-center border-2 border-white shadow-sm">
-          <img
-            src={''}
-            alt="avatar"
-            className="w-full h-full object-cover mt-6"
+          <FinishedAvatar
+            outfit={outfit}
+            className="h-full w-full"
+            imageClassName="scale-125 translate-y-3"
           />
         </div>
         <span className="font-ssrm font-bold text-[#525252] text-3xl pt-1">

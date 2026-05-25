@@ -5,11 +5,15 @@ import { ProfileSection, SettingsSection } from '@/features/mypage';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { BackButton } from '@/shared/ui/BackButton';
+import { usePortfolioOutfitForPlayer } from '@/features/shop/model/portfolioShopStorage';
 
 const MyPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const user = useAuthStore((state) => state.user);
+  const portfolioOutfit = usePortfolioOutfitForPlayer(
+    user?.outfit?.bird ?? 'bird_07',
+  );
   const { logout } = useLogout();
 
   const section = searchParams.get('section');
@@ -29,10 +33,15 @@ const MyPage = () => {
 
       <Sidebar
         nickname={user.nickname}
+        tag={user.tag!}
         level={user.level!}
         currentXp={user.currentExp!}
         coin={user.coin!}
-        outfit={user.outfit!}
+        outfit={
+          import.meta.env.VITE_USE_MOCK === 'true'
+            ? portfolioOutfit
+            : user.outfit!
+        }
         onLogout={logout}
         currentPage="mypage"
       />

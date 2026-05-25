@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client';
 
 import App from './App';
 import { setupAxiosInterceptors } from './config/setupAxios';
+import { ensurePortfolioAuthStorage } from '@/entities/user/model/portfolioUser';
 import './global.css';
 
 setupAxiosInterceptors();
+ensurePortfolioAuthStorage();
 
 export const enableMSW = async () => {
   if (import.meta.env.DEV && import.meta.env.VITE_USE_MSW) {

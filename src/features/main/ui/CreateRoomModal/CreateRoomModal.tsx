@@ -8,6 +8,7 @@ import title from '@/assets/title.svg';
 import type { GameMode, Room } from '@/entities/room';
 import { cn } from '@/shared/lib';
 import { Spinner } from '@/shared/ui/Spinner';
+import { showToast } from '@/shared/ui/Toast';
 import { TITLE_PRESETS } from '../../constants/titles';
 import type { CreateRoomForm } from '../../lib/validators';
 import { createRoomSchema } from '../../lib/validators';
@@ -24,7 +25,13 @@ import { useSound } from '@/entities/sound';
 import { SoundManager } from '@/shared/api/sound/manager';
 import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 
-export const CreateRoomModal = () => {
+interface CreateRoomModalProps {
+  noopOnSubmit?: boolean;
+}
+
+export const CreateRoomModal = ({
+  noopOnSubmit = false,
+}: CreateRoomModalProps) => {
   const navigate = useNavigate();
   const { isOpen, close, mode, initialData } = useCreateRoomModalStore();
   const { mutate, isPending } = useCreateRoomMutation();
@@ -124,6 +131,12 @@ export const CreateRoomModal = () => {
 
   const onSubmit = (data: CreateRoomForm) => {
     playClick();
+
+    if (noopOnSubmit) {
+      showToast.info('데모 모드에서 방 설정은 변경되지 않습니다.');
+      close();
+      return;
+    }
 
     if (isEdit) {
       const waitingSocket = getWaitingSocket();

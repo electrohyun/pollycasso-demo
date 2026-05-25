@@ -6,13 +6,21 @@ import type { DrawingContext, Player, RoomState } from '@/shared/model';
 import { useGameSocket } from '@/shared/api/socket/GameSocketProvider';
 import { SOCKET_EVENTS } from '@/shared/api/socket';
 
-export const useGameState = () => {
+export const useGameState = (overrideState?: RoomState) => {
   const user = useAuthStore((state) => state.user);
   const { gameSocket } = useGameSocket();
 
-  const [roomState, setRoomState] = useState<RoomState>(MOCK_GAME_SELECTING);
+  const [roomState, setRoomState] = useState<RoomState>(
+    overrideState ?? MOCK_GAME_SELECTING,
+  );
 
   useEffect(() => {
+    if (!overrideState) return;
+    setRoomState(overrideState);
+  }, [overrideState]);
+
+  useEffect(() => {
+    if (overrideState) return;
     if (!gameSocket) return;
 
     const handleUpdate = (payload: any) => {
@@ -32,7 +40,7 @@ export const useGameState = () => {
       gameSocket.off('room:stateSync', handleUpdate);
       gameSocket.off('room:updateGameState', handleUpdate);
     };
-  }, [gameSocket]);
+  }, [gameSocket, overrideState]);
 
   const { status, players, endsAt, phaseContext } = roomState;
 

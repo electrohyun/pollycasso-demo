@@ -1,5 +1,7 @@
 import { Coin, LaurelWreath } from '@/assets';
+import type { Outfit } from '@/shared/model';
 import { TEAM_RANK_STYLES } from '../constants/styles';
+import { FinishedAvatar } from './FinishedAvatar';
 
 interface PodiumSpotProps {
   rank: 1 | 2 | 3;
@@ -7,6 +9,7 @@ interface PodiumSpotProps {
   coins: number;
   xp: number;
   teamId: string | null;
+  outfit: Outfit;
 }
 
 export const TeamPodiumSpot = ({
@@ -15,6 +18,7 @@ export const TeamPodiumSpot = ({
   coins,
   xp,
   teamId,
+  outfit,
 }: PodiumSpotProps) => {
   const styles = TEAM_RANK_STYLES[rank];
 
@@ -22,7 +26,7 @@ export const TeamPodiumSpot = ({
 
   return (
     <div className={styles.wrapper}>
-      <img src={''} className="relative w-full h-full" alt="bird" />
+      <FinishedAvatar outfit={outfit} className="relative w-full h-full" />
 
       <img
         src={LaurelWreath}

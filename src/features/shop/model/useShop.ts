@@ -9,6 +9,7 @@ import { useShopFilter } from './useShopFilter';
 import { useShopPreview } from './useShopPreview';
 import { useProductSorting } from './useProductSorting';
 import { SHOP_CATEGORIES } from '../constants/shop.constants';
+import { showToast } from '@/shared/ui/Toast';
 
 export const useShop = () => {
   const queryClient = useQueryClient();
@@ -50,8 +51,9 @@ export const useShop = () => {
         updateUser({ coin: data.remainingCoins });
       }
       queryClient.invalidateQueries({ queryKey: shopQueries.all() });
+      showToast.success('구매 완료! 옷장에서 착용해보세요.');
     },
-    onError: () => alert('구매에 실패했습니다.'),
+    onError: () => showToast.error('구매에 실패했습니다.'),
   });
 
   const handlePurchase = () => {

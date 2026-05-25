@@ -9,6 +9,7 @@ const DEFAULT_BIRD_ID = 'bird_01';
 interface CharacterPreviewProps {
   level: number;
   nickname?: string;
+  defaultBirdId?: string;
   previewItems: Product[];
   onReset?: () => void;
   showResetButton?: boolean;
@@ -34,7 +35,8 @@ const LAYER_ORDER = [
 
 export const CharacterPreview = ({
   level,
-  nickname = '폴리칵소',
+  nickname = '기현#0001',
+  defaultBirdId = DEFAULT_BIRD_ID,
   previewItems,
   onReset,
   showResetButton = true,
@@ -44,7 +46,7 @@ export const CharacterPreview = ({
     (item) => item.subCategory === SHOP_CATEGORIES.BIRD,
   );
 
-  const birdImageId = selectedBird ? selectedBird.image : DEFAULT_BIRD_ID;
+  const birdImageId = selectedBird ? selectedBird.image : defaultBirdId;
 
   const wearables = useMemo(() => {
     return previewItems
