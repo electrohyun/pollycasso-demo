@@ -1,5 +1,10 @@
 import title from '@/assets/title.svg';
-import { LoginForm, SignupLink, SocialLoginButtons } from '@/features/auth';
+import {
+  GuestLoginButton,
+  LoginForm,
+  SignupLink,
+  SocialLoginButtons,
+} from '@/features/auth';
 import { AuthLayout } from '@/widgets/auth/ui/AuthLayout';
 import { useAdminKnock } from '@/features/admin';
 
@@ -20,7 +25,14 @@ const LoginPage = () => {
           alt="폴리카소 로고"
         />
         <LoginForm />
+        <div className=" w-[470px]  border-[#419341]" />
         <SocialLoginButtons />
+        <div className="my-5 flex w-[470px] items-center gap-4">
+          <div className="h-px flex-1 bg-[#419341]" />
+          <span className="text-lg font-bold text-[#1E3411]">데모 전용</span>
+          <div className="h-px flex-1 bg-[#419341]" />
+        </div>
+        <GuestLoginButton />
         <SignupLink />
       </AuthLayout>
     </div>

@@ -7,19 +7,28 @@ export const useLogout = () => {
   const navigate = useNavigate();
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
+  const clearLocalAuthAndRedirect = () => {
+    clearAuth();
+    localStorage.removeItem('auth-storage');
+    navigate('/login', { replace: true });
+  };
+
   const { mutate: logout, isPending } = useMutation({
     ...authQueries.logout(),
 
-    onSuccess: () => {
-      clearAuth();
-      navigate('/login', { replace: true });
-    },
+    onSuccess: clearLocalAuthAndRedirect,
 
-    onError: () => {
-      clearAuth();
-      navigate('/login', { replace: true });
-    },
+    onError: clearLocalAuthAndRedirect,
   });
 
-  return { logout, isPending };
+  const handleLogout = () => {
+    if (import.meta.env.VITE_USE_MOCK === 'true') {
+      clearLocalAuthAndRedirect();
+      return;
+    }
+
+    logout();
+  };
+
+  return { logout: handleLogout, isPending };
 };

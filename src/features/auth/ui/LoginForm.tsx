@@ -65,7 +65,7 @@ export const LoginForm = () => {
 
       <hr className="w-full border border-[#419341]" />
 
-      <div className="relative w-full h-10">
+      <div className="relative w-full h-10 right-2">
         <SocialGuide visible={!username && !password && !isAnyFieldFocused} />
       </div>
     </div>

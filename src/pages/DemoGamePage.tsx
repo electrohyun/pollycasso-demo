@@ -2,7 +2,12 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import GameWidget from '@/widgets/game/ui/GameWidget';
-import type { PhaseContext, Player, RoomState, RoomStatus } from '@/shared/model';
+import type {
+  PhaseContext,
+  Player,
+  RoomState,
+  RoomStatus,
+} from '@/shared/model';
 import { usePortfolioOutfitForPlayer } from '@/features/shop/model/portfolioShopStorage';
 
 type DemoPhase = Extract<
@@ -43,7 +48,7 @@ const getPhaseContext = (phase: DemoPhase): PhaseContext => {
     return {
       kind: 'THEME_SELECTING',
       selectorId: 1,
-      nickname: '기현',
+      nickname: '폴리',
     };
   }
 
@@ -142,7 +147,7 @@ const DemoGamePage = () => {
     () => [
       {
         userId: '1',
-        nickname: '기현',
+        nickname: '폴리',
         level: 7,
         exp: 0,
         coins: 99,

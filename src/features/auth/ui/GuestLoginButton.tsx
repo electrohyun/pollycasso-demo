@@ -14,9 +14,9 @@ export const GuestLoginButton = () => {
     <button
       type="button"
       onClick={handleGuestLogin}
-      className="w-[470px] rounded-xl bg-[#EF5F52] p-4 text-2xl text-white transition-colors duration-200 hover:bg-[#d64538]"
+      className="w-[470px] rounded-xl bg-[#EF5F52] p-4 text-2xl font-bold text-white transition-colors duration-200 hover:bg-[#d64538]"
     >
-      게스트로 체험하기
+      게스트 로그인
     </button>
   );
 };

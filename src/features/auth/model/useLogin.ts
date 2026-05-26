@@ -11,6 +11,7 @@ import type { LoginFormValues } from '../lib/validators';
 import { loginSchema } from '../lib/validators';
 import type { LoginFailureResponse } from '../model/types';
 import { authQueries } from '../queries/authQueries';
+import { showToast } from '@/shared/ui/Toast';
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
@@ -66,6 +67,11 @@ export const useLogin = () => {
   });
 
   const onSubmit = (form: LoginFormValues) => {
+    if (import.meta.env.VITE_USE_MOCK === 'true') {
+      showToast.info('데모에서는 게스트 로그인만 가능합니다.');
+      return;
+    }
+
     login(form);
   };
 

@@ -20,7 +20,7 @@ const createOutfit = (overrides?: Partial<Outfit>): Outfit => ({
 export const MOCK_PLAYERS: Player[] = [
   {
     userId: 'user_1',
-    nickname: '기현',
+    nickname: '폴리',
     level: 7,
     exp: 80,
     coins: 99,

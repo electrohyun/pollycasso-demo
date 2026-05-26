@@ -3,7 +3,7 @@ import { resetPortfolioDemoStorage } from '@/features/shop/model/portfolioShopSt
 
 export const PORTFOLIO_USER: User = {
   id: 1,
-  nickname: '기현',
+  nickname: '폴리',
   tag: '0001',
   coin: 99,
   level: 7,

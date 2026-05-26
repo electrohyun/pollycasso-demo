@@ -35,7 +35,7 @@ const LAYER_ORDER = [
 
 export const CharacterPreview = ({
   level,
-  nickname = '기현#0001',
+  nickname = '폴리#0001',
   defaultBirdId = DEFAULT_BIRD_ID,
   previewItems,
   onReset,
