@@ -1,48 +1,64 @@
 import type { FriendProfile, FriendRelation } from '@/entities/friend';
 import { SOCKET_EVENTS } from '@/shared/api/socket';
 import type { MockSocket } from '@/shared/api/socket/mockSocket';
+import type { Outfit } from '@/shared/model';
 
 export interface FriendWithRelation extends FriendProfile {
   relation: FriendRelation;
 }
 
+const createOutfit = (bird: string): Outfit => ({
+  bird,
+  accessory: null,
+  hat: null,
+  top: null,
+  bottom: null,
+  shoes: null,
+  effect: null,
+});
+
 export const MOCK_FRIENDS: FriendWithRelation[] = [
   {
     userId: 1,
-    nickname: '그림쟁이#1234',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=Art',
+    nickname: '그림쟁이',
+    tag: '1234',
+    outfit: createOutfit('bird_03'),
     level: 25,
     isOnline: true,
     relation: 'FRIEND',
   },
   {
     userId: 2,
-    nickname: '밤샘코딩#5678',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=Code',
+    nickname: '버그수집가',
+    tag: '5678',
+    outfit: createOutfit('bird_04'),
     level: 10,
     isOnline: false,
     relation: 'FRIEND',
   },
   {
     userId: 3,
-    nickname: '친추주세요#1111',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=Req',
+    nickname: '친추주세요',
+    tag: '1111',
+    outfit: createOutfit('bird_05'),
     level: 5,
     isOnline: true,
     relation: 'REQUEST_RECEIVED',
   },
   {
     userId: 4,
-    nickname: '묵묵부답#2222',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=Wait',
+    nickname: '묵묵부답',
+    tag: '2222',
+    outfit: createOutfit('bird_06'),
     level: 1,
     isOnline: false,
     relation: 'REQUEST_SENT',
   },
   {
     userId: 5,
-    nickname: '비매너유저#9999',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=Block',
+    nickname: '비매너유저',
+    tag: '9999',
+    outfit: createOutfit('bird_02'),
     level: 99,
     isOnline: false,
     relation: 'BLOCKED',
@@ -52,33 +68,55 @@ export const MOCK_FRIENDS: FriendWithRelation[] = [
 export const MOCK_RECOMMENDED: FriendProfile[] = [
   {
     userId: 101,
-    nickname: '뉴비환영#0001',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=New',
+    nickname: '뉴비환영',
+    tag: '0001',
+    outfit: createOutfit('bird_01'),
     level: 2,
     isOnline: true,
   },
   {
     userId: 102,
-    nickname: '같이놀아요#0002',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=Play',
+    nickname: '같이해요',
+    tag: '0002',
+    outfit: createOutfit('bird_07'),
     level: 15,
     isOnline: false,
   },
   {
     userId: 103,
-    nickname: '고수등장#7777',
-    outfit: 'https://api.dicebear.com/7.x/miniavs/svg?seed=Gosu',
+    nickname: '고수등장',
+    tag: '7777',
+    outfit: createOutfit('bird_08'),
     level: 50,
     isOnline: true,
   },
 ];
 
-const MOCK_ALL_USERS = [
-  { userId: 1001, nickname: '검색테스트1#1111', level: 5, isOnline: true },
-  { userId: 1002, nickname: '검색테스트2#2222', level: 10, isOnline: false },
-  { userId: 1003, nickname: '숨은고수#9999', level: 99, isOnline: true },
-  { userId: 1004, nickname: '폴리카소#7777', level: 1, isOnline: false },
-  { userId: 1005, nickname: '아이유#1004', level: 50, isOnline: true },
+const MOCK_ALL_USERS: FriendProfile[] = [
+  {
+    userId: 1001,
+    nickname: '검색테스트1',
+    tag: '1111',
+    outfit: createOutfit('bird_01'),
+    level: 5,
+    isOnline: true,
+  },
+  {
+    userId: 1002,
+    nickname: '검색테스트2',
+    tag: '2222',
+    outfit: createOutfit('bird_02'),
+    level: 10,
+    isOnline: false,
+  },
+  {
+    userId: 1003,
+    nickname: '숨은고수',
+    tag: '9999',
+    outfit: createOutfit('bird_03'),
+    level: 99,
+    isOnline: true,
+  },
 ];
 
 export const handleFriendGetList = (socket: MockSocket) => {
@@ -95,9 +133,7 @@ export const handleFriendGetRecommended = (socket: MockSocket) => {
 export const handleFriendRequestSend = (socket: MockSocket, payload: any) => {
   const { targetNickname } = payload;
 
-  console.log(`[Mock] 친구 요청 시도: ${targetNickname}`);
-
-  if (targetNickname === '나' || targetNickname === 'me') {
+  if (targetNickname === '기현#0001' || targetNickname === 'me') {
     socket.trigger('system:notification', {
       status: 400,
       code: 'CANNOT_REQUEST_SELF',
@@ -107,30 +143,13 @@ export const handleFriendRequestSend = (socket: MockSocket, payload: any) => {
   }
 
   const existingFriend = MOCK_FRIENDS.find(
-    (f) => f.nickname === targetNickname && f.relation === 'FRIEND',
+    (friend) => friend.nickname === targetNickname && friend.relation === 'FRIEND',
   );
+
   if (existingFriend) {
     socket.trigger('system:notification', {
       status: 400,
       code: 'ALREADY_FRIEND',
-      errors: [],
-    });
-    return;
-  }
-
-  if (targetNickname === '차단맨') {
-    socket.trigger('system:notification', {
-      status: 403,
-      code: 'BLOCKED_BY_TARGET',
-      errors: [],
-    });
-    return;
-  }
-
-  if (targetNickname === '인기남') {
-    socket.trigger('system:notification', {
-      status: 429,
-      code: 'TOO_MANY_REQUESTS',
       errors: [],
     });
     return;
@@ -141,7 +160,7 @@ export const handleFriendRequestSend = (socket: MockSocket, payload: any) => {
     ...MOCK_RECOMMENDED,
     ...MOCK_ALL_USERS,
   ];
-  const userExists = allKnownUsers.find((u) => u.nickname === targetNickname);
+  const userExists = allKnownUsers.find((user) => user.nickname === targetNickname);
 
   if (!userExists) {
     socket.trigger('system:notification', {
@@ -154,7 +173,8 @@ export const handleFriendRequestSend = (socket: MockSocket, payload: any) => {
 
   socket.trigger('system:notification', {
     status: 200,
-    message: `${targetNickname}님에게 친구 신청을 보냈습니다.`,
+    code: 'FRIEND_REQUEST_SENT',
+    message: `${targetNickname}에게 친구 요청을 보냈습니다.`,
   });
 };
 
@@ -164,9 +184,9 @@ export const handleFriendAccept = (socket: MockSocket, payload: any) => {
     userId: requesterId,
     relation: 'FRIEND',
   });
-  // 성공 토스트 트리거
   socket.trigger('system:notification', {
     status: 200,
+    code: 'FRIEND_ACCEPTED',
     message: '친구 요청을 수락했습니다.',
   });
 };
@@ -197,14 +217,9 @@ export const handleFriendSearch = (socket: MockSocket, payload: any) => {
     return;
   }
 
-  const foundUsers = MOCK_ALL_USERS.filter((user) =>
-    user.nickname.includes(keyword),
-  );
-
-  const myRelationIds = new Set(MOCK_FRIENDS.map((f) => f.userId));
-
-  const finalResults = foundUsers.filter(
-    (user) => !myRelationIds.has(user.userId),
+  const myRelationIds = new Set(MOCK_FRIENDS.map((friend) => friend.userId));
+  const finalResults = MOCK_ALL_USERS.filter(
+    (user) => user.nickname.includes(keyword) && !myRelationIds.has(user.userId),
   );
 
   socket.trigger(SOCKET_EVENTS.FRIEND_SEARCH_RESPONSE, finalResults);

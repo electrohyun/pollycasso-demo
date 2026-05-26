@@ -7,8 +7,9 @@ import {
 } from '@heroicons/react/24/solid';
 
 import { DRAWING_TOOLS } from '../constants/drawingConstants';
+import type { DrawingTool } from '@/entities/drawing';
 
-export type DrawingToolType = (typeof DRAWING_TOOLS)[number]['id'];
+export type DrawingToolType = DrawingTool;
 
 type IconProps = ComponentProps<'svg'>;
 

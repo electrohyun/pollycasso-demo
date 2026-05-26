@@ -36,7 +36,9 @@ export const MessageList = ({
           <MessageItem
             key={msg.id}
             msg={msg}
-            currentUserId={currentUserId}
+            currentUserId={
+              currentUserId === undefined ? undefined : String(currentUserId)
+            }
             showChannelTag={showChannelTag}
           />
         ))

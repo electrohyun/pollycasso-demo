@@ -19,18 +19,26 @@ export const PORTFOLIO_USER: User = {
   },
 };
 
-export const getPortfolioUser = (user?: User | null): User => ({
-  ...PORTFOLIO_USER,
-  ...user,
-  nickname: PORTFOLIO_USER.nickname,
-  tag: PORTFOLIO_USER.tag,
-  coin: PORTFOLIO_USER.coin,
-  outfit: {
-    ...PORTFOLIO_USER.outfit,
-    ...user?.outfit,
-    bird: PORTFOLIO_USER.outfit!.bird,
-  },
-});
+export const getPortfolioUser = (user?: User | null): User => {
+  const baseOutfit = PORTFOLIO_USER.outfit!;
+
+  return {
+    ...PORTFOLIO_USER,
+    ...user,
+    nickname: PORTFOLIO_USER.nickname,
+    tag: PORTFOLIO_USER.tag,
+    coin: PORTFOLIO_USER.coin,
+    outfit: {
+      bird: baseOutfit.bird,
+      accessory: user?.outfit?.accessory ?? baseOutfit.accessory,
+      hat: user?.outfit?.hat ?? baseOutfit.hat,
+      top: user?.outfit?.top ?? baseOutfit.top,
+      bottom: user?.outfit?.bottom ?? baseOutfit.bottom,
+      shoes: user?.outfit?.shoes ?? baseOutfit.shoes,
+      effect: user?.outfit?.effect ?? baseOutfit.effect,
+    },
+  };
+};
 
 export const ensurePortfolioAuthStorage = () => {
   if (import.meta.env.VITE_USE_MOCK !== 'true') return;

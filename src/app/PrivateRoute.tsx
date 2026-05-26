@@ -1,11 +1,7 @@
-import { Navigate, Outlet } from 'react-router';
-
-import { useAuthStore } from '@/entities/user';
+import { Outlet } from 'react-router';
 
 const PrivateRoute = () => {
-  const { accessToken } = useAuthStore();
-
-  return accessToken ? <Outlet /> : <Outlet />;
+  return <Outlet />;
 };
 
 export default PrivateRoute;

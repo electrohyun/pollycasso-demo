@@ -178,6 +178,7 @@ export class MockSocket {
 
       case SOCKET_EVENTS.FRIEND_SEARCH:
         handleFriendSearch(this, payload);
+        break;
       case SOCKET_EVENTS.GAME_USE_ITEM:
         handleGameUseItem(this, payload);
         break;

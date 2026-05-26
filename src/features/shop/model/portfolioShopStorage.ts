@@ -106,8 +106,8 @@ export const getPortfolioOutfitForPlayer = (
   fallbackBird = 'bird_07',
 ): Outfit => {
   const storedOutfit = getPortfolioOutfitStorage();
-  const getImageById = (id?: number) =>
-    id ? MOCK_SHOP_PRODUCTS.find((product) => product.id === id)?.image : null;
+  const getImageById = (id?: number): string | null =>
+    id ? MOCK_SHOP_PRODUCTS.find((product) => product.id === id)?.image ?? null : null;
 
   return {
     bird: getImageById(storedOutfit.bird) ?? fallbackBird,

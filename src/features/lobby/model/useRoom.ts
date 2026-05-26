@@ -13,7 +13,6 @@ import type { UpdateGameStatePayload } from '../model/types';
 import { useSound } from '@/entities/sound';
 import { SOUND_ASSETS } from '@/shared/api/sound/assets';
 import { SoundManager } from '@/shared/api/sound/manager';
-import type { UpdateGameStatePayload } from '@/features/lobby/model/types';
 
 export const useRoom = () => {
   const navigate = useNavigate();
@@ -193,7 +192,7 @@ export const useRoom = () => {
   const startGame = () => waitingSocket.emit('game:startRequest');
   const toggleReady = () => waitingSocket.emit('room:readyToggle');
   const changeTeam = (targetTeam: 'BLUE' | 'RED' | 'NONE') => {
-    if (!me || me.team === targetTeam) return;
+    if (!me || me.teamId === targetTeam) return;
     waitingSocket.emit('room:changeTeam', { targetTeam });
   };
   const kickUser = (targetUserId: string | number) =>

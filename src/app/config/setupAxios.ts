@@ -50,7 +50,11 @@ export const setupAxiosInterceptors = () => {
             const decoded = parseAccessToken(newAccessToken);
 
             useAuthStore.getState().setAuth({
-              user: { id: decoded.sub, nickname: decoded.nickname },
+              user: {
+                id: decoded.sub,
+                nickname: decoded.nickname,
+                tag: decoded.tag ?? '0001',
+              },
               accessToken: newAccessToken,
             });
 

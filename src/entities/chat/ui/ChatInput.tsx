@@ -7,10 +7,13 @@ import type { Friend } from '@/shared/model';
 import { mapFriendsToSuggestions, MENTION_STYLE } from './chatInput.styles';
 
 interface ChatInputProps
-  extends Omit<ComponentProps<typeof MentionsInput>, 'value' | 'onChange'> {
+  extends Omit<
+    ComponentProps<typeof MentionsInput>,
+    'value' | 'onChange' | 'children'
+  > {
   value: string;
   onChange: (v: string) => void;
-  friends: Friend[];
+  friends?: Friend[];
 }
 
 export const ChatInput = ({

@@ -16,7 +16,6 @@ const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const MainPage = lazy(() => import('@/pages/MainPage'));
 const GamePage = lazy(() => import('@/pages/GamePage'));
 const DemoGamePage = lazy(() => import('@/pages/DemoGamePage'));
-const GameWidget = lazy(() => import('@/widgets/game/ui/GameWidget'));
 const FriendPage = lazy(() => import('@/pages/FriendPage'));
 const ShopPage = lazy(() => import('@/pages/ShopPage'));
 const WardrobePage = lazy(() => import('@/pages/WardrobePage'));
@@ -52,7 +51,6 @@ const router = createBrowserRouter([
               { path: '/ranking', element: <RankingPage /> },
               { path: '/mypage', element: <MyPage /> },
               { path: '/demo/game/:roomId', element: <DemoGamePage /> },
-              { path: '/dev/gameWidget', element: <GameWidget /> },
               {
                 path: '/rooms/:roomId',
                 element: (

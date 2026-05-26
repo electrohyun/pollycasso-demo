@@ -18,6 +18,7 @@ export const SOCKET_EVENTS = {
 
   GAME_TYPING: 'game:typing',
   GAME_TYPING_SHARE: 'game:shareTyping',
+  GAME_THEME_SUBMIT: 'game:themeSubmit',
   GAME_FINALIZE: 'game:finalize',
 
   FRIEND_GET_ALL: 'friends:getList',

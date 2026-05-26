@@ -147,13 +147,8 @@ const WardrobePage = () => {
           </div>
 
           <button
-            onClick={() => handleTabChange('SKILL')}
-            className={cn(
-              'w-[370px] h-[60px] rounded-[20px] transition-colors',
-              activeTab === 'SKILL'
-                ? 'bg-[#2D2D2D] text-white'
-                : 'bg-black hover:bg-[#2D2D2D] text-white',
-            )}
+            onClick={() => handleTabChange('ITEM')}
+            className="w-[370px] h-[60px] rounded-[20px] transition-colors bg-black/50 text-white/70 cursor-default"
           >
             기술
           </button>

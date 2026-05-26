@@ -13,6 +13,7 @@ export interface ThemeSelectingContext {
   kind: 'THEME_SELECTING';
   selectorId: number;
   nickname: string;
+  value?: string;
 }
 
 export interface DrawingContext {

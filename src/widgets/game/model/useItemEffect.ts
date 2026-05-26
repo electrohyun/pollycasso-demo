@@ -29,7 +29,7 @@ export const useItemEffect = () => {
     }) => {
       const { itemId, targetUserId } = payload;
 
-      if (targetUserId !== myUserId) return;
+      if (String(targetUserId) !== String(myUserId)) return;
 
       const effectFunc = ITEM_EFFECTS[itemId];
 

@@ -107,6 +107,7 @@ export const handleGameThemeSubmit = (socket: MockSocket, payload: any) => {
 
   socket['roomState'].status = 'DRAWING';
   socket['roomState'].phaseContext = {
+    kind: 'DRAWING',
     currentTheme: theme,
   };
 
@@ -129,6 +130,7 @@ export const handleGameThemeAutoSelect = (socket: MockSocket) => {
 
   socket['roomState'].status = 'DRAWING';
   socket['roomState'].phaseContext = {
+    kind: 'DRAWING',
     currentTheme: selectedTheme,
   };
 

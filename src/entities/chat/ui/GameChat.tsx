@@ -21,7 +21,6 @@ export const GameChat = () => {
             value={state.input}
             onChange={actions.setInput}
             onKeyDown={actions.handleKeyDown}
-            setIsComposing={actions.setIsComposing}
             placeholder="채팅 입력..."
             className="w-full text-base text-black placeholder-gray-500"
           />

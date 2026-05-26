@@ -12,9 +12,9 @@ export const selectMe = (state: RoomState | null, myId: string | number) =>
  * 필드명을 teamId -> team으로 맞추고, NONE 상태인 유저도 관리합니다.
  */
 export const selectTeams = (state: RoomState | null) => ({
-  blue: state?.players.filter((p) => p.team === 'BLUE') ?? [],
-  red: state?.players.filter((p) => p.team === 'RED') ?? [],
-  none: state?.players.filter((p) => p.team === 'NONE') ?? [],
+  blue: state?.players.filter((p) => p.teamId === 'BLUE') ?? [],
+  red: state?.players.filter((p) => p.teamId === 'RED') ?? [],
+  none: state?.players.filter((p) => p.teamId === 'NONE') ?? [],
 });
 
 /**
@@ -53,7 +53,7 @@ export const selectTopBottomTeams = (
   const { blue, red, none } = selectTeams(state);
 
   // 내 팀이 없거나 BLUE면 BLUE를 상단(Top)에 노출
-  const myTeam = me?.team || 'BLUE';
+  const myTeam = me?.teamId || 'BLUE';
   const isMyTeamBlue = myTeam === 'BLUE' || myTeam === 'NONE';
 
   const topTeamId = isMyTeamBlue ? 'BLUE' : 'RED';

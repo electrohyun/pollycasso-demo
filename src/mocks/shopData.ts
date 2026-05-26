@@ -1,6 +1,10 @@
 import type { Product } from '@/entities/product';
 
-export const MOCK_TOTAL_PRODUCTS: Product[] = [
+type RawShopProduct = Omit<Product, 'subCategory'> & {
+  subCategory?: string;
+};
+
+export const MOCK_TOTAL_PRODUCTS: RawShopProduct[] = [
   {
     id: 1,
     name: '뭔가 멋진 블랙 안경',

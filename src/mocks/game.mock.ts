@@ -143,7 +143,8 @@ export const MOCK_GAME_SELECTING: RoomState = {
   players: [MOCK_ME, MOCK_OPPONENT, MOCK_DISCONNECTED, MOCK_BONUS],
 
   phaseContext: {
-    selectorId: 'id-2',
+    kind: 'THEME_SELECTING',
+    selectorId: 2,
     nickname: '폴리',
     value: '',
   },
@@ -169,6 +170,7 @@ export const MOCK_GAME_DRAWING: RoomState = {
   players: [MOCK_ME, MOCK_OPPONENT, MOCK_DISCONNECTED, MOCK_BONUS],
 
   phaseContext: {
+    kind: 'DRAWING',
     currentTheme: '',
   },
 

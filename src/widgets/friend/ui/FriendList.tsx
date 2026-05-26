@@ -1,6 +1,7 @@
 import { FaceFrownIcon } from '@heroicons/react/24/outline';
 
 import { FriendCard, useFriend } from '@/entities/friend';
+import type { FriendRelation } from '@/entities/friend';
 import { FriendListSkeleton } from './FriendListSkeleton';
 
 interface FriendListProps {
@@ -21,6 +22,9 @@ export const FriendList = ({ searchKeyword }: FriendListProps) => {
             <FriendCard
               key={friend.userId}
               {...friend}
+              relation={
+                ('relation' in friend ? friend.relation : 'FRIEND') as FriendRelation
+              }
               onAction={(action) => handleFriendAction(friend.userId, action)}
             />
           ))}
