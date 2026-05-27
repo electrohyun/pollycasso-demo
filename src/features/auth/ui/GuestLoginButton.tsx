@@ -7,7 +7,7 @@ export const GuestLoginButton = () => {
 
   const handleGuestLogin = () => {
     loginAsPortfolioGuest();
-    navigate('/', { replace: true });
+    navigate('/welcome', { replace: true });
   };
 
   return (

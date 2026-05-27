@@ -15,8 +15,8 @@ export interface AuthState {
   accessToken: string | null;
 
   setAuth: (data: {
-    user: Pick<User, 'id' | 'nickname' | 'tag'>;
-    accessToken: string;
+    user: User;
+    accessToken: string | null;
   }) => void;
 
   setProfile: (data: Partial<User>) => void;

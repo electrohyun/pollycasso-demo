@@ -1,5 +1,6 @@
 import type { User } from './types';
 import { resetPortfolioDemoStorage } from '@/features/shop/model/portfolioShopStorage';
+import { useAuthStore } from './useAuthStore';
 
 export const PORTFOLIO_USER: User = {
   id: 1,
@@ -62,6 +63,10 @@ export const ensurePortfolioAuthStorage = () => {
 };
 
 export const loginAsPortfolioGuest = () => {
+  useAuthStore.getState().setAuth({
+    user: PORTFOLIO_USER,
+    accessToken: null,
+  });
   localStorage.setItem(
     'auth-storage',
     JSON.stringify({
